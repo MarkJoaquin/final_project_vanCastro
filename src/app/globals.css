@@ -1,6 +1,13 @@
 @import "tailwindcss";
 
-:root {
+:root { 
+    --font-primary: "Monserrat", sans-serif;
+    --font-secondary: "Aleo", sans-serif;
+    --font-terciary: "Lato", sans-serif;
 
+    --primary-color: #FFCE47;
+    --secoundary-color: #FFDF94;
+    --third-color: #FFF5D8;
+    --text-primary-color: #2F2F2F;
+    --text-secoundary-color: #777777;
 }
-

@@ -1,5 +1,6 @@
 import Dummy from "./(components)/Dummy/Dummy";
 import Hero from "./(components)/Hero/Hero";
+
 export default function Home() {
   const heroSection = {
     title: "Join Us on the Road.",
