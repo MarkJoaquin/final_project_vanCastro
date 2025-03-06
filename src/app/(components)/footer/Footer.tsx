@@ -6,7 +6,7 @@ export default function Footer() {
             <div className="footer-container flex justify-between border-b pb-6">
                 <div className="footer-contact justify-items-start">
                     <h3>Contact</h3>
-                    <p className="footer-element">Phone</p>
+                    <p className="footer-element"><span>Phone</span></p>
                     <p className="footer-element flex hover-element"><img className="phone-icon" src="./footer/footer-phone.svg"/>+1 604-600-9173</p>
                     <p className="footer-element flex hover-element"><img className="phone-icon" src="./footer/footer-phone.svg"/>+1 778-680-5613</p>
                     <p className="footer-element"><span>Email:</span> Vancastrodrivingschool@gmail.com</p>

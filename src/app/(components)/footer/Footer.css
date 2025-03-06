@@ -4,6 +4,7 @@ footer {
 }
 
 h3 {
+    font-size: large;
     font-weight: 700;
     margin-bottom: 6px;
 }
@@ -34,3 +35,23 @@ span {
 .social-logo {
     width: 20px;
 }
+/* Responsive for mobile view */
+@media (max-width: 768px) {
+    .footer-container {
+        flex-direction: column; 
+        align-items: flex-start; 
+    }
+
+    .footer-contact, .footer-location, .footer-vancastro {
+        margin-bottom: 3rem;
+    }
+
+    .footer-copyright {
+        justify-content: start;
+    }
+
+    .footer-element {
+        margin-bottom: 10px; 
+    }
+}
+
