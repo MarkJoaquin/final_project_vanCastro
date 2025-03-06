@@ -1,5 +1,7 @@
+import ReviewCarousel from "./(components)/carousel/ReviewCarousel";
+import YoutubeCarousel from "./(components)/carousel/YoutubeCarousel";
 import Dummy from "./(components)/Dummy/Dummy";
-import Hero from "./(components)/Hero/Hero";
+import Hero from "./(components)/hero/Hero";
 
 export default function Home() {
   const heroSection = {
@@ -15,6 +17,8 @@ export default function Home() {
     <>
       <Hero data={heroSection} />
       <Dummy />
+      <ReviewCarousel/>
+      <YoutubeCarousel/>
     </>
   );
 }
