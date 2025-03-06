@@ -1,0 +1,48 @@
+.homeHero {
+    border: 3px red solid;
+}
+
+.heroContainer{
+    /* background-color: yellow; */
+    width: 100vw;
+    height: 100vh;
+    padding: 2rem 0;
+}
+
+.content{
+    width: 60%;
+    border: 1px red solid;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.content h1 {
+    font-size: 64px;
+    font-weight: 700;
+    line-height: 70px;
+    color: white;
+}
+
+.content button {
+    padding: 0.5rem 3rem;
+    border-radius: 15px;
+    background-color: #ffce47;
+}
+
+.content a {
+    text-decoration: none;
+    font-size: 23px;
+    font-weight: 700;
+    line-height: 27px;
+    color: black;
+}
+
+.content p {
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 22px;
+    color: white;
+}
+.plansHero {
+    border: 3px green solid;
+}
