@@ -14,7 +14,7 @@ export default function Home() {
   return (
     <>
       <Hero data={heroSection} />
-      <Dummy />
+      {/* <Dummy /> */}
     </>
   );
 }
