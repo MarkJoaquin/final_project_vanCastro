@@ -26,7 +26,7 @@ export default function Footer() {
                     <p className="footer-element hover-element">Contact</p>
                 </div>
                 <div className="footer-logo">
-                    <img className="mb-5" src="./vancastro-logo.svg" alt="Logo" />
+                    <img className="mb-5" src="./footer/vancastro-logo.svg" alt="Logo" />
                     <div className="social-media flex justify-between">
                         <div className="div-social-logo flex justify-center">
                             <img className="social-logo" src="./footer/footer-facebook.svg" alt="Facebook" />
