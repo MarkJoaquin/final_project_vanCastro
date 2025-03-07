@@ -9,8 +9,8 @@ export default function Footer() {
                     <p className="footer-element"><span>Phone</span></p>
                     <p className="footer-element flex hover-element"><img className="phone-icon" src="./footer/footer-phone.svg"/>+1 604-600-9173</p>
                     <p className="footer-element flex hover-element"><img className="phone-icon" src="./footer/footer-phone.svg"/>+1 778-680-5613</p>
-                    <p className="footer-element"><span>Email:</span> Vancastrodrivingschool@gmail.com</p>
-                    <p className="footer-element"><span>Working hours:</span> Monday to Friday 8a.m. - 6p.m.</p>
+                    <p className="footer-element"><span>Email:</span>Vancastrodrivingschool@gmail.com</p>
+                    <p className="footer-element"><span>Working hours:</span>Monday to Friday 8a.m. - 6p.m.</p>
                 </div>
                 <div className="footer-location justify-items-start">
                     <h3>Location</h3>
