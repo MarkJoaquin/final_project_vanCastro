@@ -1,3 +1,4 @@
+import AlumniCarousel from "./(components)/carousel/AlumniCarousel";
 import ReviewCarousel from "./(components)/carousel/ReviewCarousel";
 import YoutubeCarousel from "./(components)/carousel/YoutubeCarousel";
 import Dummy from "./(components)/Dummy/Dummy";
@@ -19,6 +20,7 @@ export default function Home() {
       <Dummy />
       <ReviewCarousel/>
       <YoutubeCarousel/>
+      <AlumniCarousel/>
     </>
   );
 }
