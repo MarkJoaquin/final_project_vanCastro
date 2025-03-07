@@ -1,4 +1,4 @@
-import Hero from "../(components)/Hero/Hero";
+import Hero from "../(components)/hero/Hero";
 import Dummy from "../(components)/Dummy/Dummy";
 
 export default function Plans() {

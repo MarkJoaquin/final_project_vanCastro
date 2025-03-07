@@ -1,0 +1,111 @@
+.stepOne{
+    background-color: var(--third-color);
+}
+
+.stepTwo{
+    background-color: var(--secoundary-color);
+}
+
+.stepThree{
+    background-color: var(--primary-color);
+}
+
+.sectionTitle{
+    align-content: flex-start;
+    align-items: flex-start;
+    display: flex;
+    flex: none;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 0px;
+    height: 1727px;
+    justify-content: flex-start;
+    overflow: visible;
+    padding: 64px 0;
+    position: relative;
+    width: 1442px;
+}
+
+.mainStep{
+    align-content: flex-start;
+    align-items: flex-start;
+    display: flex;
+    flex: none;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 16px;
+    height: min-content;
+    justify-content: flex-start;
+    overflow: visible;
+    padding: 60px 423px;
+    position: relative;
+    width: 1442px;
+}
+
+.stepContainer{
+    align-content: center;
+    align-items: center;
+    display: flex;
+    flex: none;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 14px;
+    height: min-content;
+    justify-content: center;
+    overflow: visible;
+    padding: 0;
+    position: relative;
+    width: 595px;
+}
+
+.stepId{
+    align-content: center;
+    align-items: center;
+    background-color: #2f2f2f;
+    border-radius: 30px;
+    display: flex;
+    flex: none;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 10px;
+    height: min-content;
+    justify-content: center;
+    overflow: visible;
+    padding: 10px 32px;
+    position: relative;
+    font-size: 36px;
+    color: var(--primary-color);
+    font-weight: 700;
+}
+
+.StepTitle{
+    font-size: 45px;
+    font-weight: 700;
+    font-family: var(--font-primary);
+}
+
+.mainText{
+    display: flex;
+    flex-direction: column;
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 30px !important;
+    text-align: center;
+    font-family: var(--font-primary);
+}
+
+.titleDescription{
+    line-height: 45px !important;
+    font-family: var(--font-primary);
+}
+
+.subText{
+    font-size: 20px !important;
+    line-height: 25px;
+    text-align: center;
+    font-family: var(--font-primary);
+}
+
+.withTitle{
+    font-size: 30px;
+}
