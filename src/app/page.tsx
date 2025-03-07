@@ -14,6 +14,8 @@ export default function Home() {
     linkTo: "plans",
   };
 
+  
+
   const stepsOneSection = {
     name: "Step", 
     id: "1",
@@ -25,6 +27,7 @@ export default function Home() {
     className: "stepOne",
     LinkTo: "https://www.facebook.com/ICBCKnowledgeTestMaterial/"
   };
+
   const stepsTwoSection = {
     name: "Step", 
     id: "2",
@@ -34,7 +37,9 @@ export default function Home() {
     ],
     subText: "",
     className: "stepTwo ",
+    LinkTo: ""
   };
+
   const stepsThreeSection = {
     name: "Step", 
     id: "3",
@@ -46,6 +51,7 @@ export default function Home() {
     ],
     subText: "",
     className: "stepThree",
+    LinkTo: ""
   };
 
 
@@ -53,7 +59,6 @@ export default function Home() {
     <>
       <Navbar/>
       <Hero data={heroSection} />
-      <Dummy />
       <Steps data={stepsOneSection} />
       <Steps data={stepsTwoSection} />
       <Steps data={stepsThreeSection} />

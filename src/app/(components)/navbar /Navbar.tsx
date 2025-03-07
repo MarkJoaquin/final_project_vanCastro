@@ -6,15 +6,15 @@ import styles from "./Navbar.module.css";
 
 export default function Navbar() {
     const [activeLink, setActiveLink] = useState<string>("");
-    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false); 
+    /* const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);  */
 
     const handleNavbarLinkClick = (linkName: string) => {
         setActiveLink(linkName);
-        setIsMobileMenuOpen(false); // Cerrar el menú después de hacer clic en un enlace
+        /* setIsMobileMenuOpen(false);  */
     };
 
     const toggleMobileMenu = () => {
-        setIsMobileMenuOpen(!isMobileMenuOpen); // Alterna el estado del menú
+       /*  setIsMobileMenuOpen(!isMobileMenuOpen);  */
     };
 
     return (
@@ -24,17 +24,15 @@ export default function Navbar() {
                     <img className={styles.logoImg} src="/images/logo.png" alt="Logo" width={100} height={50} />
                 </div>
 
-                <button
+                {/* <button
                     className={styles.mobileMenuButton}
                     onClick={toggleMobileMenu}
                     aria-label="Toggle menu"
                     aria-expanded={isMobileMenuOpen ? "true" : "false"}
                 >
                     {isMobileMenuOpen ? '✖' : '☰'} 
-                </button>
-
-                {/* Mostrar el menú de enlaces solo cuando está abierto */}
-                {isMobileMenuOpen && (
+                </button> */}
+               {/*  {isMobileMenuOpen && ( */}
                     <ul className={styles.navLinks}>
                         <li 
                             className={`${styles.singleNavLink} ${activeLink === "home" ? styles.active : ""}`} 
@@ -67,7 +65,7 @@ export default function Navbar() {
                             <Link href="/contact">Contact</Link>
                         </li>
                     </ul>
-                )}
+                {/* )} */}
             </nav>
         </header>  
     );

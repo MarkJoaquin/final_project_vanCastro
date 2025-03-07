@@ -39,7 +39,7 @@
     overflow: visible;
     padding: 60px 423px;
     position: relative;
-    width: 1442px;
+  
 }
 
 .stepContainer{
@@ -56,6 +56,11 @@
     padding: 0;
     position: relative;
     width: 595px;
+}
+
+.titlesSection{
+    
+
 }
 
 .stepId{
@@ -97,6 +102,7 @@
 .titleDescription{
     line-height: 45px !important;
     font-family: var(--font-primary);
+    font-size: 24px !important;
 }
 
 .subText{
@@ -109,3 +115,4 @@
 .withTitle{
     font-size: 30px;
 }
+

@@ -8,7 +8,7 @@ type Props = {
     name: string,
     id: string,
     title: string 
-    mainText: string [],
+    mainText: string[] | { title: string; description: string }[],
     subText: string,
     className: string 
     LinkTo: string
@@ -22,13 +22,10 @@ export default function Steps({ data }: { data: SectionProps['data'] }) {
     const [showTitles, setShowTitles] = useState<boolean>(false);
 
     useEffect(() => {
-        // Verificamos si ya se mostraron los títulos iniciales usando localStorage
         const hasShownTitles = localStorage.getItem('hasShownTitles');
 
         if (!hasShownTitles) {
-            // Si no se han mostrado, mostramos los títulos
             setShowTitles(true);
-            // Guardamos en localStorage que los títulos han sido mostrados
             localStorage.setItem('hasShownTitles', 'true');
         }
     }, []); 
@@ -36,7 +33,7 @@ export default function Steps({ data }: { data: SectionProps['data'] }) {
     return (
         <>
             {showTitles && (
-                <div>
+                <div className={styles.sectionTitle}>
                     <p className={styles.questioTitle}>How it Works?</p>
                     <p className={styles.followTitle}>Follow 3 Simple Steps</p>
                 </div>
