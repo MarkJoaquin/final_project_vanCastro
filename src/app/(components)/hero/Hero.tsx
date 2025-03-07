@@ -31,7 +31,7 @@ export default function Hero({ data }: SectionProps) {
         </video>
       )}
 
-      {/* <div className={styles.overlay}></div> */}
+      <div className={styles.overlay}></div>
 
       <div className={styles.heroContainer}>
         <div className={styles[className]}>
