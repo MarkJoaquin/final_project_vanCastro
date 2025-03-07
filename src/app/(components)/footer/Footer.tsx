@@ -1,4 +1,5 @@
 import "./Footer.css";
+import Link from "next/link";
 
 export default function Footer() {
     return (
@@ -20,8 +21,12 @@ export default function Footer() {
                 </div>
                 <div className="footer-vancastro justify-items-start">
                     <h3>Vancastro</h3>
-                    <p className="footer-element hover-element">Home</p>
+                    <Link href="/">
+                        <p className="footer-element hover-element">Home</p>
+                    </Link>
+                    <Link href="/plans">
                     <p className="footer-element hover-element">Plans</p>
+                    </Link>
                     <p className="footer-element hover-element">FAQ</p>
                     <p className="footer-element hover-element">Contact</p>
                 </div>
