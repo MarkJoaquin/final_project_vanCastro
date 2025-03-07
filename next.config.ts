@@ -10,8 +10,14 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'images.ctfassets.net',
+        port: '',
+        pathname: '/**',
+      }
     ],
-    domains: ['images.ctfassets.net'],
+    // domains: ['images.ctfassets.net'],
   },
 };
 
