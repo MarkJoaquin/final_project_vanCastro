@@ -1,6 +1,7 @@
 "use client"
-import { useState } from "react";
+import { useEffect } from "react";
 import Style from "./SelectBtn.module.css"
+import { useSelectBtnContext } from "@/app/(context)/SelectBtnContext";
 
 interface selectBtnProps {
   btnName:string[]
@@ -11,10 +12,14 @@ const btnName = ["Alumni Review","Google Review","Video Review"];
 */
 
 export default function SelectorBtn({btnName}:selectBtnProps) {
-  const [activeBtn,setActiveBtn] = useState<string>(btnName[0])
+  const {activeBtn,setActive} = useSelectBtnContext();
+
+  useEffect(()=>{
+    setActive(btnName[0]);
+  },[])
 
   const selectBtnHandler = (btn:string) => {
-    setActiveBtn(btn);
+    setActive(btn);
   }
 
   return (
@@ -25,8 +30,6 @@ export default function SelectorBtn({btnName}:selectBtnProps) {
             <p className="pr-3 pl-3" style={{ cursor:"pointer"}} onClick={()=>{selectBtnHandler(item)}}>{item}</p>
           </div>
         )}
-
-{/*         <div className="Button2" style={{borderRadius: "21.46px", cursor:"pointer"}}><p className="pr-3 pl-3" style={{}} onClick={()=>selectBtnHandler("Button2")}>Button2</p></div> */}
       </div>
     </>
   );

@@ -1,10 +1,7 @@
 import SelectorBtn from "./(components)/Button/SelectorBtn";
-import AlumniCarousel from "./(components)/Carousels/AlumniCarousel";
-import GoogleCarousel from "./(components)/Carousels/GoogleCarousel";
-import YoutubeCarousel from "./(components)/Carousels/YoutubeCarousel";
-import Dummy from "./(components)/Dummy/Dummy";
 import Hero from "./(components)/Hero/Hero";
 import WhyUs from './(components)/WhyUs/WhyUs'
+import Review from "./Review/Review";
 
 export default function Home() {
   const heroSection = {
@@ -50,14 +47,8 @@ export default function Home() {
     <>
       <Hero data={heroSection} />
       <WhyUs data = {whyUsData}/>
-      {/* <Dummy /> */}
-
-    <SelectorBtn btnName={btnName}/>
-    {/* 
-      <AlumniCarousel/>
-      <GoogleCarousel/>
-      <YoutubeCarousel/>
-     */}  
+      
+      <Review btnName = {btnName}/>
     </>
   );
 }
