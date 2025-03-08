@@ -1,5 +1,5 @@
 import AlumniCarousel from "./(components)/carousel/AlumniCarousel";
-import ReviewCarousel from "./(components)/carousel/ReviewCarousel";
+import GoogleCarousel from "./(components)/carousel/GoogleCarousel";
 import YoutubeCarousel from "./(components)/carousel/YoutubeCarousel";
 import Dummy from "./(components)/Dummy/Dummy";
 import Hero from "./(components)/hero/Hero";
@@ -49,7 +49,7 @@ export default function Home() {
       {/* <Dummy /> */}
 {/* 
       <AlumniCarousel/>
-      <ReviewCarousel/>
+      <GoogleCarousel/>
       <YoutubeCarousel/>
  */}      
     </>
