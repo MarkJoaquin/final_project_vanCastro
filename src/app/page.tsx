@@ -1,6 +1,3 @@
-import AlumniCarousel from "./(components)/carousel/AlumniCarousel";
-import ReviewCarousel from "./(components)/carousel/ReviewCarousel";
-import YoutubeCarousel from "./(components)/carousel/YoutubeCarousel";
 import Dummy from "./(components)/Dummy/Dummy";
 import Hero from "./(components)/hero/Hero";
 
@@ -18,9 +15,6 @@ export default function Home() {
     <>
       <Hero data={heroSection} />
       <Dummy />
-      <ReviewCarousel/>
-      <YoutubeCarousel/>
-      <AlumniCarousel/>
     </>
   );
 }
