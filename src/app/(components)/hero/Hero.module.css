@@ -1,48 +1,110 @@
-.homeHero {
-    border: 3px red solid;
+/* @import '../../globals.css'; */
+
+.heroComponent{
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    overflow-x: hidden;
+    
+}
+
+.videoBackground{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+    z-index: -10;
+    overflow-x: hidden;
+
 }
 
 .heroContainer{
-    /* background-color: yellow; */
-    width: 100vw;
-    height: 100vh;
-    padding: 2rem 0;
-}
-
-.content{
-    width: 60%;
-    border: 1px red solid;
-    margin: 0 auto;
-    text-align: center;
-}
-
-.content h1 {
-    font-size: 64px;
-    font-weight: 700;
-    line-height: 70px;
+    position: absolute;
+    height: 100%;
+    z-index: 10;
     color: white;
 }
 
-.content button {
-    padding: 0.5rem 3rem;
-    border-radius: 15px;
-    background-color: #ffce47;
+.overlay{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 0;
 }
 
-.content a {
+.homeHero {
+    height: 100%;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3rem;
+    text-align: center;
+}
+
+.homeHero h1{
+    width: 60%;
+    margin: 0 auto;
+}
+
+.plansHero {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 3rem;
+    padding: 0 2rem;
+}
+
+.plansHero h1{
+    width: 60%;
+}
+
+.plansHero p{
+    width: 60%;
+}
+
+.mainContent{
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.heroTitle {
+    font-size: 64px;
+    font-weight: 700;
+    line-height: 70px;
+}
+
+.heroLink {
     text-decoration: none;
     font-size: 23px;
     font-weight: 700;
     line-height: 27px;
     color: black;
+    padding: 0.5rem 3rem;
+    border-radius: 15px;
+    background-color: var(--primary-color);
+    transition: background-color 0.2s ease-in-out;
+    /* background-color: #FFCE47; ; */
 }
 
-.content p {
-    font-size: 18px;
+.heroLink:hover {
+    background-color: #ffe08b;
+}
+
+.heroText {
+    font-size: 24px;
     font-weight: 600;
     line-height: 22px;
-    color: white;
-}
-.plansHero {
-    border: 3px green solid;
 }
