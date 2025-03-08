@@ -95,7 +95,12 @@
     padding: 0.5rem 3rem;
     border-radius: 15px;
     background-color: var(--primary-color);
+    transition: background-color 0.2s ease-in-out;
     /* background-color: #FFCE47; ; */
+}
+
+.heroLink:hover {
+    background-color: #ffe08b;
 }
 
 .heroText {
