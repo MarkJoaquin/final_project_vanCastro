@@ -135,3 +135,50 @@
         
     }
 }
+
+@media (min-width: 768px) and (max-width: 1024px){
+    .sectionTitle {
+        height: auto;
+        padding: 40px 0;
+    }
+
+    .mainStep {
+        display: flex;
+        align-content: flex-start;
+        padding: 30px 50px;
+        width: 100%;
+    }
+
+    .stepContainer {
+        padding: 15px;
+    }
+
+    .stepId {
+        font-size: 30px;
+        padding: 10px 30px;
+    }
+
+    .StepTitle {
+        text-align: center;
+        font-size: 38px;
+    }
+
+    .mainText {
+        font-size: 20px;
+        line-height: 26px;
+    }
+
+    .titleDescription {
+        font-size: 22px;
+    }
+
+    .subText {
+        font-size: 18px;
+        line-height: 22px;
+    }
+
+    .withTitle {
+        font-size: 28px;
+    }
+
+}
