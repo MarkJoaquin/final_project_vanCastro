@@ -1,3 +1,4 @@
+import SelectorBtn from "./(components)/Button/SelectorBtn";
 import AlumniCarousel from "./(components)/Carousels/AlumniCarousel";
 import GoogleCarousel from "./(components)/Carousels/GoogleCarousel";
 import YoutubeCarousel from "./(components)/Carousels/YoutubeCarousel";
@@ -42,16 +43,21 @@ export default function Home() {
       message: 'Build confidence with a mock test and Road Test support.'
     },
   ]
+
+  const btnName = ["Alumni Review","Google Review","Video Review"];
+
   return (
     <>
       <Hero data={heroSection} />
       <WhyUs data = {whyUsData}/>
       {/* <Dummy /> */}
 
+    <SelectorBtn btnName={btnName}/>
+    {/* 
       <AlumniCarousel/>
       <GoogleCarousel/>
       <YoutubeCarousel/>
-      
+     */}  
     </>
   );
 }
