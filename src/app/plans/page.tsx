@@ -1,6 +1,6 @@
 import Hero from "../(components)/hero/Hero";
 import Dummy from "../(components)/Dummy/Dummy";
-import Navbar from "../(components)/navbar /Navbar";
+import Navbar from "../(components)/navbar/Navbar";
 
 export default function Plans() {
   const heroSection = {
