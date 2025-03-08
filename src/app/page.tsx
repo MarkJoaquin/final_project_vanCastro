@@ -1,3 +1,6 @@
+import AlumniCarousel from "./(components)/Carousels/AlumniCarousel";
+import GoogleCarousel from "./(components)/Carousels/GoogleCarousel";
+import YoutubeCarousel from "./(components)/Carousels/YoutubeCarousel";
 import Dummy from "./(components)/Dummy/Dummy";
 import Hero from "./(components)/Hero/Hero";
 import WhyUs from './(components)/WhyUs/WhyUs'
@@ -44,6 +47,11 @@ export default function Home() {
       <Hero data={heroSection} />
       <WhyUs data = {whyUsData}/>
       {/* <Dummy /> */}
+
+      <AlumniCarousel/>
+      <GoogleCarousel/>
+      <YoutubeCarousel/>
+      
     </>
   );
 }

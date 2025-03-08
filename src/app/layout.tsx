@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Aleo, Geist, Geist_Mono, Lato, Montserrat } from "next/font/google";
 import "./globals.css";
+import Footer from "./(components)/Footer/Footer";
 
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
@@ -53,6 +54,7 @@ export default function RootLayout({
         className={`${monserrat.variable} ${monserrat.variable} antialiased`}
       >
         {children}
+        <Footer />
       </body>
     </html>
   );
