@@ -89,15 +89,15 @@ export default function Home() {
 
   return (
     <>
-      <Navbar/>
+   
       <Hero data={heroSection} />
       <WhyUs data = {whyUsData}/>
       {/* <Dummy /> */}
       <Steps data = {steps} />
 
-      <AlumniCarousel/>
+      {/* <AlumniCarousel/>
       <GoogleCarousel/>
-      <YoutubeCarousel/>
+      <YoutubeCarousel/> */}
       
       <LicensedInstructors />
     </>

@@ -16,7 +16,7 @@ export default function Plans() {
 
   return (
     <>
-       <Navbar/>
+       
       <Hero data={heroSection} />
       {/* <Dummy /> */}
     </>
