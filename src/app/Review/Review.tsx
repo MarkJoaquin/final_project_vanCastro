@@ -29,7 +29,7 @@ export default function Review({btnName}:selectBtnProps){
       <div className="pb-4">
         <SelectorBtn btnName={btnName}/>
       </div>
-      <div className="pt-4 pb-4">
+      <div className="pt-4 pb-[30px]">
         {setReview()}
       </div>
     </section>
