@@ -3,7 +3,8 @@ import GoogleCarousel from "./(components)/Carousels/GoogleCarousel";
 import YoutubeCarousel from "./(components)/Carousels/YoutubeCarousel";
 import Dummy from "./(components)/Dummy/Dummy";
 import Hero from "./(components)/Hero/Hero";
-import WhyUs from './(components)/WhyUs/WhyUs'
+import WhyUs from './(components)/WhyUs/WhyUs';
+import PickAPlan from "./(components)/PickAPlan/PickAPlan";
 
 export default function Home() {
   const heroSection = {
@@ -46,11 +47,12 @@ export default function Home() {
     <>
       <Hero data={heroSection} />
       <WhyUs data = {whyUsData}/>
-      {/* <Dummy /> */}
+      <Dummy />
+      <PickAPlan/>
 
-      <AlumniCarousel/>
+      {/* <AlumniCarousel/>
       <GoogleCarousel/>
-      <YoutubeCarousel/>
+      <YoutubeCarousel/> */}
       
     </>
   );
