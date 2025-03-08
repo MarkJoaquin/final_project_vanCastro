@@ -89,9 +89,7 @@ export default function Home() {
       <Hero data={heroSection} />
       <WhyUs data = {whyUsData}/>
       {/* <Dummy /> */}
-      <Steps data={stepsOneSection} />
-      <Steps data={stepsTwoSection} />
-      <Steps data={stepsThreeSection} />
+      <Steps data = {steps} />
     </>
   );
 }

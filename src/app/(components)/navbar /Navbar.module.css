@@ -2,11 +2,19 @@
     background-color: rgb(20, 18, 12);
     box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 4px 0px;
     opacity: 1;
-    
-    
 }
 
 .navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    background-color: rgb(20, 18, 12);
+    
+}
+
+.navbarSection{
     display:flex;
     flex-direction: row;
     margin-left: 91px ;
@@ -14,7 +22,6 @@
     height: 126px;
     overflow: hidden;
     justify-content: space-between;
-    
 }
 
 .logo{

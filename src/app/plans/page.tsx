@@ -1,5 +1,6 @@
 import Hero from "../(components)/hero/Hero";
 import Dummy from "../(components)/Dummy/Dummy";
+import Navbar from "../(components)/navbar /Navbar";
 
 export default function Plans() {
   const heroSection = {
@@ -15,6 +16,7 @@ export default function Plans() {
 
   return (
     <>
+       <Navbar/>
       <Hero data={heroSection} />
       {/* <Dummy /> */}
     </>

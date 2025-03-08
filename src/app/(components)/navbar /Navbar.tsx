@@ -20,19 +20,20 @@ export default function Navbar() {
     return (
         <header className={styles.header}>
             <nav className={styles.navbar}>
-                <div className={styles.logo}>
-                    <img className={styles.logoImg} src="/images/logo.png" alt="Logo" width={100} height={50} />
-                </div>
+                <div className={styles.navbarSection }>
+                    <div className={styles.logo}> 
+                        <img className={styles.logoImg} src="/images/logo.png" alt="Logo" width={100} height={50} />
+                    </div>
 
-                {/* <button
-                    className={styles.mobileMenuButton}
-                    onClick={toggleMobileMenu}
-                    aria-label="Toggle menu"
-                    aria-expanded={isMobileMenuOpen ? "true" : "false"}
-                >
-                    {isMobileMenuOpen ? '✖' : '☰'} 
-                </button> */}
-               {/*  {isMobileMenuOpen && ( */}
+                    {/* <button
+                        className={styles.mobileMenuButton}
+                        onClick={toggleMobileMenu}
+                        aria-label="Toggle menu"
+                        aria-expanded={isMobileMenuOpen ? "true" : "false"}
+                    >
+                        {isMobileMenuOpen ? '✖' : '☰'} 
+                    </button> */}
+                    {/*  {isMobileMenuOpen && ( */}
                     <ul className={styles.navLinks}>
                         <li 
                             className={`${styles.singleNavLink} ${activeLink === "home" ? styles.active : ""}`} 
@@ -50,7 +51,7 @@ export default function Navbar() {
                             className={`${styles.singleNavLink} ${activeLink === "bookings" ? styles.active : ""}`} 
                             onClick={() => handleNavbarLinkClick("bookings")}
                         >
-                            <Link href="/bookings">Bookings</Link>
+                            <Link href="/booking">Booking</Link>
                         </li>
                         <li 
                             className={`${styles.singleNavLink} ${activeLink === "faq" ? styles.active : ""}`} 
@@ -65,7 +66,9 @@ export default function Navbar() {
                             <Link href="/contact">Contact</Link>
                         </li>
                     </ul>
-                {/* )} */}
+                    {/* )} */}
+
+                </div>
             </nav>
         </header>  
     );
