@@ -1,4 +1,5 @@
 import client from "@/lib/contentful";
+
 export const fetchInstructors = async () => {
     try {
       const response = await client.getEntries({

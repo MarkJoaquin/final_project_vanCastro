@@ -5,6 +5,7 @@ import Dummy from "./(components)/Dummy/Dummy";
 import Hero from "./(components)/Hero/Hero";
 import WhyUs from './(components)/WhyUs/WhyUs';
 import PickAPlan from "./(components)/PickAPlan/PickAPlan";
+import Steps from "./(components)/steps/Steps";
 import LicensedInstructors from "./(components)/Licensed_Instructors/Licensed_Instructors";
 
 export default function Home() {
@@ -44,14 +45,59 @@ export default function Home() {
       message: 'Build confidence with a mock test and Road Test support.'
     },
   ]
+
+  
+
+  const steps = [
+    {
+      name: "Step", 
+      id: "1",
+      title: "Take the Knowledge Test",
+      mainText: [
+        "Prepare for and complete the Knowledge Test to assess your understanding of driving rules"
+      ],
+      subText: "Need translation? Click here to connect with a partner for language support",
+      className: "stepOne",
+      LinkTo: "https://www.facebook.com/ICBCKnowledgeTestMaterial/"
+    },
+    {
+      name: "Step", 
+      id: "2",
+      title: "Phone Consultation",
+      mainText: [
+        "Discuss available plans tailored to your needs  (e.g. changing licenses or starting as a beginner)",
+      ],
+      subText: "",
+      className: "stepTwo",
+      LinkTo: ""
+    },
+    {
+      name: "Step", 
+      id: "3",
+      title: "Road Test Preparation",
+      mainText: [
+        { title: "Convenient Pickup & Drop-off", description: "We'll pick you up and drop you off at the meeting point." },
+        { title: "Meet at a Designated Location", description: "Typically at a SkyTrain station." },
+        { title: "Road Test Scheduling", description: "We'll help you schedule your Road Test." }
+      ],
+      subText: "",
+      className: "stepThree",
+      LinkTo: ""
+    }
+  ];
+  
+
   return (
     <>
+   
       <Hero data={heroSection} />
       <WhyUs data = {whyUsData}/>
       <Dummy />
+      <Steps data = {steps}/>
       {/* <AlumniCarousel/>
       <GoogleCarousel/>
       <YoutubeCarousel/> */}
+      
       <LicensedInstructors />
       <PickAPlan/>
 
