@@ -31,7 +31,7 @@ const LicensedInstructors = async () => {
                     instructorsData.length > 0 &&
                     instructorsData.map((instructor) => {
                       const { name, avatar, avatar2 } = instructor.fields;
-                      console.log(name, avatar, avatar2); // Agrega este console.log para depurar los datos
+                      // console.log(name, avatar, avatar2); // Agrega este console.log para depurar los datos
 
                       return (
                         <div

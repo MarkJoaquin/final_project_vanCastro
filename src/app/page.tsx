@@ -49,13 +49,12 @@ export default function Home() {
       <Hero data={heroSection} />
       <WhyUs data = {whyUsData}/>
       <Dummy />
-      <PickAPlan/>
-
       {/* <AlumniCarousel/>
       <GoogleCarousel/>
       <YoutubeCarousel/> */}
-      
       <LicensedInstructors />
+      <PickAPlan/>
+
     </>
   );
 }
