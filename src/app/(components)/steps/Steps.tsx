@@ -32,12 +32,12 @@ export default function Steps({ data }: { data: SectionProps['data'] }) {
 
     return (
         <>
-            {showTitles && (
+         {/*    {showTitles && ( */}
                 <div className={styles.sectionTitle}>
                     <p className={styles.questioTitle}>How it Works?</p>
                     <p className={styles.followTitle}>Follow 3 Simple Steps</p>
                 </div>
-            )}
+        )} 
 
             <div className={`${styles.mainStep} ${styles[data.className]}`}>
                 <div className={styles.stepContainer}>
