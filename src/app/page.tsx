@@ -1,5 +1,6 @@
 import Dummy from "./(components)/Dummy/Dummy";
 import Hero from "./(components)/Hero/Hero";
+import LicensedInstructors from "./(components)/Licensed_Instructors/Licensed_Instructors";
 
 export default function Home() {
   const heroSection = {
@@ -15,6 +16,7 @@ export default function Home() {
     <>
       <Hero data={heroSection} />
       <Dummy />
+      <LicensedInstructors />
     </>
   );
 }
