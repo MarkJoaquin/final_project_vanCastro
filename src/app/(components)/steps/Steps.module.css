@@ -11,7 +11,7 @@
     overflow: visible;
     padding: 64px 0;
     position: relative;
-    width: 1442px;
+    width: 100%;
 }
 
 .sectionTitle{
@@ -23,6 +23,11 @@
     width: 100%;
     flex-direction: column;
     justify-content: center;
+   
+}
+
+.steplist{
+    width: 100%;
 }
 
 .questioTitle{
@@ -33,5 +38,22 @@
     line-height: 60px;
     font-size: 50px;
 }
+.ul{
+    width: 100%;
+
+}
+
+@media  (max-width: 467px){
+
+    .sectionTitle{
+        padding: 20px 20px;
+    }
+
+}
+
+
+
+
+
 
 

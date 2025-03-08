@@ -23,12 +23,11 @@
     overflow: visible;
     padding: 64px 0;
     position: relative;
-    width: 1442px;
+    width: 100%;
 }
 
 .mainStep{
     align-content: flex-start;
-    align-items: flex-start;
     display: flex;
     flex: none;
     flex-direction: column;
@@ -39,6 +38,7 @@
     overflow: visible;
     padding: 60px 423px;
     position: relative;
+    width: 100%;
   
 }
 
@@ -55,13 +55,10 @@
     overflow: visible;
     padding: 0;
     position: relative;
-    width: 595px;
+   
 }
 
-.titlesSection{
-    
 
-}
 
 .stepId{
     align-content: center;
@@ -116,3 +113,25 @@
     font-size: 30px;
 }
 
+
+
+@media  (max-width: 467px) {
+    .sectionTitle{
+        height: auto;
+    }
+
+    .mainStep{
+        display: flex;
+        align-content: flex-start;
+        padding: 20px 20px;
+    }
+
+    .stepContainer{
+        padding: 10px;
+    }
+    
+    .StepTitle{
+        text-align: center;
+        
+    }
+}
