@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Aleo, Geist, Geist_Mono, Lato, Montserrat } from "next/font/google";
 import "./globals.css";
-import Footer from "./(components)/Footer/Footer";
+import Footer from "./(components)/footer/Footer";
 import Navbar from "./(components)/navbar /Navbar";
 
 // const geistSans = Geist({
