@@ -5,6 +5,7 @@ import Dummy from "./(components)/Dummy/Dummy";
 import Hero from "./(components)/Hero/Hero";
 import WhyUs from './(components)/WhyUs/WhyUs';
 import PickAPlan from "./(components)/PickAPlan/PickAPlan";
+import LicensedInstructors from "./(components)/Licensed_Instructors/Licensed_Instructors";
 
 export default function Home() {
   const heroSection = {
@@ -54,6 +55,7 @@ export default function Home() {
       <GoogleCarousel/>
       <YoutubeCarousel/> */}
       
+      <LicensedInstructors />
     </>
   );
 }
