@@ -4,7 +4,6 @@ import YoutubeCarousel from "./(components)/Carousels/YoutubeCarousel";
 import Dummy from "./(components)/Dummy/Dummy";
 import Hero from "./(components)/hero/Hero";
 import WhyUs from './(components)/WhyUs/WhyUs'
-import Navbar from "./(components)/navbar/Navbar";
 import Steps from "./(components)/steps/Steps";
 import LicensedInstructors from "./(components)/Licensed_Instructors/Licensed_Instructors";
 
