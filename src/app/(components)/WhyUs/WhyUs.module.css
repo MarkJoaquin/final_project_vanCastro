@@ -1,0 +1,22 @@
+.sectionContainer{
+    padding: 3rem 2rem;
+}
+
+.sectionContainer h2{
+    font-size: 50px;
+    font-weight: 700;
+    line-height: 80px;
+    font-family: var(--font-primary);
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+/* .listContainer{
+    border: 2px green solid;
+} */
+
+.list{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

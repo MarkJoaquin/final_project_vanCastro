@@ -8,7 +8,7 @@ export default function Plans() {
       "From begginer to advanced, we're here to guide you to condifdent driving, every step of the way.",
     buttonText: "Book Now",
     background:
-      "https://framerusercontent.com/images/LAwNc4MrUnMfbUcGSXC8GoQh07A.png?scale-down-to=2048",
+      "https://framerusercontent.com/images/LAwNc4MrUnMfbUcGSXC8GoQh07A.png",
     className: "plansHero",
     linkTo: "booking",
   };
@@ -16,7 +16,7 @@ export default function Plans() {
   return (
     <>
       <Hero data={heroSection} />
-      <Dummy />
+      {/* <Dummy /> */}
     </>
   );
 }
