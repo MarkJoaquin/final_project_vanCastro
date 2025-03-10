@@ -11,7 +11,7 @@
     width: 100%;
     z-index: 1000;
     background-color: rgb(20, 18, 12);
-    
+    overflow-y: auto;
 }
 
 .navbarSection{
@@ -22,6 +22,7 @@
     height: 126px;
     overflow: hidden;
     justify-content: space-between;
+    align-items: center;
 }
 
 .logo{
@@ -29,7 +30,6 @@
     border-radius: inherit;
     object-fit: cover;
     align-items: center;
-
 }
 
 .logoImg{
@@ -38,7 +38,6 @@
     object-fit: cover;
     width: 166px !important;
     height: 84px !important;
-
 }
 
 .navLinks {
@@ -71,34 +70,40 @@
     color: white
 }
 
-.navLinksOpen {
-    display: block;
-    position: absolute;
-    top: 60px;
-    left: 0;
-    width: 100%;
-    background-color: white;
-    padding: 20px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+.overlay {
+    display: none;
 }
 
-.navLinksOpen .singleNavLink {
-    color: black; /* Color de los enlaces en el menú hamburguesa */
-    padding: 10px 0;
-}
-
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
     .navLinks {
-        display: none; /* Ocultamos el menú horizontal en pantallas pequeñas */
+        display: none;
+        position: fixed;
+        top: 126px;
+        left: 0;
+        right: 0;
+        background-color: rgb(20, 18, 12);
+        padding: 20px;
+        z-index: 999;
     }
 
-    /* Mostrar el botón hamburguesa */
+    .navLinks.open {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
     .mobileMenuButton {
         display: block;
     }
 
-    /* Cuando el menú se abre, mostramos los enlaces en bloque */
-    .navLinksOpen {
+    .overlay {
         display: block;
+        position: fixed;
+        top: 126px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 998;
     }
 }
