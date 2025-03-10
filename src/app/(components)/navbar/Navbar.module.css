@@ -53,6 +53,11 @@
     font-size: 20px;
 }
 
+.navLinks.open {
+    display: block; 
+    overflow-y: auto;
+}
+
 .singleNavLink:hover {
     color: var(--primary-color);
     cursor: pointer;
@@ -83,22 +88,155 @@
 }
 
 .navLinksOpen .singleNavLink {
-    color: black; /* Color de los enlaces en el menú hamburguesa */
+    color: black; 
     padding: 10px 0;
 }
 
-@media (max-width: 768px) {
-    .navLinks {
-        display: none; /* Ocultamos el menú horizontal en pantallas pequeñas */
+@media (max-width: 767px) {
+
+    .navbarSection{
+        justify-content: space-between;
+        margin-left: 50px ;
+        margin-right: 50px ;
     }
 
-    /* Mostrar el botón hamburguesa */
     .mobileMenuButton {
-        display: block;
+        font-size: 2.5rem;
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: white;
+        display: flex;
+        align-items: center;
     }
 
-    /* Cuando el menú se abre, mostramos los enlaces en bloque */
+    .closeButton {
+        position: absolute;
+        top: 20px;
+        right: 10px;
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: white;
+        margin-right: 30px ;
+    }
+
     .navLinksOpen {
         display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0px;
+        bottom: 0;
+        background-color: white;
+        padding: 20px;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        z-index: 1000; 
+        overflow-y: auto; 
+    }
+
+    .navLinks {
+        height: 100px;
+        list-style: none;
+        padding: 0;
+        margin-top: 60px;
+        color: white;
+        margin-right: 10px; 
+    }
+
+    .singleNavLink {
+        color: white;
+        text-decoration: none;
+        padding: 5px 0;
+        font-size: 1.5rem;
+        text-align: center; 
+        display: block; 
+    }
+
+    .singleNavLink:hover {
+        color: var(--primary-color);
+        cursor: pointer;
+    }
+
+    
+    .singleNavLink.active {
+        font-weight: 800;
+    }
+} 
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    
+    .mobileMenuButton {
+        font-size: 2.5rem;
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: white;
+        display: flex;
+        align-items: center;
+    }
+
+    .navbarSection {
+    display: flex;
+    flex-direction: row;
+    margin-left: 91px;
+    margin-right: 91px;
+    justify-content: space-between;
+    align-items: center;
+    }
+
+    .closeButton {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: white;
+        margin-right: 50px ;
+    }
+
+    .navLinksOpen {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0px;
+        bottom: 0;
+        background-color: white;
+        padding: 20px;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        z-index: 1000; 
+        overflow-y: auto; 
+    }
+
+    .navLinks {
+        height: 100px;
+        list-style: none;
+        padding: 0;
+        margin-top: 60px;
+        color: white;
+        margin-right: 10px; 
+    }
+
+    .singleNavLink {
+        color: white;
+        text-decoration: none;
+        padding: 5px 0;
+        font-size: 1.5rem;
+        text-align: center; 
+        display: block; 
+    }
+
+    .singleNavLink:hover {
+        color: var(--primary-color);
+        cursor: pointer;
+    }
+
+    
+    .singleNavLink.active {
+        font-weight: 800;
     }
 }

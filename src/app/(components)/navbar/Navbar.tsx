@@ -6,15 +6,15 @@ import styles from "./Navbar.module.css";
 
 export default function Navbar() {
     const [activeLink, setActiveLink] = useState<string>("");
-    /* const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);  */
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false); 
 
     const handleNavbarLinkClick = (linkName: string) => {
         setActiveLink(linkName);
-        /* setIsMobileMenuOpen(false);  */
+        setIsMobileMenuOpen(false);
     };
 
     const toggleMobileMenu = () => {
-       /*  setIsMobileMenuOpen(!isMobileMenuOpen);  */
+       setIsMobileMenuOpen(!isMobileMenuOpen);
     };
 
     return (
@@ -25,16 +25,22 @@ export default function Navbar() {
                         <img className={styles.logoImg} src="/images/logo.png" alt="Logo" width={100} height={50} />
                     </div>
 
-                    {/* <button
-                        className={styles.mobileMenuButton}
+                    <button
+                        className={`${styles.mobileMenuButton} ${isMobileMenuOpen ? styles.closeButton : styles.openButton}`}
                         onClick={toggleMobileMenu}
                         aria-label="Toggle menu"
                         aria-expanded={isMobileMenuOpen ? "true" : "false"}
+                        aria-controls="mobileMenu"
                     >
                         {isMobileMenuOpen ? '✖' : '☰'} 
-                    </button> */}
-                    {/*  {isMobileMenuOpen && ( */}
-                    <ul className={styles.navLinks}>
+                    </button> 
+
+                    {isMobileMenuOpen && (
+                        <div className={styles.overlay} onClick={() => setIsMobileMenuOpen(false)}></div>
+                    )}
+
+                    {isMobileMenuOpen && ( 
+                    <ul className={`${styles.navLinks} ${isMobileMenuOpen ? styles.open : ''}`}>
                         <li 
                             className={`${styles.singleNavLink} ${activeLink === "home" ? styles.active : ""}`} 
                             onClick={() => handleNavbarLinkClick("home")}
@@ -66,7 +72,7 @@ export default function Navbar() {
                             <Link href="/contact">Contact</Link>
                         </li>
                     </ul>
-                    {/* )} */}
+                     )} 
 
                 </div>
             </nav>
