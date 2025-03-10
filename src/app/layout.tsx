@@ -33,8 +33,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta
+          name="apple-mobile-web-app-status-bar-style"
+          content="black-translucent"
+        />
+        <meta name="mobile-web-app-capable" content="yes" />
+      </head>
       <body
-        className={`${montserrat.variable} ${montserrat.variable} antialiased`}
+        className={`${montserrat.variable} ${aleo.variable} ${lato.variable} antialiased`}
       >
         <Navbar />
         {children}
