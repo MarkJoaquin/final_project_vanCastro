@@ -1,3 +1,4 @@
+
 .stepOne{
     background-color: var(--third-color);
 }
@@ -23,7 +24,7 @@
     overflow: visible;
     padding: 64px 0;
     position: relative;
-    width: 1442px;
+    width: 100%;
 }
 
 .mainStep{

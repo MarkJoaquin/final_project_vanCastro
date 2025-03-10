@@ -11,7 +11,8 @@
     overflow: visible;
     padding: 64px 0;
     position: relative;
-    width: 1442px;
+    width: 100%;
+    border: 2px red solid;
 }
 
 .sectionTitle{

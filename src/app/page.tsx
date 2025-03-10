@@ -46,8 +46,6 @@ export default function Home() {
     },
   ]
 
-  
-
   const steps = [
     {
       name: "Step", 
@@ -92,13 +90,12 @@ export default function Home() {
    
       <Hero data={heroSection} />
       <WhyUs data = {whyUsData}/>
-      <Dummy />
-      <Steps data = {steps}/>
+      <LicensedInstructors />
       {/* <AlumniCarousel/>
       <GoogleCarousel/>
       <YoutubeCarousel/> */}
-      
-      <LicensedInstructors />
+      <Dummy />
+      <Steps data = {steps}/>
       <PickAPlan/>
 
     </>
