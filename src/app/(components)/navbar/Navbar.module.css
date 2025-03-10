@@ -17,7 +17,8 @@
 .navbarSection {
   display: flex;
   flex-direction: row;
-  margin: 0 5rem;
+  margin: 0 2.5rem;
+  padding: 3rem 0;
   height: 8rem;
   overflow: hidden;
   justify-content: space-between;
