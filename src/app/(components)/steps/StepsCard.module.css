@@ -23,12 +23,11 @@
     overflow: visible;
     padding: 64px 0;
     position: relative;
-    width: 1442px;
+    width: 100%;
 }
 
 .mainStep{
     align-content: flex-start;
-    align-items: flex-start;
     display: flex;
     flex: none;
     flex-direction: column;
@@ -39,7 +38,7 @@
     overflow: visible;
     padding: 60px 423px;
     position: relative;
-  
+    width: 100%;
 }
 
 .stepContainer{
@@ -55,12 +54,6 @@
     overflow: visible;
     padding: 0;
     position: relative;
-    width: 595px;
-}
-
-.titlesSection{
-    
-
 }
 
 .stepId{
@@ -116,3 +109,74 @@
     font-size: 30px;
 }
 
+@media (max-width: 467px) {
+    .sectionTitle{
+        height: auto;
+        padding: 20px 0;
+    }
+
+    .mainStep{
+        display: flex;
+        align-content: flex-start;
+        padding: 20px 20px;
+        width: 100%;
+    }
+
+    .stepContainer{
+        padding: 10px;
+    }
+    
+    .StepTitle{
+        text-align: center;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    .sectionTitle {
+        height: auto;
+        padding: 40px 0;
+    }
+
+    .mainStep {
+        display: flex;
+        align-content: flex-start;
+        padding: 40px 100px;
+        width: 100%;
+    }
+
+    .stepContainer {
+        padding: 20px;
+        gap: 20px;
+    }
+
+    .stepId {
+        font-size: 32px;
+        padding: 12px 40px;
+        border-radius: 40px;
+    }
+
+    .StepTitle {
+        text-align: center;
+        font-size: 40px;
+        margin-bottom: 10px;
+    }
+
+    .mainText {
+        font-size: 22px;
+        line-height: 28px;
+    }
+
+    .titleDescription {
+        font-size: 24px;
+        line-height: 40px;
+    }
+
+    .subText {
+        font-size: 20px;
+        line-height: 24px;
+    }
+
+    .withTitle {
+        font-size: 30px;
+    }
+}
