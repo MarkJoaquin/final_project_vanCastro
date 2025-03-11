@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import styles from "./Navbar.module.css";
+import Image from "next/image";
 
 export default function Navbar() {
     const [activeLink, setActiveLink] = useState<string>("");
@@ -22,9 +23,7 @@ export default function Navbar() {
             <nav className={styles.navbar}>
                 <div className={styles.navbarSection}>
                     <div className={styles.logo}> 
-                        <img className={styles.logoImg} src="/images/logo.png" alt="Logo" 
-                        width={100} 
-                        height={50} />
+                        <Image className={styles.logoImg} src="/images/logo.png" alt="Logo" width={500} height={0} style={{height: "auto"}} priority />
                     </div>
 
                     <button

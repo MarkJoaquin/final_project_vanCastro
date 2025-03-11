@@ -1,29 +1,30 @@
 .instructors-section {
   background-color: var(--primary-color);
-  /* padding-bottom: 3rem; */
-
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  min-height: 30rem;
 }
 
 .container {
   width: 100%;
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 .flex-container {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-end;
 }
 
 .content-left {
   width: 100%;
   margin-bottom: 1.5rem;
+  padding-bottom: 2rem;
 }
 
 .instructor-title {
-  font-size: 3rem;
+  font-size: 5rem;
   font-weight: 700;
   margin-bottom: 1.5rem;
   color: #000;
@@ -31,7 +32,7 @@
 }
 
 .instructor-description {
-  font-size: 1.125rem;
+  font-size: 1rem;
   color: #000;
   line-height: 1.5;
 }
@@ -46,11 +47,11 @@
   position: relative;
 }
 
-.white-circle {
+/* .white-circle {
   background-color: #ffff;
   overflow: hidden;
   clip-path: circle(53.8% at 50% 86%);
-}
+} */
 
 .image-container {
   width: 100%;
@@ -58,34 +59,179 @@
   position: relative;
   display: flex;
   justify-content: center;
-  align-items: center;
+  z-index: 1;
 }
 
-.instructor-images {
+.image-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  clip-path: circle(56.8% at 50% 86%);
+  background-color: #ffff;
+  z-index: -2;
+}
+
+
+
+[class^="instructor-images-"] {
+  animation: instructor-images ease-in-out;
+  animation-timeline: view();
+  animation-range: entry 0 cover 30%;
+  animation-delay: 3s;
+}
+
+@keyframes instructor-images {
+  from {
+    opacity: 0;
+    transform: translateY(500px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+
+.instructor-images-0 {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: flex-end;
+  position: relative;
+  left: -40px;
+  width: 27rem !important;
+  order: 2;
+}
+
+.instructor-images-1 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  position: relative;
+  right: -40px;
+  order: 1;
 }
 
 .instructor-image {
   object-fit: cover;
-  margin: 10px;
+  position: relative;
 }
 
-/* Media queries para diseño responsive */
-@media (min-width: 768px) {
+/* Media Queries */
+
+/* Mobile Vertical */
+@media only screen and (max-width: 480px) {
+  .content-left {
+    margin-bottom: 0;
+    
+    padding: 3rem 4rem 0 ;
+  }
+
+  .instructor-title {
+    font-size: 3rem;
+  }
+
+  .instructor-description {
+    font-size: 1.2rem;
+  }
+}
+
+/* Mobile Horizontal */
+@media only screen and (min-width: 481px) and (max-width: 768px) {
+  .flex-container {
+    flex-direction: column;
+  }
+
+  .content-left {
+    margin-bottom: 0;
+    padding-right: 2rem;
+    padding-top: 2rem;
+  }
+
+  .instructor-title {
+    font-size: 3rem;
+  }
+
+  .instructor-description {
+    font-size: 1.5rem;
+  }
+
+  .content-right {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    margin: auto;
+  }
+}
+
+@media only screen and (min-width: 769px) and (max-width: 1279px) {
+
+  .content-left {
+    margin: auto;
+    padding: 2rem 4rem 0 0;
+  }
+
+  .instructor-description {
+    font-size: 1.3rem;
+  }
+  
+}
+
+/* Tablet */
+@media only screen and (min-width: 1280px) {
   .flex-container {
     flex-direction: row;
   }
 
   .content-left {
     width: 50%;
-    margin-bottom: 0;
+    margin: auto;
     padding-right: 2rem;
+  }
+
+  .instructor-title {
+    font-size: 5rem;
+  }
+
+  .instructor-description {
+    font-size: 1.5rem;
   }
 
   .content-right {
     width: 50%;
   }
-}
 
+  .instructor-images-0 {
+    width: 44rem !important;
+  }
+
+  .instructor-images-1 {
+    width: 44rem !important;
+  }
+
+  .instructor-images-0 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    position: relative;
+    left: -25px;
+    width: 23rem !important;
+    order: 2;
+  }
+  
+  .instructor-images-1 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    position: relative;
+    width: 26rem !important;
+    right: -40px;
+    order: 1;
+  }
+}
