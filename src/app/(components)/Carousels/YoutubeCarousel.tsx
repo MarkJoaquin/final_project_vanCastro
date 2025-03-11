@@ -3,6 +3,7 @@ import YouTube, { YouTubeProps } from 'react-youtube';
 import YoutubeIcon from "@/../public/YoutubeIcon_60_45.png"
 
 import Image from "next/image";
+import { CircleArrowLeft, CircleArrowRight } from "../ArrowSVG/ArrowSVG";
 
 //const data = [1,2,3,4,5,6,7,8,9,10,11,12]
 const youtubeData = [
@@ -155,7 +156,7 @@ export default function YoutubeCarousel() {
   return (
     <>
       <div className="flex justify-center flex-wrap gap-4 relative">
-        <div className="absolute left-0" onClick={handlePrevious}>left</div>
+        <div className="w-[50px] h-[50px] absolute left-[5%] top-[40%]" onClick={handlePrevious}><CircleArrowLeft/></div>
         {currentItems.map((item,index)=>
           <div key={index} className="w-[300px] h-auto flex flex-col border-1 border-gray-300 rounded-sm shadow-md"style={{
             boxShadow: "1px 1px 2px 2px rgba(200,200,200, 0.3)"
@@ -178,7 +179,6 @@ export default function YoutubeCarousel() {
                 style={{margin:"auto"}} 
                 />
               <p>{item.nameAndLocation}</p>
-              <p>{count}</p>
             </div>
 
 {/*  Image of customer
@@ -193,7 +193,7 @@ export default function YoutubeCarousel() {
  */}
           </div>
         )}
-        <div className="absolute right-0" onClick={handleNext}>Right</div>
+        <div className="w-[50px] h-[50px] absolute right-[5%] top-[40%] " onClick={handleNext}><CircleArrowRight/></div>
       </div>
     </>
   );
