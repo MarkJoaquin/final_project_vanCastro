@@ -67,15 +67,51 @@
     background: none;
     border: none;
     cursor: pointer;
-    color: white
+    color: var(--primary-color);
 }
 
 .overlay {
     display: none;
 }
 
-@media (max-width: 1024px) {
+/* @media (max-width: 480px){
+    .navbarSection{
+        margin-left: 40px;
+        margin-right: 40px;
+    }
+
+    .navLinks.open {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .singleNavLink{
+        margin-left: 20px !important;
+    }
+
+    .mobileMenuButton {
+        display: block;
+    }
+
+    .overlay {
+        display: block;
+        position: fixed;
+        top: 126px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 998;
+    }
+    
+} */
+
+
+@media (min-width: 481px) and (max-width: 768px) {
     .navLinks {
+        display: flex;
+        align-items: flex-start;
         display: none;
         position: fixed;
         top: 126px;
@@ -90,6 +126,62 @@
         display: flex;
         flex-direction: column;
         gap: 20px;
+        padding: 20px;
+    }
+
+    .singleNavLink{
+        margin-left: 70px;
+    }
+
+    .navbarSection{
+        margin-left: 91px;
+        margin-right: 91px;
+    }
+
+    .mobileMenuButton {
+        display: block;
+    }
+
+    .overlay {
+        display: block;
+        position: fixed;
+        top: 126px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 998;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1279px){
+    .navLinks {
+        display: flex;
+        align-items: flex-start;
+        display: none;
+        position: fixed;
+        top: 126px;
+        left: 0;
+        right: 0;
+        background-color: rgb(20, 18, 12);
+        padding: 20px;
+        z-index: 999;
+    }
+
+    .navLinks.open {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        padding: 20px;
+    }
+
+    .singleNavLink{
+        margin-left: 70px;
+    }
+
+    .navbarSection{
+        margin-left: 91px;
+        margin-right: 91px;
     }
 
     .mobileMenuButton {
