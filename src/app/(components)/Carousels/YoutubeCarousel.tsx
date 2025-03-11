@@ -65,28 +65,33 @@ const youtubeData = [
 export default function YoutubeCarousel() {
 	const [currentPage,setCurrentPage] = useState<number>(1);
 	const [pagePerItems,setPagePerItems] = useState<number>(3);
+  const [width, setWidth] = useState<number>(window.innerWidth);
 
-/* 
   useEffect(()=>{
-    const updateCanvasSize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      initialCircle();
-  }
+    const handleResize = () => {
+      setWidth(window.innerWidth);
+    };
 
-  const ctx = canvas.getContext("2d");
-  updateCanvasSize();
+    window.addEventListener('resize', handleResize);
 
-    if(canvas){
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
 
-      return () => {
-        window.removeEventListener('resize', updateCanvasSize);
-        cancelAnimationFrame(animationFrameId);
-      };
-
-    }
   },[])
- */
+
+  useEffect(()=>{
+    if(width>935 && pagePerItems!==3){
+      setPagePerItems(3)
+      setCurrentPage(1)
+    }else if(width<934 && width>621 && pagePerItems!==2){
+      setPagePerItems(2)
+      setCurrentPage(1)
+    }else if(width<620 && pagePerItems!==1){
+      setPagePerItems(1)
+      setCurrentPage(1)
+    }
+  },[width])
 
 	const totalPage = Math.ceil(youtubeData.length/pagePerItems);
 	const startIndex = (currentPage-1)*pagePerItems;
