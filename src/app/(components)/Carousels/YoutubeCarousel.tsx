@@ -66,12 +66,13 @@ export default function YoutubeCarousel() {
 	const [currentPage,setCurrentPage] = useState<number>(1);
 	const [pagePerItems,setPagePerItems] = useState<number>(3);
   const [width, setWidth] = useState<number>(window.innerWidth);
+  const [count, setCount] = useState<number>(0);
 
+  //get window size for resizing
   useEffect(()=>{
     const handleResize = () => {
       setWidth(window.innerWidth);
     };
-
     window.addEventListener('resize', handleResize);
 
     return () => {
@@ -80,6 +81,7 @@ export default function YoutubeCarousel() {
 
   },[])
 
+  //Resize for responsive
   useEffect(()=>{
     if(width>935 && pagePerItems!==3){
       setPagePerItems(3)
@@ -92,6 +94,27 @@ export default function YoutubeCarousel() {
       setCurrentPage(1)
     }
   },[width])
+
+  //set timer for auto feed
+  useEffect(()=>{
+    const interval = setInterval(() => {
+      setCount((prevCount) => prevCount + 1);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  },[])
+
+  //execute auto feed
+  useEffect(()=>{
+    if(count>=10){
+      handleNext();
+    }
+  },[count])
+
+  //reset timer
+  useEffect(()=>{
+    setCount(0);
+  },[currentPage])
 
 	const totalPage = Math.ceil(youtubeData.length/pagePerItems);
 	const startIndex = (currentPage-1)*pagePerItems;
@@ -155,6 +178,7 @@ export default function YoutubeCarousel() {
                 style={{margin:"auto"}} 
                 />
               <p>{item.nameAndLocation}</p>
+              <p>{count}</p>
             </div>
 
 {/*  Image of customer
