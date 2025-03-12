@@ -28,7 +28,7 @@ const youtubeData = [
   {
     id:3,
     schoolName:"VanCastro Driving Scholl",
-    nameAndLocation:"Camila Almeida - ICBC North Vancouver - VanCastro (604) 600-9173",
+    nameAndLocation:"Camila Almeida - ICBC North Vancouver - VanCastro",
     youtubeId:"NaPN2IXfQhI",
     clientIcon:"",
     youtubeIcon:YoutubeIcon,
@@ -143,6 +143,7 @@ export default function YoutubeCarousel() {
   const onReady: YouTubeProps['onReady'] = (event) => {
     const player = event.target;
       player.playVideo();
+      player.setVolume(0);
   };
   const options: YouTubeProps['opts'] = {
     width: 'auto',  // Video width
