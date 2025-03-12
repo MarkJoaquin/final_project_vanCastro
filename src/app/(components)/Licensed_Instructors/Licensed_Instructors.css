@@ -220,7 +220,7 @@
     justify-content: flex-end;
     position: relative;
     left: -25px;
-    width: 23rem !important;
+    width: 19.5rem !important;
     order: 2;
   }
   
@@ -230,7 +230,7 @@
     align-items: center;
     justify-content: flex-end;
     position: relative;
-    width: 26rem !important;
+    width: 22.5rem !important;
     right: -40px;
     order: 1;
   }
