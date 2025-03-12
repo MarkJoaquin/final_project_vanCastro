@@ -2,12 +2,15 @@
     background-color: var(--third-color);
 }
 
+
+
 .stepTwo{
     background-color: var(--secoundary-color);
 }
 
 .stepThree{
     background-color: var(--primary-color);
+    margin-bottom: 10px;
 }
 
 .sectionTitle{
@@ -18,12 +21,12 @@
     flex-direction: column;
     flex-wrap: nowrap;
     gap: 0px;
-    height: 1727px;
     justify-content: flex-start;
     overflow: visible;
     padding: 64px 0;
     position: relative;
     width: 100%;
+    
 }
 
 .mainStep{
@@ -36,23 +39,21 @@
     height: min-content;
     justify-content: flex-start;
     overflow: visible;
-    padding: 60px 423px;
+    padding: 3rem 3rem;
     position: relative;
-    width: 100%;
+    width: 100vw;
 }
 
 .stepContainer{
     align-content: center;
     align-items: center;
-    display: flex;
     flex: none;
     flex-direction: column;
     flex-wrap: nowrap;
     gap: 14px;
-    height: min-content;
     justify-content: center;
     overflow: visible;
-    padding: 0;
+    padding: 0 5rem;
     position: relative;
 }
 
@@ -71,25 +72,30 @@
     overflow: visible;
     padding: 10px 32px;
     position: relative;
-    font-size: 36px;
+    font-size: 2.3rem;
     color: var(--primary-color);
     font-weight: 700;
+    margin: 0px 400px;
+    margin-bottom: 1rem;
 }
 
 .StepTitle{
-    font-size: 45px;
+    text-align: center;
+    font-size: 3rem;
     font-weight: 700;
     font-family: var(--font-primary);
+    margin-bottom: 1.5rem;
 }
 
 .mainText{
     display: flex;
     flex-direction: column;
-    font-size: 24px;
+    font-size: 2rem;
     font-weight: 500;
     line-height: 30px !important;
     text-align: center;
     font-family: var(--font-primary);
+    margin-bottom: 1.3rem
 }
 
 .titleDescription{
@@ -99,8 +105,8 @@
 }
 
 .subText{
-    font-size: 20px !important;
-    line-height: 25px;
+    font-size: 1.8rem !important;
+    line-height: 2.3rem;
     text-align: center;
     font-family: var(--font-primary);
 }
@@ -109,74 +115,160 @@
     font-size: 30px;
 }
 
-@media (max-width: 480px)  {
-    .sectionTitle{
-        height: auto;
-        padding: 20px 0;
-    }
+.link{
+    border-bottom: 2px solid black !important;
+    text-decoration: none;
+}
+
+@media screen and (max-width: 480px) {
+    
 
     .mainStep{
         display: flex;
         align-content: flex-start;
-        padding: 20px 20px;
+        padding: 3rem 2rem;
         width: 100%;
     }
 
     .stepContainer{
-        padding: 10px;
+        padding: 3px;
     }
     
     .StepTitle{
         text-align: center;
+        
     }
+
+    .stepId{
+        margin: 0rem 6.2rem;
+        margin-bottom: 1rem;
+        font-size: 1.7rem;
+    }
+
+    .StepTitle{
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+    }
+
+    .subText{
+        font-size: 0.8rem !important;
+        line-height: 1.5rem;
+        margin:  0rem 2.3rem;
+    }
+
+    .mainText{
+        font-size: 0.9rem;
+        margin-bottom: 1.1rem !important;
+        margin: 0rem 1rem;
+        
+    }
+
+    
+    .titleDescription{
+        line-height: 2.2rem !important;
+        font-family: var(--font-primary);
+        font-size: 1rem !important;
+    }
+
 }
 
-@media screen and (min-width: 481px) and (max-width: 1024px) {
-    .sectionTitle {
-        height: auto;
-        padding: 40px 0;
-    }
-
-    .mainStep {
+@media screen and (min-width: 481px) and (max-width: 768px) {
+    .mainStep{
         display: flex;
         align-content: flex-start;
-        padding: 40px 100px;
-        width: 100%;
+        padding: 3rem 2rem !important;
     }
 
-    .stepContainer {
-        padding: 20px;
-        gap: 20px;
+    .stepContainer{
+        padding: 0.7rem;
     }
 
-    .stepId {
-        font-size: 32px;
-        padding: 12px 40px;
-        border-radius: 40px;
-    }
-
-    .StepTitle {
+    .StepTitle{
         text-align: center;
-        font-size: 40px;
-        margin-bottom: 10px;
+        
     }
 
-    .mainText {
-        font-size: 22px;
-        line-height: 28px;
+    .stepId{
+        margin: 0rem 8rem;
+        margin-bottom: 1rem;
+        font-size: 1.8rem;
     }
 
-    .titleDescription {
-        font-size: 24px;
-        line-height: 40px;
+    .StepTitle{
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
     }
 
-    .subText {
-        font-size: 20px;
-        line-height: 24px;
+    .mainText{
+        font-size: 1.8rem;
+        margin-bottom: 1.1rem !important;
+        margin: 0rem 1rem;
+        
     }
 
-    .withTitle {
-        font-size: 30px;
+    .subText{
+        font-size: 1.5rem !important;
+        margin:  0.6rem 2.3rem;
+    }
+
+    .titleDescription{
+        line-height: 2.3rem !important;
+        font-family: var(--font-primary);
+        font-size: 1.3rem !important;
+    }
+
+}
+
+@media (min-width: 769px) and (max-width: 1279px) {
+    .mainStep{
+        display: flex;
+        align-content: flex-start;
+        padding: 3rem 3rem !important;
+        width: 100vw;
+    }
+
+    .stepContainer{
+        padding: 0 5rem !important
+    }
+
+    .StepTitle{
+        text-align: center;
+    }
+
+    .stepId{
+        margin: 0rem 11rem;
+        margin-bottom: 1rem;
+        font-size: 2rem;
+    }
+
+    .StepTitle{
+        font-size: 3rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .mainText{
+        font-size: 2rem;
+        margin-bottom: 1.3rem !important;
+        margin: 0rem 1rem;
+    }
+
+    .subText{
+        font-size: 1.6rem !important;
+        margin:  0.6rem 2.3rem;
+    }
+
+    .titleDescription{
+        line-height: 2.3rem !important;
+        font-family: var(--font-primary);
+        font-size: 1.8rem !important;
     }
 }
+
+
+
+
+
+
+
+
+ 

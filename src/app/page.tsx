@@ -7,6 +7,7 @@ import WhyUs from './(components)/WhyUs/WhyUs'
 import Steps from "./(components)/steps/Steps";
 import LicensedInstructors from "./(components)/Licensed_Instructors/Licensed_Instructors";
 import Section from "./(components)/Section/Section";
+import Link from "next/link";
 
 export default function Home() {
   const heroSection = {
@@ -56,7 +57,15 @@ export default function Home() {
       mainText: [
         "Prepare for and complete the Knowledge Test to assess your understanding of driving rules"
       ],
-      subText: "Need translation? Click here to connect with a partner for language support",
+      subText: (
+        <>
+          Need translation?{' '}
+          <Link href="https://www.facebook.com/ICBCKnowledgeTestMaterial/" target="_blank" rel="noopener noreferrer" className="link">
+            Click here
+          </Link>  
+          {' '}to connect with a partner for language support
+        </>
+      ),
       className: "stepOne",
       LinkTo: "https://www.facebook.com/ICBCKnowledgeTestMaterial/"
     },

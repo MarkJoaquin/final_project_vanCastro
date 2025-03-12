@@ -22,6 +22,7 @@
   height: 8rem;
   overflow: hidden;
   justify-content: space-between;
+  align-items: center;
 }
 
 .logo {
@@ -171,57 +172,6 @@
     }
 }
 
-@media screen and (max-width: 480px){
-    .navLinks {
-        display: flex;
-        align-items: flex-start;
-        display: none;
-        position: fixed;
-        top: 126px;
-        left: 0;
-        right: 0;
-        background-color: rgb(20, 18, 12);
-        padding: 20px;
-        z-index: 999;
-    }
-
-    .navLinks.open {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-        padding: 20px;
-    }
-
-    .singleNavLink{
-        margin-left: 20px;
-    }
-
-    .navbarSection{
-        margin-left: 40px;
-        margin-right: 40px;
-    }
-
-    .mobileMenuButton {
-        display: block;
-    }
-
-    .overlay {
-        display: block;
-        position: fixed;
-        top: 126px;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: rgba(0, 0, 0, 0.5);
-        z-index: 998;
-    }
-
-    .logoImg {
-        width: 8rem !important;
-        height: 4rem !important;
-      }
-    
-} 
 
 
 @media screen and (min-width: 481px) and (max-width: 768px) {
