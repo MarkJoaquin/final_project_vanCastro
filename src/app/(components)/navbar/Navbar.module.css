@@ -1,109 +1,118 @@
-.header{
-    background-color: rgb(20, 18, 12);
-    box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 4px 0px;
-    opacity: 1;
+.header {
+  background-color: rgb(20, 18, 12);
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 4px 0px;
+  opacity: 1;
+  transition: all 0.5s ease 0s;
 }
 
 .navbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 1000;
-    background-color: rgb(20, 18, 12);
-    overflow-y: auto;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: rgb(20, 18, 12);
 }
 
-.navbarSection{
-    display:flex;
-    flex-direction: row;
-    margin-left: 91px ;
-    margin-right: 91px ;
-    height: 126px;
-    overflow: hidden;
-    justify-content: space-between;
-    align-items: center;
+.navbarSection {
+  display: flex;
+  flex-direction: row;
+  margin: 0 2.5rem;
+  padding: 3rem 0;
+  height: 8rem;
+  overflow: hidden;
+  justify-content: space-between;
 }
 
-.logo{
-    display: flex;
-    border-radius: inherit;
-    object-fit: cover;
-    align-items: center;
+.logo {
+  display: flex;
+  border-radius: inherit;
+  object-fit: cover;
+  align-items: center;
 }
 
-.logoImg{
-    border-radius: inherit;
-    object-position: center center !important;
-    object-fit: cover;
-    width: 166px !important;
-    height: 84px !important;
+.logoImg {
+  border-radius: inherit;
+  object-position: center center !important;
+  object-fit: cover;
+  width: 166px !important;
+  height: 84px !important;
+  object-fit: cover;
+  image-rendering: auto;
 }
 
 .navLinks {
-    display: flex;
-    align-items: center;
-    font-family: var(--font-primary);
-    gap: 48px;
-    justify-content: flex-start;
-    position: relative;
-    color: white;
-    font-weight: 500;
-    font-size: 20px;
+  display: flex;
+  align-items: center;
+  font-family: var(--font-primary);
+  gap: 48px;
+  justify-content: flex-start;
+  position: relative;
+  color: white;
+  font-weight: 500;
+  font-size: 20px;
 }
 
 .singleNavLink:hover {
-    color: var(--primary-color);
-    cursor: pointer;
+  color: var(--primary-color);
+  cursor: pointer;
 }
 
-.active{
-    font-weight: 800;
+.active {
+  font-weight: 800;
 }
 
 .mobileMenuButton {
-    display: none;
-    font-size: 2.5rem;
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: white
+  display: none;
+  font-size: 2.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: white;
 }
 
-.overlay {
-    display: none;
+.navLinksOpen {
+  display: block;
+  position: absolute;
+  top: 60px;
+  left: 0;
+  width: 100%;
+  background-color: white;
+  padding: 20px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-@media (max-width: 1024px) {
-    .navLinks {
-        display: none;
-        position: fixed;
-        top: 126px;
-        left: 0;
-        right: 0;
-        background-color: rgb(20, 18, 12);
-        padding: 20px;
-        z-index: 999;
-    }
-
-    .navLinks.open {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-    }
-
-    .mobileMenuButton {
-        display: block;
-    }
-
-    .overlay {
-        display: block;
-        position: fixed;
-        top: 126px;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: rgba(0, 0, 0, 0.5);
-        z-index: 998;
-    }
+.navLinksOpen .singleNavLink {
+  color: black; /* Color de los enlaces en el menú hamburguesa */
+  padding: 10px 0;
 }
+
+@media only screen and (max-width: 900px) {
+  .navLinks {
+    display: none; /* Ocultamos el menú horizontal en pantallas pequeñas */
+  }
+
+  /* Mostrar el botón hamburguesa */
+  .mobileMenuButton {
+    display: block;
+  }
+
+  /* Cuando el menú se abre, mostramos los enlaces en bloque */
+  .navLinksOpen {
+    display: block;
+  }
+  .navbarSection {
+    height: 5rem;
+  }
+  .logoImg {
+    width: 8rem !important;
+    height: 4rem !important;
+  }
+}
+
+/* @media only screen and (min-width : 769px) and (max-width: 1279px) {
+  .logoImg {
+    width: 6rem !important;
+    height: 3rem !important;
+  }
+} */

@@ -3,6 +3,7 @@ import Image from "next/image";
 import "./Licensed_Instructors.css";
 import type { DrivingInstructor } from "@/types/contentful";
 
+
 const LicensedInstructors = async () => {
   const instructorsData = await fetchInstructors();
 
@@ -25,35 +26,35 @@ const LicensedInstructors = async () => {
           </div>
           <div className="content-right">
             <div className="circle-container">
-              <div className="white-circle">
-                <div className="image-container">
-                  {instructorsData &&
-                    instructorsData.length > 0 &&
-                    instructorsData.map((instructor) => {
-                      const { name, avatar, avatar2 } = instructor.fields;
-                      // console.log(name, avatar, avatar2); // Agrega este console.log para depurar los datos
+              <div className="image-container">
+                {instructorsData &&
+                  instructorsData.length > 0 &&
+                  instructorsData.map((instructor, index) => {
+                    const { name, avatar } = instructor.fields;
+                    // console.log(name, avatar, avatar2);
 
-                      return (
-                        <div
-                          key={instructor.sys.id}
-                          className="instructor-images"
-                        >
-                          <Image
-                            src={
-                              (("https:" +
-                                (avatar as DrivingInstructor).fields?.file
-                                  .url) as string) || ""
-                            }
-                            alt={(name as string) || ""}
-                            width={400}
-                            height={400}
-                            className="instructor-image"
-                            priority
-                          />
-                        </div>
-                      );
-                    })}
-                </div>
+                    return (
+                      <div
+                        key={instructor.sys.id}
+                        className={`instructor-images-${index}`}
+                      >
+                        <Image
+                          src={
+                            (("https:" +
+                              (avatar as DrivingInstructor).fields?.file
+                                .url) as string) || ""
+                          }
+                          alt={(name as string) || ""}
+                          width={500}
+                          height={0} 
+                          style={{ height: 'auto' }} 
+                          className="instructor-image"
+                          data-aos="fade-up"
+                          priority
+                        />
+                      </div>
+                    );
+                  })}
               </div>
             </div>
           </div>

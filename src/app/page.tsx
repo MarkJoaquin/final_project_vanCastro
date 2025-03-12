@@ -7,6 +7,7 @@ import WhyUs from './(components)/WhyUs/WhyUs';
 import PickAPlan from "./(components)/PickAPlan/PickAPlan";
 import Steps from "./(components)/steps/Steps";
 import LicensedInstructors from "./(components)/Licensed_Instructors/Licensed_Instructors";
+import Section from "./(components)/Section/Section";
 
 export default function Home() {
   const heroSection = {
@@ -83,6 +84,13 @@ export default function Home() {
       LinkTo: ""
     }
   ];
+
+  /* LicensedInstructors start */
+  const LicensedInstructorsSection = {
+    className: 'instructors-section',
+    children: <LicensedInstructors />
+  }
+  /* LicensedInstructors end */
   
 
   return (
@@ -90,14 +98,13 @@ export default function Home() {
    
       <Hero data={heroSection} />
       <WhyUs data = {whyUsData}/>
-      <LicensedInstructors />
+      <Section {...LicensedInstructorsSection} />
       {/* <AlumniCarousel/>
       <GoogleCarousel/>
       <YoutubeCarousel/> */}
       <Dummy />
       <Steps data = {steps}/>
       <PickAPlan/>
-
     </>
   );
 }
