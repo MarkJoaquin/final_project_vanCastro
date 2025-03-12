@@ -1,5 +1,6 @@
 import Hero from "../(components)/hero/Hero";
 import Dummy from "../(components)/Dummy/Dummy";
+import HereToHelp from "../(components)/HereToHelp/HereToHelp";
 
 export default function Plans() {
   const heroSection = {
@@ -13,11 +14,18 @@ export default function Plans() {
     linkTo: "booking",
   };
 
+  const hereToHelp = {
+    title: "Here to Supporyt You - Customize Your Driving Plan",
+    buttonText: "Contact Us",
+    linkTo: "contact",
+  }  
+
   return (
     <>
        
       <Hero data={heroSection} />
       {/* <Dummy /> */}
+      <HereToHelp data={hereToHelp} />
     </>
   );
 }

@@ -1,0 +1,7 @@
+.here-to-help {
+    background-color: var(--primary-color);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: 
+        "info img";
+}
