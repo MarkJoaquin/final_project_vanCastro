@@ -13,7 +13,7 @@ interface CardProps {
 
 export default function Card({card}: CardProps){
 
-    const {id, title, icon, message} = card;
+    const {title, icon, message} = card;
 
     return(
         <li className={styles.cardItem}>

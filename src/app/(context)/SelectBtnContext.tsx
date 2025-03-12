@@ -27,7 +27,7 @@ const SelectBtnContextProvider: React.FC<{children: React.ReactNode}> = ({childr
 const useSelectBtnContext = ():State => {
   const context = useContext(SelectBtnContext);
   if(!context){
-    throw new Error("useCounterContex must be used within a CounterContextProvider");
+    throw new Error("useSelectBtnContex must be used within a CounterContextProvider");
   }
   return context;
 }

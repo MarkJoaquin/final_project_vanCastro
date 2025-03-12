@@ -1,7 +1,14 @@
 import SelectorBtn from "./(components)/Button/SelectorBtn";
+import AlumniCarousel from "./(components)/Carousels/AlumniCarousel";
+import GoogleCarousel from "./(components)/Carousels/GoogleCarousel";
+import YoutubeCarousel from "./(components)/Carousels/YoutubeCarousel";
+import Dummy from "./(components)/Dummy/Dummy";
 import Hero from "./(components)/Hero/Hero";
 import WhyUs from './(components)/WhyUs/WhyUs'
 import Review from "./Review/Review";
+import Steps from "./(components)/steps/Steps";
+import LicensedInstructors from "./(components)/Licensed_Instructors/Licensed_Instructors";
+import Section from "./(components)/Section/Section";
 
 export default function Home() {
   const heroSection = {
@@ -45,12 +52,63 @@ export default function Home() {
 
   const btnName = ["Alumni Review","Google Review","Video Review"];
 
+
+  
+
+  const steps = [
+    {
+      name: "Step", 
+      id: "1",
+      title: "Take the Knowledge Test",
+      mainText: [
+        "Prepare for and complete the Knowledge Test to assess your understanding of driving rules"
+      ],
+      subText: "Need translation? Click here to connect with a partner for language support",
+      className: "stepOne",
+      LinkTo: "https://www.facebook.com/ICBCKnowledgeTestMaterial/"
+    },
+    {
+      name: "Step", 
+      id: "2",
+      title: "Phone Consultation",
+      mainText: [
+        "Discuss available plans tailored to your needs  (e.g. changing licenses or starting as a beginner)",
+      ],
+      subText: "",
+      className: "stepTwo",
+      LinkTo: ""
+    },
+    {
+      name: "Step", 
+      id: "3",
+      title: "Road Test Preparation",
+      mainText: [
+        { title: "Convenient Pickup & Drop-off", description: "We'll pick you up and drop you off at the meeting point." },
+        { title: "Meet at a Designated Location", description: "Typically at a SkyTrain station." },
+        { title: "Road Test Scheduling", description: "We'll help you schedule your Road Test." }
+      ],
+      subText: "",
+      className: "stepThree",
+      LinkTo: ""
+    }
+  ];
+
+  /* LicensedInstructors start */
+  const LicensedInstructorsSection = {
+    className: 'instructors-section',
+    children: <LicensedInstructors />
+  }
+  /* LicensedInstructors end */
+  
+
   return (
     <>
+   
       <Hero data={heroSection} />
       <WhyUs data = {whyUsData}/>
-      
+      {/* <Dummy /> */}
       <Review btnName = {btnName}/>
+      <Steps data = {steps} />      
     </>
   );
 }
