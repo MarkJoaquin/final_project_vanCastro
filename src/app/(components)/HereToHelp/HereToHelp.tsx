@@ -20,9 +20,12 @@ export default function HereToHelp({ data }: HereToHelpProps) {
         <div className={styles.hereToHelp}>
             <div className={styles.imageSide}>
                 <img src="./images/HereToHelp/here-to-help-icon.svg" alt="Here to Help" />
+                <Link href={`/${linkTo}`} className={styles.buttonMobile}>
+                {buttonText}
+                </Link>
             </div>
             <div className={styles.infoSide}>
-                <h3 className={styles.title}>{title1}</h3>
+                <h3 className={styles.changingTitle}>{title1}</h3>
                 <h3>{title2}</h3>
                 <p>{subtitle}</p>
                 <Link href={`/${linkTo}`} className={styles.button}>
