@@ -3,19 +3,38 @@ import { fetchPlans } from "@/api/contentful/fetchPlans"
 import { useState, useEffect } from "react";
 import SelectorBtn from "../Button/SelectorBtn";
 import PlanCard from './PlanCard';
+import styles from './PickAPlan.module.css';
+
+type PlanProps = {
+    category: string;
+    title: string;
+    planName: string;
+    price: string,
+    featuresList:string[],
+    planId:string,
+}
+
  const PickAPlan = () => {
 
-    // const plansData = await fetchPlans();
-    // // console.log('Plans: ', plansData)
     const btnNames = ['Class 7', 'Class 5', 'Class 4']
     const [selectedSection, setSelectedSection] = useState(btnNames[0]);
-    const [plansData, setPlansData] = useState<any>('')
+    const [plansData, setPlansData] = useState<PlanProps[]>([])
 
     useEffect(()=>{
         const getPlans = async () => {
             const data = await fetchPlans();
             if(data) {
-                setPlansData(data)
+
+                const formattedData = data.map((plan:any) =>({
+                    category: plan.fields.category,
+                    title: plan.fields.title,
+                    planName: plan.fields.planName,
+                    price: plan.fields.price,
+                    featuresList: plan.fields.featuresList,
+                    planId: plan.fields.planId
+                }))
+
+                setPlansData(formattedData)
             } else {
                 console.error('Error fetching plans: no data')
             }
@@ -23,7 +42,8 @@ import PlanCard from './PlanCard';
         getPlans();
     },[])
 
-    // console.log('Plans: ', plansData)
+
+    const filterPlans = plansData.filter(plan => plan.category === selectedSection)
 
     return(
         <div className="sectionContainer">
@@ -31,23 +51,15 @@ import PlanCard from './PlanCard';
             <SelectorBtn btnName={btnNames} onSelect={setSelectedSection}/>
             <div className="cardSectionContainer">
                 <ul>
-                    {plansData && plansData.length > 0 && plansData.map((plan) => {
-
-                        const planData = {
-                            category: plan.fields.category,
-                            title: plan.fields.title,
-                            planName: plan.fields.planName,
-                            price: plan.fields.price,
-                            featuresList: plan.fields.featuresList,
-                        };
-
-                        return <PlanCard data = {planData}/>
-                    }
-                        
+                    {filterPlans.length > 0 ? (
+                        filterPlans.map((plan:any) => {
+                            return <PlanCard data = {plan} key={plan.planId}/>
+                        }
+                    )):(
+                        <p>No plans available for {selectedSection}</p>
                     )}
                 </ul>
             </div>
-            
         </div>
     )
 }
