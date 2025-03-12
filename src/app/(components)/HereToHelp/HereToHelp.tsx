@@ -3,6 +3,7 @@ import Link from "next/link";
 
 type Props = {
     title: string;
+    subtitle: string;
     buttonText: string;
     linkTo: string;
 };
@@ -12,16 +13,20 @@ interface HereToHelpProps {
 }
 
 export default function HereToHelp({ data }: HereToHelpProps) {
-    const { title, buttonText, linkTo } = data;
+    const { title, subtitle, buttonText, linkTo } = data;
 
     return (
         <div className={styles.hereToHelp}>
-        <div className={styles.infoSide}>
-            <h3>{title}</h3>
-            <Link href={`/${linkTo}`} className={styles.helpLink}>
-            {buttonText}
-            </Link>
-        </div>
+            <div className={styles.imageSide}>
+                <img src="./images/HereToHelp/here-to-help-icon.svg" alt="Here to Help" />
+            </div>
+            <div className={styles.infoSide}>
+                <h3>{title}</h3>
+                <p>{subtitle}</p>
+                <Link href={`/${linkTo}`} className={styles.helpLink}>
+                {buttonText}
+                </Link>
+            </div>
         </div>
     );
 }

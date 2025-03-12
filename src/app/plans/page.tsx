@@ -15,14 +15,14 @@ export default function Plans() {
   };
 
   const hereToHelp = {
-    title: "Here to Supporyt You - Customize Your Driving Plan",
+    title: "We’re Here to Help Let’s Customize Your Driving Plan!",
+    subtitle: "Our courses are designed to fit the experience and ability level of each individual learner.",
     buttonText: "Contact Us",
     linkTo: "contact",
   }  
 
   return (
     <>
-       
       <Hero data={heroSection} />
       {/* <Dummy /> */}
       <HereToHelp data={hereToHelp} />
