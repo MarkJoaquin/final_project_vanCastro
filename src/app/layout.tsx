@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import { Aleo, Lato, Montserrat } from "next/font/google";
 import "./globals.css";
-import Footer from "./(components)/footer/Footer";
+import Footer from "./(components)/Footer/Footer";
 import Navbar from "./(components)/navbar/Navbar";
-import { SelectBtnContextProvider } from "./(context)/SelectBtnContext";
 
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
@@ -56,9 +55,7 @@ export default function RootLayout({
         className={`${montserrat.variable} ${aleo.variable} ${lato.variable} antialiased`}
       >
         <Navbar />
-        <SelectBtnContextProvider>
           {children}
-        </SelectBtnContextProvider>
         <Footer />
       </body>
     </html>

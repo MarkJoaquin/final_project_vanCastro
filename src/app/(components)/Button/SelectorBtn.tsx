@@ -1,25 +1,18 @@
 "use client"
-import { useEffect } from "react";
+import { useState } from "react";
 import Style from "./SelectBtn.module.css"
-import { useSelectBtnContext } from "@/app/(context)/SelectBtnContext";
 
 interface selectBtnProps {
-  btnName:string[]
+  btnName:string[];
+  onSelect: (btn:string) => void;
 }
 
-/* Data type 
-const btnName = ["Alumni Review","Google Review","Video Review"];
-*/
-
-export default function SelectorBtn({btnName}:selectBtnProps) {
-  const {activeBtn,setActive} = useSelectBtnContext();
-
-  useEffect(()=>{
-    setActive(btnName[1]);
-  },[])
+export default function SelectorBtn({btnName, onSelect}:selectBtnProps) {
+  const [activeBtn,setActiveBtn] = useState<string>(btnName[0])
 
   const selectBtnHandler = (btn:string) => {
-    setActive(btn);
+    setActiveBtn(btn);
+    onSelect(btn);
   }
 
   return (
@@ -34,28 +27,3 @@ export default function SelectorBtn({btnName}:selectBtnProps) {
     </>
   );
 }
-
-/* 
-import { useState } from "react";
-
-const ButtonSelector = () => {
-  const [activeButton, setActiveButton] = useState(null); // State to track active button
-  const buttons = [1, 2, 3, 4]; // Dynamic list of buttons
-
-  return (
-    <div>
-      {buttons.map((button) => (
-        <button
-          key={button}
-          className={activeButton === button ? "is-active" : ""}
-          onClick={() => setActiveButton(button)}
-        >
-          Button {button}
-        </button>
-      ))}
-    </div>
-  );
-};
-
-export default ButtonSelector
- */
