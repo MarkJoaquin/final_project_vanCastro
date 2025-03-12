@@ -57,15 +57,12 @@ export default function Home() {
       mainText: [
         "Prepare for and complete the Knowledge Test to assess your understanding of driving rules"
       ],
-      subText: (
-        <>
-          Need translation?{' '}
-          <Link href="https://www.facebook.com/ICBCKnowledgeTestMaterial/" target="_blank" rel="noopener noreferrer" className="link">
-            Click here
-          </Link>  
-          {' '}to connect with a partner for language support
-        </>
-      ),
+      subText: {
+        text: "Need translation? ",
+      linkText: "Click here",
+      linkTo: "https://www.facebook.com/ICBCKnowledgeTestMaterial/",
+      className: "link", 
+      },
       className: "stepOne",
       LinkTo: "https://www.facebook.com/ICBCKnowledgeTestMaterial/"
     },

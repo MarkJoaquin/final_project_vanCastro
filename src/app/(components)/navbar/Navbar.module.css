@@ -45,7 +45,6 @@
 .navLinks {
   display: flex;
   align-items: center;
-  font-family: var(--font-primary);
   gap: 48px;
   justify-content: flex-start;
   position: relative;

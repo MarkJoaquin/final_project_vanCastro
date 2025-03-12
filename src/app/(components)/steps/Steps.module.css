@@ -11,12 +11,12 @@
     overflow: visible;
     padding: 64px 0;
     position: relative;
-    width: 100%;
+    width: 100vw;
 }
 
 .sectionTitle{
     background-color: #fff;
-    flex: none;
+    display: flex;
     height: 269px;
     overflow: visible;
     position: relative;
@@ -33,10 +33,9 @@
 .questioTitle{
 
     text-align: center;
-    font-family: var(--font-primary) !important;
     font-weight: 700 !important;
     line-height: 60px;
-    font-size: 50px;
+    font-size: 2.5rem
 }
 .ul{
     width: 100%;
@@ -49,7 +48,7 @@
     }
 
     .questioTitle{
-        font-size: 2rem;
+        font-size: 1.5rem !important;
     }
 }
 
@@ -59,7 +58,7 @@
     }
 
     .questioTitle{
-        font-size: 2.5rem !important;
+        font-size: 1.7rem !important;
     }
 
 }
@@ -72,7 +71,7 @@
     }
 
     .questioTitle{
-        font-size: 3.2rem;
+        font-size: 1.9rem;
     }
 
 }

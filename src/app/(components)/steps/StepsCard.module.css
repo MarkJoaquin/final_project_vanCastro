@@ -2,32 +2,37 @@
     background-color: var(--third-color);
 }
 
-
-
+.stepOne .stepIdName{
+    color: var(--third-color) !important;
+}
 .stepTwo{
     background-color: var(--secoundary-color);
 }
 
-.stepThree{
-    background-color: var(--primary-color);
-    margin-bottom: 10px;
+.stepTwo .stepIdName{
+    color: var(--secoundary-color) !important;
 }
 
-.sectionTitle{
-    align-content: flex-start;
-    align-items: flex-start;
-    display: flex;
-    flex: none;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    gap: 0px;
-    justify-content: flex-start;
-    overflow: visible;
-    padding: 64px 0;
-    position: relative;
-    width: 100%;
+
+.stepThree{
+    background-color: var(--primary-color);
     
 }
+.stepThree .stepIdName{
+    color: var(--primary-color) !important;
+}
+
+.Link {
+    text-decoration: underline;
+    color: red;
+    }
+
+
+.Link:hover {
+    color: var(--primary-color);
+    text-decoration-color: var(--primary-color);
+}
+
 
 .mainStep{
     align-content: flex-start;
@@ -39,7 +44,7 @@
     height: min-content;
     justify-content: flex-start;
     overflow: visible;
-    padding: 3rem 3rem;
+    padding: 5rem 5rem;
     position: relative;
     width: 100vw;
 }
@@ -47,6 +52,7 @@
 .stepContainer{
     align-content: center;
     align-items: center;
+    display: flex;
     flex: none;
     flex-direction: column;
     flex-wrap: nowrap;
@@ -75,40 +81,40 @@
     font-size: 2.3rem;
     color: var(--primary-color);
     font-weight: 700;
-    margin: 0px 400px;
+    width: fit-content;
     margin-bottom: 1rem;
 }
 
 .StepTitle{
     text-align: center;
-    font-size: 3rem;
+    font-size: 2.5rem;
     font-weight: 700;
-    font-family: var(--font-primary);
+   
     margin-bottom: 1.5rem;
 }
 
 .mainText{
     display: flex;
     flex-direction: column;
-    font-size: 2rem;
+    font-size: 2.2rem;
     font-weight: 500;
-    line-height: 30px !important;
+    line-height: 48px !important;
     text-align: center;
-    font-family: var(--font-primary);
+    
     margin-bottom: 1.3rem
 }
 
 .titleDescription{
-    line-height: 45px !important;
-    font-family: var(--font-primary);
-    font-size: 24px !important;
+    line-height: 48px !important;
+    
+    font-size: 1.8rem!important;
 }
 
 .subText{
-    font-size: 1.8rem !important;
-    line-height: 2.3rem;
+    font-size: 1.7rem !important;
+    line-height: 2.2rem;
     text-align: center;
-    font-family: var(--font-primary);
+  
 }
 
 .withTitle{
@@ -116,8 +122,12 @@
 }
 
 .link{
-    border-bottom: 2px solid black !important;
-    text-decoration: none;
+    text-decoration: underline;
+    color: var(--primary-color);;
+}
+
+.link:hover{
+   color: #0088ff;
 }
 
 @media screen and (max-width: 480px) {
@@ -140,34 +150,34 @@
     }
 
     .stepId{
-        margin: 0rem 6.2rem;
         margin-bottom: 1rem;
-        font-size: 1.7rem;
+        font-size: 1.3rem;
     }
 
     .StepTitle{
-        font-size: 1.8rem;
-        margin-bottom: 1rem;
+        font-size: 1.5rem;
+        margin-bottom: 8px;
     }
 
     .subText{
         font-size: 0.8rem !important;
-        line-height: 1.5rem;
+        line-height: 23px;
         margin:  0rem 2.3rem;
+        
     }
 
     .mainText{
         font-size: 0.9rem;
-        margin-bottom: 1.1rem !important;
+        margin-bottom: 8px !important;
         margin: 0rem 1rem;
-        
+        line-height: 23px !important;
     }
 
     
     .titleDescription{
-        line-height: 2.2rem !important;
-        font-family: var(--font-primary);
-        font-size: 1rem !important;
+        line-height: 23px !important;
+        
+        font-size: 0.8rem !important;
     }
 
 }
@@ -189,32 +199,31 @@
     }
 
     .stepId{
-        margin: 0rem 8rem;
         margin-bottom: 1rem;
-        font-size: 1.8rem;
+        font-size: 1.6rem;
     }
 
     .StepTitle{
-        font-size: 2.5rem;
+        font-size: 1.6rem;
         margin-bottom: 1rem;
     }
 
     .mainText{
-        font-size: 1.8rem;
+        font-size: 1.2rem;
         margin-bottom: 1.1rem !important;
         margin: 0rem 1rem;
         
     }
 
     .subText{
-        font-size: 1.5rem !important;
+        font-size: 1rem !important;
         margin:  0.6rem 2.3rem;
     }
 
     .titleDescription{
-        line-height: 2.3rem !important;
+        line-height: 25px!important;
         font-family: var(--font-primary);
-        font-size: 1.3rem !important;
+        font-size: 1.1rem !important;
     }
 
 }
@@ -228,7 +237,7 @@
     }
 
     .stepContainer{
-        padding: 0 5rem !important
+        padding: 1rem;
     }
 
     .StepTitle{
@@ -236,31 +245,31 @@
     }
 
     .stepId{
-        margin: 0rem 11rem;
+    
         margin-bottom: 1rem;
-        font-size: 2rem;
+        font-size: 1.7rem;
     }
 
     .StepTitle{
-        font-size: 3rem;
+        font-size: 1.9rem;
         margin-bottom: 1.5rem;
     }
 
     .mainText{
-        font-size: 2rem;
-        margin-bottom: 1.3rem !important;
+        font-size: 1.4rem;
+        margin-bottom: 1.1rem !important;
         margin: 0rem 1rem;
     }
 
     .subText{
-        font-size: 1.6rem !important;
+        font-size: 1.2rem !important;
         margin:  0.6rem 2.3rem;
     }
 
     .titleDescription{
-        line-height: 2.3rem !important;
+        line-height: 30px !important;
         font-family: var(--font-primary);
-        font-size: 1.8rem !important;
+        font-size: 1.3rem !important;
     }
 }
 
