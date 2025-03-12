@@ -15,7 +15,8 @@ export default function Plans() {
   };
 
   const hereToHelp = {
-    title: "We’re Here to Help Let’s Customize Your Driving Plan!",
+    title1: "We’re Here to Help",
+    title2: "Let’s Customize Your Driving Plan!",
     subtitle: "Our courses are designed to fit the experience and ability level of each individual learner.",
     buttonText: "Contact Us",
     linkTo: "contact",
