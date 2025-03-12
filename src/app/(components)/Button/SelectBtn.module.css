@@ -1,0 +1,6 @@
+.isActive{
+    background-color: rgb(255, 206, 71);border-radius: 21.46px;
+  }
+  .nonActive{
+    color: rgb(255,255,255);
+  }
