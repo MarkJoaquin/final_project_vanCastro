@@ -14,14 +14,14 @@ export default function Review({btnName}:selectBtnProps){
   const {activeBtn} = useSelectBtnContext();
 
   const setReview = () => {
-    if(activeBtn==="Google Review"){
-      return <GoogleCarousel/>
+    if(activeBtn==="Alumni Review"){
+      return <AlumniCarousel/>
     }
     if(activeBtn==="Video Review"){
       return <YoutubeCarousel/>
     }
     //Default
-    return <AlumniCarousel/>
+    return <GoogleCarousel/>
   }
   
   return(

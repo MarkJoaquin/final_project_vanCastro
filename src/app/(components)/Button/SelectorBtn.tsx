@@ -15,7 +15,7 @@ export default function SelectorBtn({btnName}:selectBtnProps) {
   const {activeBtn,setActive} = useSelectBtnContext();
 
   useEffect(()=>{
-    setActive(btnName[0]);
+    setActive(btnName[1]);
   },[])
 
   const selectBtnHandler = (btn:string) => {
