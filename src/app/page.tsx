@@ -6,8 +6,7 @@ import Hero from "./(components)/hero/Hero";
 import WhyUs from './(components)/WhyUs/WhyUs'
 import Steps from "./(components)/steps/Steps";
 import LicensedInstructors from "./(components)/Licensed_Instructors/Licensed_Instructors";
-import Section from "./(components)/Section/Section";
-import Link from "next/link";
+import type { StepsSection } from "@/types/stepsSection";
 
 export default function Home() {
   const heroSection = {
@@ -90,15 +89,8 @@ export default function Home() {
       className: "stepThree",
       LinkTo: ""
     }
-  ];
+  ];  
 
-  /* LicensedInstructors start */
-  const LicensedInstructorsSection = {
-    className: 'instructors-section',
-    children: <LicensedInstructors />
-  }
-  /* LicensedInstructors end */
-  
 
   return (
     <>
@@ -106,13 +98,13 @@ export default function Home() {
       <Hero data={heroSection} />
       <WhyUs data = {whyUsData}/>
       {/* <Dummy /> */}
-      <Steps data = {steps} />
+      <Steps data = {steps as StepsSection[]} />
 
       {/* <AlumniCarousel/>
       <GoogleCarousel/>
       <YoutubeCarousel/> */}
-      
-      <Section {...LicensedInstructorsSection} />
+
+      <LicensedInstructors />
     </>
   );
 }

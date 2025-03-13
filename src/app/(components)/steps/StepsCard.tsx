@@ -21,7 +21,7 @@ interface StepCardProps {
 }
 
 export default function StepCard({ cardStep }: StepCardProps) {
-    const { name, id, title, mainText, subText, className, LinkTo } = cardStep;
+    // const { name, id, title, mainText, subText, className, LinkTo } = cardStep;
   
     return (
       <li>
@@ -35,11 +35,12 @@ export default function StepCard({ cardStep }: StepCardProps) {
             <div className={styles.stepContainer} id={cardStep.id}>
               <p className={styles.StepTitle}>{cardStep.title}</p>
               {Array.isArray(cardStep.mainText) && cardStep.mainText.length > 0 && (
-                <div>
+                <div className={styles.mainTextContainer}>
                   {cardStep.mainText.map((text, index) => (
                     typeof text === 'object' ? (
                       <p key={index} className={`${styles.mainText} ${styles.titleDescription} ${styles.withTitle}`}>
-                        <strong>{text.title}:</strong> {text.description}
+                        <strong className={styles.innerTitle}>{text.title}</strong>
+                        <span className={styles.innerDescription}>{text.description} </span>
                       </p>
                     ) : (
                       <p key={index} className={styles.mainText}>
@@ -54,7 +55,7 @@ export default function StepCard({ cardStep }: StepCardProps) {
                   {cardStep.subText.text}
                   {' '}
                   <Link 
-                    href={cardStep.subText.linkTo}
+                    href={cardStep.subText.linkTo} target="_blank"
                     className={`${styles[cardStep.subText.className]}`}
                   >
                     {cardStep.subText.linkText}
