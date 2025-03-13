@@ -6,17 +6,17 @@
     flex-direction: column;
     flex-wrap: nowrap;
     gap: 0px;
-    height: 1727px;
+    
     justify-content: flex-start;
     overflow: visible;
     padding: 64px 0;
     position: relative;
-    width: 100%;
+    width: 100vw;
 }
 
 .sectionTitle{
     background-color: #fff;
-    flex: none;
+    display: flex;
     height: 269px;
     overflow: visible;
     position: relative;
@@ -33,64 +33,45 @@
 .questioTitle{
 
     text-align: center;
-    font-family: var(--font-primary) !important;
     font-weight: 700 !important;
     line-height: 60px;
-    font-size: 50px;
+    font-size: 2.5rem
 }
 .ul{
     width: 100%;
 
 }
 
-@media  (max-width: 767px){
-
+@media screen and (max-width: 480px) {
     .sectionTitle{
-        padding: 20px 20px;
+        padding: 3rem 2rem;
+    }
+
+    .questioTitle{
+        font-size: 1.5rem !important;
+    }
+}
+
+@media screen and (min-width: 481px) and (max-width: 768px){
+    .sectionTitle{
+        padding: 3rem 2rem;
+    }
+
+    .questioTitle{
+        font-size: 1.7rem !important;
     }
 
 }
 
-@media (min-width: 768px) and (min-width: 1024px){
-    .sectionTitle {
-        padding: 40px 0;
-        height: auto;
+
+
+@media (min-width: 769px) and (max-width: 1279px){
+    .sectionTitle{
+        padding: 0 5rem !important;
     }
 
-    .mainStep {
-        padding: 30px 50px;
-        width: 100%;
-    }
-
-    .stepContainer {
-        padding: 15px;
-    }
-
-    .stepId {
-        font-size: 30px;
-        padding: 10px 30px;
-    }
-
-    .StepTitle {
-        font-size: 38px;
-    }
-
-    .mainText {
-        font-size: 20px;
-        line-height: 26px;
-    }
-
-    .titleDescription {
-        font-size: 22px;
-    }
-
-    .subText {
-        font-size: 18px;
-        line-height: 22px;
-    }
-
-    .withTitle {
-        font-size: 28px;
+    .questioTitle{
+        font-size: 1.9rem;
     }
 
 }
