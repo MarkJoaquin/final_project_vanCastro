@@ -1,4 +1,4 @@
-import Hero from "../(components)/hero/Hero";
+import Hero from "../(components)/Hero/Hero";
 import Dummy from "../(components)/Dummy/Dummy";
 import HereToHelp from "../(components)/HereToHelp/HereToHelp";
 import ContactBanner from "../(components)/ContactBarnner/ContactBanner";
@@ -52,10 +52,8 @@ export default function Plans() {
   return (
     <>
       <Hero data={heroSection} />
-      {/* <Dummy /> */}
-{/*       <HereToHelp data={hereToHelp} /> */}
-      <ContactBanner data={hereToHelp}/>
       <ContactBanner data={ICBC_knowledge}/>
+      <ContactBanner data={hereToHelp}/>
 </>
   );
 }

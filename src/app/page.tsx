@@ -2,7 +2,7 @@ import AlumniCarousel from "./(components)/Carousels/AlumniCarousel";
 import GoogleCarousel from "./(components)/Carousels/GoogleCarousel";
 import YoutubeCarousel from "./(components)/Carousels/YoutubeCarousel";
 import Dummy from "./(components)/Dummy/Dummy";
-import Hero from "./(components)/hero/Hero";
+import Hero from "./(components)/Hero/Hero";
 import WhyUs from './(components)/WhyUs/WhyUs'
 import Steps from "./(components)/steps/Steps";
 import LicensedInstructors from "./(components)/Licensed_Instructors/Licensed_Instructors";

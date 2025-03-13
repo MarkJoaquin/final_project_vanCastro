@@ -37,7 +37,7 @@ export default function ContactBanner({ data }: HereToHelpProps) {
             ordersubtitle = 'order-1'
         }
         return <>
-        <h3 className={`text-[36px] ${titleLayout} ${ordertytle}`}>
+        <h3 className={`text-[32px] ${titleLayout} ${ordertytle} ${styles.titleFontSize}`} >
             {title1.map((item,index)=>
                 <span key={index} style={{color:`${title1Color[index]}`,order:`${ordertytle}`}}>{item} </span>
             )}
@@ -59,17 +59,18 @@ export default function ContactBanner({ data }: HereToHelpProps) {
 
     return (
         <section  style={{backgroundColor:`${bgColor}`}}>
-            <div className={`flex w-[80%] justify-between gap-3 m-auto pt-[2rem] pb-[2rem]`}>
+            <div className={`grid w-[100%] justify-around gap-3 m-auto pt-[2rem] pb-[2rem] ${img2?styles.gridTemplateStyle2:styles.gridTemplateStyle1}`}>
                 {img2?
                     <>
                         <Image
+                            className={`${styles.style2img1}`}
                             src={img1}
                             alt={"img1"}
                             height={165}
                             width={320}
-                            style={{width:"165px", height:"320px", flexBasis:"1fr"}}
+                            style={{width:"165px", height:"320px", flexBasis:"1fr", gridArea:"style2img1"}}
                         />
-                        <div className="basis-3/5 flex flex-col gap-3 justify-center items-center">
+                        <div className="basis-3/5 flex flex-col gap-3 justify-center items-center" style={{ gridArea:"style2text"}}>
                             {textComponent()}     
                         </div>
                         <Image
@@ -77,18 +78,19 @@ export default function ContactBanner({ data }: HereToHelpProps) {
                             alt={"img1"}
                             width={165}
                             height={320}
-                            style={{width:"165px", height:"320px", flexBasis:"1fr"}}
+                            style={{width:"165px", height:"320px", flexBasis:"1fr", gridArea:"style2img2"}}
                         />
                     </>
                     :<>
                         <Image
+                            className={`${styles.style1img1}`}
                             src={img1}
                             alt={"img1"}
                             height={350}
                             width={400}
-                            style={{width:"250px", height:"300px", flexBasis:"1fr"}}
+                            style={{width:"250px", height:"300px", flexBasis:"1fr", gridArea:"img1"}}
                         />
-                        <div className="basis-2/3 flex flex-col gap-[2rem] justify-center">
+                        <div className="basis-2/3 flex flex-col gap-[2rem] justify-center" style={{ gridArea:"text"}}>
                             {textComponent()}     
                         </div>
                     </>
