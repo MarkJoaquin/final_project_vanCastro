@@ -1,4 +1,4 @@
-/* "use client"
+"use client"
 
 import { fetchInstructors } from "@/api/contentful/fetchInstructors";
 import type { DrivingInstructor } from "@/types/contentful";
@@ -12,7 +12,7 @@ const InstructorsProfile = () => {
     useEffect(() => {
         const getInstructors = async () => {
             const data = await fetchInstructors();
-            if (data && data.length > 0) {
+            if (data) {
                 setInstructors(data.map((item: any) => item.fields));
             }
         };
@@ -21,7 +21,7 @@ const InstructorsProfile = () => {
 
     return (
         <div className={styles.profileContainer}>
-            {instructors.length > 0 && instructors.map((instructor, index) => {
+            {instructors.map((instructor, index) => {
                 const avatarUrl = (instructor.avatar as any)?.fields?.file?.url || '/default-avatar.png';
                 
                 return (
@@ -42,7 +42,7 @@ const InstructorsProfile = () => {
                             <p><strong>Languages:</strong> {instructor.languages.join(", ")}</p>
                         </CardContent>
                         <CardFooter>
-                            {/* Add any footer content here if needed }
+                            {/* Add any footer content here if needed */}
                         </CardFooter>
                     </Card>
                 );
@@ -51,5 +51,4 @@ const InstructorsProfile = () => {
     );
 };
 
-export default InstructorsProfile;*/
- 
+export default InstructorsProfile;
