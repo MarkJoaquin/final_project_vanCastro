@@ -1,6 +1,6 @@
 import Hero from "../(components)/hero/Hero";
 import Dummy from "../(components)/Dummy/Dummy";
-/* import InstructorsProfile from "../(components)/instructorsProfile/Instructors_Profile"; */
+import HereToHelp from "../(components)/HereToHelp/HereToHelp";
 
 export default function Plans() {
   const heroSection = {
@@ -14,12 +14,18 @@ export default function Plans() {
     linkTo: "booking",
   };
 
+  const hereToHelp = {
+    title1: "We’re Here to Help",
+    title2: "Let’s Customize Your Driving Plan!",
+    subtitle: "Our courses are designed to fit the experience and ability level of each individual learner.",
+    buttonText: "Contact Us",
+    linkTo: "contact",
+  }  
+
   return (
     <>
-       
       <Hero data={heroSection} />
       {/* <Dummy /> */}
-      {/* <InstructorsProfile /> */}
     </>
   );
 } 
