@@ -1,6 +1,7 @@
 .cardItem{
     border: 2px var(--primary-color) solid;
-    max-width: 30%;
+    /* max-width: 30%; */
+    width: 30%;
     min-height: 25rem;
     border-radius: 15px;
     padding: 1.6rem;
