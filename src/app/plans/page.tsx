@@ -1,5 +1,6 @@
 import Hero from "../(components)/hero/Hero";
 import Dummy from "../(components)/Dummy/Dummy";
+/* import InstructorsProfile from "../(components)/instructorsProfile/Instructors_Profile"; */
 
 export default function Plans() {
   const heroSection = {
@@ -18,6 +19,7 @@ export default function Plans() {
        
       <Hero data={heroSection} />
       {/* <Dummy /> */}
+      {/* <InstructorsProfile /> */}
     </>
   );
 } 
