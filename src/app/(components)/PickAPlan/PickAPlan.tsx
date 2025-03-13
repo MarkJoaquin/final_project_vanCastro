@@ -46,11 +46,11 @@ type PlanProps = {
     const filterPlans = plansData.filter(plan => plan.category === selectedSection)
 
     return(
-        <div className="sectionContainer">
+        <div className={styles.sectionContainer}>
             <h2>Pick What Fits You Best</h2>
             <SelectorBtn btnName={btnNames} onSelect={setSelectedSection}/>
-            <div className="cardSectionContainer">
-                <ul>
+            <div className={styles.cardSectionContainer}>
+                <ul className={styles.cardList}>
                     {filterPlans.length > 0 ? (
                         filterPlans.map((plan:any) => {
                             return <PlanCard data = {plan} key={plan.planId}/>

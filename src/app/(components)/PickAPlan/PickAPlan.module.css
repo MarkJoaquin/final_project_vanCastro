@@ -1,0 +1,26 @@
+/* .sectionContainer {
+    border: 2px red solid;
+} */
+
+.sectionContainer h2 {
+    font-size: 48px;
+    line-height: 58px;
+    font-weight: 700;
+    font-family: 'Montserrat', sans-serif;
+    text-align: center;
+    padding: 2rem 0 ;
+    /* border: 1px red solid; */
+}
+
+.cardSectionContainer{
+    /* border: 1px red solid; */
+    padding: 2rem;
+}
+
+.cardList{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+
+}

@@ -1,0 +1,63 @@
+.cardItem{
+    border: 2px var(--primary-color) solid;
+    max-width: 30%;
+    min-height: 25rem;
+    border-radius: 15px;
+    padding: 1.6rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    /* gap: 1rem; */
+}
+
+.title{
+    font-size: 19px;
+    line-height: 23px;
+    font-weight: 500;
+}
+
+.planName{
+    font-size: 38px;
+    line-height: 46px;
+    font-weight: 700;
+    margin-bottom: 2rem;
+}
+
+
+.priceContainer{
+    background-color: var(--third-color);
+    border-radius: 50%;
+    min-width: 12rem;
+    min-height: 12rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.price{
+    font-size: 56px;
+    line-height: 67px;
+    font-weight: 700;
+}
+
+.featuresList{
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.feature{
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.feature p{
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 19px;
+}
