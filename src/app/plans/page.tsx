@@ -2,6 +2,7 @@ import Hero from "../(components)/hero/Hero";
 import Dummy from "../(components)/Dummy/Dummy";
 import HereToHelp from "../(components)/HereToHelp/HereToHelp";
 import ContactBanner from "../(components)/ContactBarnner/ContactBanner";
+import hereToHelpImg from "@/../public/images/HereToHelp/here-to-help-icon.svg"
 
 export default function Plans() {
   const heroSection = {
@@ -16,19 +17,45 @@ export default function Plans() {
   };
 
   const hereToHelp = {
-    title1: "We're Here to Help",
-    title2: "Let's Customize Your Driving Plan!",
-    subtitle: "Our courses are designed to fit the experience and ability level of each individual learner.",
+    title1: ["We're Here to Help"],
+    title2: ["Let's Customize Your Driving Plan!"],
+    subtitle: ["Our courses are designed to fit the experience and ability level of each individual learner."],
+    title1Color: ["#000000"],
+    title2Color: ["#000000"],
+    subtitleColor: ["#000000"],
+    img1:hereToHelpImg,
     buttonText: "Contact Us",
     linkTo: "contact",
+    bgColor: "#FFCE47",
+    btnColor: "#2F2F2F",
+    btnTextColor: "#FFF5D8",
+    type:"style1"
+  }  
+
+  const ICBC_knowledge = {
+    title1: ["Taking the ICBC", "Knowledge Test"],
+    title2: ["Let's Customize Your Driving Plan!"],
+    subtitle: ["Check out", "our partner for"],
+    title1Color: ["#000000","#FFAE00"],
+    title2Color: ["#000000"],
+    subtitleColor: ["#FFAE00","#000000"],
+    img1:hereToHelpImg,
+    img2:hereToHelpImg,
+    buttonText: "Contact Us",
+    linkTo: "contact",
+    bgColor: "#F7F7F7",
+    btnColor: "#FFCE47",
+    btnTextColor: "#000000",
+    type:"style2"
   }  
 
   return (
     <>
       <Hero data={heroSection} />
       {/* <Dummy /> */}
-      <HereToHelp data={hereToHelp} />
+{/*       <HereToHelp data={hereToHelp} /> */}
       <ContactBanner data={hereToHelp}/>
-    </>
+      <ContactBanner data={ICBC_knowledge}/>
+</>
   );
 }
