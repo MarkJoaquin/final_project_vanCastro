@@ -104,7 +104,7 @@
 
 .heroText {
   font-size: 24px;
-  font-weight: 600;
+  font-weight: 300;
   line-height: 22px;
 }
 
@@ -122,7 +122,6 @@
   }
 
   .heroText {
-    font-weight: 600;
     line-height: 30px;
     font-size: 1.5rem !important;
     width: 62% !important;
@@ -174,7 +173,6 @@
   }
 
   .heroText {
-    font-weight: 600;
     line-height: 30px;
     font-size: 1.5rem !important;
     width: 65% !important;

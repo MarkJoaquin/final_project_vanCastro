@@ -1,6 +1,6 @@
 .cardItem{
     border: 3px var(--primary-color) solid;
-    min-height: 35rem;
+    min-height: 40rem;
     border-radius: 15px;
     padding: 1.6rem;
     display: flex;
@@ -165,6 +165,16 @@
     .mostPopularLabel{
         font-size: 20px;
         line-height: 26px;
+    }
+
+    .title{
+        font-size: 15px;
+        line-height: 18px;
+    }
+    
+    .planName{
+        font-size: 33px;
+        line-height: 41px;
     }
     
     /* .mostPopularContainer img{
