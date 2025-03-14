@@ -1,8 +1,8 @@
 import Hero from "../(components)/Hero/Hero";
-import Dummy from "../(components)/Dummy/Dummy";
-import HereToHelp from "../(components)/HereToHelp/HereToHelp";
 import ContactBanner from "../(components)/ContactBarnner/ContactBanner";
 import hereToHelpImg from "@/../public/images/HereToHelp/here-to-help-icon.svg"
+import Person1Img from "@/../public/images/ICBC_knowledge/Person1.png"
+import Person2Img from "@/../public/images/ICBC_knowledge/Person2.png"
 
 export default function Plans() {
   const heroSection = {
@@ -39,8 +39,8 @@ export default function Plans() {
     title1Color: ["#000000","#FFAE00"],
     title2Color: ["#000000"],
     subtitleColor: ["#FFAE00","#000000"],
-    img1:hereToHelpImg,
-    img2:hereToHelpImg,
+    img1:Person1Img,
+    img2:Person2Img,
     buttonText: "Contact Us",
     linkTo: "contact",
     bgColor: "#F7F7F7",
@@ -54,6 +54,6 @@ export default function Plans() {
       <Hero data={heroSection} />
       <ContactBanner data={ICBC_knowledge}/>
       <ContactBanner data={hereToHelp}/>
-</>
+    </>
   );
 }

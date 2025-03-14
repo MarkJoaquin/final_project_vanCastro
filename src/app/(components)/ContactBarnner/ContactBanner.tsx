@@ -30,7 +30,7 @@ export default function ContactBanner({ data }: HereToHelpProps) {
         let titleLayout = null;
         let ordertytle = 'order-1';
         let ordersubtitle = 'order-2';
-        const orderbtn = 'order-3';
+        let orderbtn = 'order-3';
         if(type === "style2"){
             titleLayout = "text-center"
             ordertytle = 'order-2'
