@@ -1,9 +1,11 @@
+import SelectorBtn from "./(components)/Button/SelectorBtn";
 import AlumniCarousel from "./(components)/Carousels/AlumniCarousel";
 import GoogleCarousel from "./(components)/Carousels/GoogleCarousel";
 import YoutubeCarousel from "./(components)/Carousels/YoutubeCarousel";
 import Dummy from "./(components)/Dummy/Dummy";
 import Hero from "./(components)/Hero/Hero";
-import WhyUs from './(components)/WhyUs/WhyUs';
+import WhyUs from './(components)/WhyUs/WhyUs'
+import Review from "./Review/Review";
 import PickAPlan from "./(components)/PickAPlan/PickAPlan";
 import Steps from "./(components)/steps/Steps";
 import LicensedInstructors from "./(components)/Licensed_Instructors/Licensed_Instructors";
@@ -48,6 +50,13 @@ export default function Home() {
       message: 'Build confidence with a mock test and Road Test support.'
     },
   ]
+
+  
+
+  const btnName = ["Alumni Review","Google Review","Video Review"];
+
+
+  
 
   const steps = [
     {
@@ -104,7 +113,11 @@ export default function Home() {
    
       <Hero data={heroSection} />
       <WhyUs data = {whyUsData}/>
-      <Section {...LicensedInstructorsSection} />
+      {/* <Dummy /> */}
+      <LicensedInstructors />
+      <Review btnName = {btnName}/>
+      <Steps data = {steps as StepsSection[]} />
+
       {/* <AlumniCarousel/>
       <GoogleCarousel/>
       <YoutubeCarousel/> */}
