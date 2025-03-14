@@ -1,5 +1,6 @@
 import styles from './PlanCard.module.css'
 import CheckIcon from '../CheckIcon/CheckIcon';
+import Link from 'next/link';
 type Props = {
     category: string;
     title: string;
