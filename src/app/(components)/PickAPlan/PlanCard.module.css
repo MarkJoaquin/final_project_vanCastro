@@ -1,5 +1,5 @@
 .cardItem{
-    border: 2px var(--primary-color) solid;
+    border: 3px var(--primary-color) solid;
     min-height: 35rem;
     border-radius: 15px;
     padding: 1.6rem;

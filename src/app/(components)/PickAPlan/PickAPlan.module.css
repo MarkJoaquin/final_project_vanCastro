@@ -29,7 +29,7 @@
 }
 
 .viewPlansBtn{
-    border: 2px var(--primary-color) solid;
+    border: 3px var(--primary-color) solid;
     border-radius: 7px;
     padding: 0.5rem 4rem;
     font-size: 23px;

@@ -121,7 +121,6 @@ export default function Home() {
       {/* <AlumniCarousel/>
       <GoogleCarousel/>
       <YoutubeCarousel/> */}
-      <Steps data = {steps as StepsSection[]} />
       <PickAPlan/>
     </>
   );
