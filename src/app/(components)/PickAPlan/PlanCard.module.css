@@ -10,6 +10,33 @@
     text-align: center;
 }
 
+.package{
+    position: relative;
+    order: 1;
+}
+
+.mostPopularContainer{
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* gap: 1rem; */
+    padding: 0.5rem 1rem;
+    border-radius: 30px;
+    width: 90%;
+    background-color: var(--primary-color);
+}
+
+.mostPopularLabel{
+    font-size: 25px;
+    line-height: 31px;
+    font-weight: 700;
+}
+
 .title{
     font-size: 19px;
     line-height: 23px;
@@ -22,7 +49,6 @@
     font-weight: 700;
     margin-bottom: 2rem;
 }
-
 
 .priceContainer{
     background-color: var(--third-color);
@@ -85,6 +111,11 @@
     .cardItem{
         padding: 1rem;
     }
+    
+    .mostPopularLabel{
+        font-size: 20px;
+        line-height: 26px;
+    }
 
     .planName{
         font-size: 28px;
@@ -116,9 +147,27 @@
 
 }
 
+@media only screen and (min-width: 481px) and (max-width: 768px) {
+
+    .mostPopularLabel{
+        font-size: 20px;
+        line-height: 26px;
+    }
+    
+}
+
 @media only screen and (min-width: 769px) and (max-width: 1279px) {
     .bookingBtn{
         font-size: 18px;
         line-height: 22px;
     }
+
+    .mostPopularLabel{
+        font-size: 20px;
+        line-height: 26px;
+    }
+    
+    /* .mostPopularContainer img{
+
+    } */
   }

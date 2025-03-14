@@ -1,5 +1,6 @@
 import styles from './PlanCard.module.css'
 import CheckIcon from '../CheckIcon/CheckIcon';
+import StarIcon from '../StarIcon/StarIcon'
 import Link from 'next/link';
 type Props = {
     category: string;
@@ -21,8 +22,12 @@ export default function PlanCard({data}: CardProps) {
     const { category, title, planName, price, featuresList, planId } = data
 
     return(
-        <div className={styles.cardItem}>
-            {/* <p>{category}</p> */}
+        <div className={`${styles.cardItem} ${title === 'Package' ? styles.package : ''}`}>
+            {title === 'Package' && (
+                <div className={styles.mostPopularContainer}>
+                <StarIcon/><p className={styles.mostPopularLabel}>Most Popular</p><StarIcon/>
+                </div>
+            )}
             <p className={styles.title}>{title}</p>
             <p className={styles.planName}>{planName}</p>
             <div className={styles.priceContainer}>
