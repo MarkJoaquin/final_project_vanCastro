@@ -7,7 +7,9 @@ import WhyUs from './(components)/WhyUs/WhyUs';
 import PickAPlan from "./(components)/PickAPlan/PickAPlan";
 import Steps from "./(components)/steps/Steps";
 import LicensedInstructors from "./(components)/Licensed_Instructors/Licensed_Instructors";
+import type { StepsSection } from "@/types/stepsSection";
 import Section from "./(components)/Section/Section";
+
 
 export default function Home() {
   const heroSection = {
@@ -55,7 +57,12 @@ export default function Home() {
       mainText: [
         "Prepare for and complete the Knowledge Test to assess your understanding of driving rules"
       ],
-      subText: "Need translation? Click here to connect with a partner for language support",
+      subText: {
+        text: "Need translation? ",
+      linkText: "Click here",
+      linkTo: "https://www.facebook.com/ICBCKnowledgeTestMaterial/",
+      className: "link", 
+      },
       className: "stepOne",
       LinkTo: "https://www.facebook.com/ICBCKnowledgeTestMaterial/"
     },
@@ -83,15 +90,14 @@ export default function Home() {
       className: "stepThree",
       LinkTo: ""
     }
-  ];
+  ];  
 
-  /* LicensedInstructors start */
-  const LicensedInstructorsSection = {
-    className: 'instructors-section',
-    children: <LicensedInstructors />
-  }
-  /* LicensedInstructors end */
-  
+    /* LicensedInstructors start */
+    const LicensedInstructorsSection = {
+      className: 'instructors-section',
+      children: <LicensedInstructors />
+    }
+    /* LicensedInstructors end */
 
   return (
     <>
@@ -102,8 +108,7 @@ export default function Home() {
       {/* <AlumniCarousel/>
       <GoogleCarousel/>
       <YoutubeCarousel/> */}
-      <Dummy />
-      <Steps data = {steps}/>
+      <Steps data = {steps as StepsSection[]} />
       <PickAPlan/>
     </>
   );

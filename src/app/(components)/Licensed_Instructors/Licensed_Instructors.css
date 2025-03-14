@@ -15,6 +15,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  padding: 0 4rem;
 }
 
 .content-left {
@@ -123,10 +124,17 @@
 /* Media Queries */
 
 /* Mobile Vertical */
+
+@media only screen and (min-width: 320px) and (max-width: 375px) {
+  .content-left {
+    margin-bottom: 0;
+    padding: 1rem 2rem 0 !important ;
+  }
+}
+
 @media only screen and (max-width: 480px) {
   .content-left {
     margin-bottom: 0;
-    
     padding: 3rem 4rem 0 ;
   }
 
@@ -136,6 +144,18 @@
 
   .instructor-description {
     font-size: 1.2rem;
+  }
+
+  .content-right {
+    width: 100dvw;
+  }
+
+  .circle-container {
+    width: 100%;
+  }
+
+  .flex-container {
+    padding: 0 ;
   }
 }
 
@@ -156,7 +176,7 @@
   }
 
   .instructor-description {
-    font-size: 1.5rem;
+    font-size: 1.125rem;  
   }
 
   .content-right {
@@ -185,6 +205,7 @@
 @media only screen and (min-width: 1280px) {
   .flex-container {
     flex-direction: row;
+    gap: 1rem;
   }
 
   .content-left {
@@ -220,7 +241,7 @@
     justify-content: flex-end;
     position: relative;
     left: -25px;
-    width: 23rem !important;
+    width: 19.5rem !important;
     order: 2;
   }
   
@@ -230,7 +251,7 @@
     align-items: center;
     justify-content: flex-end;
     position: relative;
-    width: 26rem !important;
+    width: 22.5rem !important;
     right: -40px;
     order: 1;
   }

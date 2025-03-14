@@ -1,0 +1,124 @@
+.hereToHelp {
+    background-color: var(--primary-color);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: 
+        "img info";
+    height: auto;
+    line-height: 1.2;
+    padding: 2rem 0;
+}
+
+.hereToHelp h3 {
+    font-weight: 700;
+    font-size: 2.1rem;
+}
+
+.hereToHelp p {
+    font-size: 1.4rem;
+    font-weight: 500;
+    margin: 3rem 0;
+}
+
+.imageSide {
+    grid: img;
+    display: flex;
+    justify-content: center;
+    padding: 0 2rem;
+}
+
+.imageSide img {
+    width: 100%;
+    max-width: 20rem;
+}
+
+.infoSide {
+    grid: info;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 2rem;
+    padding-right: 6rem;
+    color: var(--text-primary-color);
+    margin: 5rem 0;
+}
+
+.button {
+    background-color: var(--foreground);
+    color: var(--third-color);
+    max-width: 17rem;
+    padding: 0.8rem;
+    display: flex;
+    justify-content: center;
+    border-radius: 8px;
+    font-weight: 700;
+}
+
+.buttonMobile {
+    display: none;
+    background-color: var(--foreground);
+    color: var(--third-color);
+    padding: 0.8rem;
+    /* display: flex; */
+    justify-content: center;
+    border-radius: 8px;
+    font-weight: 700;
+
+}
+
+@media (min-width: 810px) and (max-width: 1000px) {
+    .changingTitle  {
+        font-size: 1.7rem !important;
+        font-weight: 500 !important;
+    }
+
+    .hereToHelp p {
+        margin-top: 3rem;
+        margin-bottom: 3rem;
+    }
+
+    .infoSide {
+        margin: 3rem 0;
+    }
+}
+
+@media (max-width: 809px) {
+    .hereToHelp{
+        display: flex;
+        flex-direction: column;
+    }
+
+    .imageSide {
+        order: 2;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .imageSide img {
+        width: 100%;
+        margin-bottom: 2rem;
+    }
+
+    .infoSide {
+        order: 1;
+        align-items: center;
+        padding: 0 4rem;
+        text-align: center;
+        margin: 1.5rem 0;
+    }
+
+    .changingTitle  {
+        font-size: 1.7rem !important;
+        font-weight: 500 !important;
+    }
+
+    .button {
+        display: none;
+    }
+
+    .buttonMobile {
+        display: flex;
+        width: 100%;
+    }
+}
