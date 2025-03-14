@@ -36,8 +36,8 @@ export default function Hero({ data }: SectionProps) {
       <div className={styles.heroContainer}>
         <div className={styles[className]}>
           <div className={styles.mainContent}>
-            <h1 className={styles.heroTitle}>{title}</h1>
-            <p className={styles.heroText}>{subtext}</p>
+            <h1 className={`${styles.heroTitle} ${className === 'plansHero' ? styles.plansHeroTitle : ''}`}>{title}</h1>
+            <p className={`${styles.heroText} ${className === 'plansHero' ? styles.plansHeroText : ''}`}>{subtext}</p>
           </div>
           <div className = {styles.buttonContainer}>
             <Link href={`/${linkTo}`} className={styles.heroLink}>{buttonText}</Link>

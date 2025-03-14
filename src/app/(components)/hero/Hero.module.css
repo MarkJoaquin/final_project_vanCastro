@@ -1,5 +1,3 @@
-/* @import '../../globals.css'; */
-
 .heroComponent {
   margin-top: 8rem;
   width: 100%;
@@ -131,6 +129,20 @@
     margin: 0 auto;
   }
 
+  .plansHero{
+    align-items: center;
+  }
+
+  .plansHeroTitle{
+    width: 100% !important;
+    text-align: center;
+  }
+
+  .plansHeroText{
+    width: 100% !important;
+    text-align: center;
+  }
+
 }
 
 /* Mobile Horizontal */
@@ -140,11 +152,25 @@
     margin-top: 5rem;
   }
 
+  .plansHero{
+    align-items: center;
+  }
+
   .heroTitle {
     font-weight: 700;
     line-height: 60px;
     font-size: 3rem !important;
     width: 50% !important;
+  }
+
+  .plansHeroTitle{
+    width: 100% !important;
+    text-align: center;
+  }
+
+  .plansHeroText{
+    width: 100% !important;
+    text-align: center;
   }
 
   .heroText {
@@ -154,11 +180,20 @@
     width: 65% !important;
     margin: 0 auto;
   }
+
+
 }
 
 @media only screen and (min-width: 769px) and (max-width: 1279px) {
   .heroComponent {
     margin-top: 5rem;
+  }
+  .plansHero{
+    align-items: center;
+  }
+  .plansHero h1, .plansHero p{
+    width: 100%;
+    text-align: center;
   }
 }
 
