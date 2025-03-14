@@ -94,16 +94,16 @@ export default function YoutubeCarousel() {
       setPagePerItems(1)
       setCurrentPage(1)
     }
-  },[width])
+  },[width, pagePerItems])
 
   //set timer for auto feed
-  useEffect(()=>{
+/*   useEffect(()=>{
     const interval = setInterval(() => {
       setCount((prevCount) => prevCount + 1);
     }, 1000);
 
     return () => clearInterval(interval);
-  },[])
+  },[]) */
 
   //execute auto feed
   useEffect(()=>{
@@ -142,13 +142,13 @@ export default function YoutubeCarousel() {
 
   const onReady: YouTubeProps['onReady'] = (event) => {
     const player = event.target;
-      player.playVideo();
+      // player.playVideo();
       player.setVolume(0);
   };
   const options: YouTubeProps['opts'] = {
     width: 'auto',  // Video width
     playerVars: {
-      autoplay: 1,       // Auto-play video
+      autoplay: 0,       // Auto-play video
       modestbranding: 1, // Remove YouTube logo
       rel: 0,            // Disable related videos at the end
     },
@@ -194,7 +194,7 @@ export default function YoutubeCarousel() {
  */}
           </div>
         )}
-        <div className="w-[50px] h-[50px] absolute right-[5%] top-[40%] " onClick={handleNext}><CircleArrowRight/></div>
+        <div className="w-[50px] h-[50px] absolute right-[5%] top-[40%] cursor-pointer " onClick={handleNext}><CircleArrowRight /></div>
       </div>
     </>
   );
