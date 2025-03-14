@@ -1,8 +1,8 @@
-.profileSection{
+.container{
     align-items: center;
     display: flex;
     flex-direction: column;
-    gap: 3rem;
+    gap: 3rem !important;
     justify-content: flex-start;
     overflow: visible;
     padding: 4rem 0;
@@ -14,4 +14,91 @@
     font-size: 3rem !important;
     font-weight: 700 ;
     text-align: center;
+}
+
+.instructorCards{
+    align-items: center;
+    display: flex;
+    flex: none;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 106px;
+    height: min-content;
+    justify-content: flex-start;
+    overflow: visible;
+    padding: 0;
+    position: relative;
+    width: min-content;
+   
+}
+
+.instructorCard{
+    padding: 2.1rem 2.7rem ;
+    border-radius: 1.2rem;
+    border-color: var( --primary-color) !important;
+    border-width: 0.2rem;
+    background-color: #fff;
+    align-items: center;
+    gap: 2.5rem;
+    justify-content:flex-start;
+    height: min-content;
+    width: 23.37rem;
+}
+
+.instructorImage{
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    object-fit: fill;
+    border-radius: 50%;
+}
+
+.instructorName{
+    font-size: 1.4rem;
+    font-weight: 700;
+    text-align: center;
+    margin-top: 0.6rem;
+    line-height: 1.78rem;
+
+}
+
+.cardContent{
+    align-items: flex-start;
+    display: flex;
+    flex: none;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 0.9rem;
+    height: min-content;
+    justify-content: flex-start;
+    overflow: visible;
+    padding: 0;
+    position: relative;
+    width: 100%;
+}
+
+.instructorInfo{
+    align-items: center;
+    display: flex
+;
+    flex: none;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 16px;
+    height: min-content;
+    justify-content: flex-start;
+    overflow: visible;
+    padding: 0;
+    position: relative;
+    width: 100%;
+    
+}
+
+.instructorInfo .p{
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+    font-weight: 500;
 }

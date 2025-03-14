@@ -11,7 +11,6 @@ const InstructorsProfile = async () => {
       return <div>No instructor data available</div>;
     }
 
-    // Helper function to extract text from rich text field
     const extractTextFromRichText = (richText: any) => {
       if (!richText || !richText.content) return '';
       return richText.content
@@ -32,7 +31,7 @@ const InstructorsProfile = async () => {
 
               return (
                 <Card key={item.sys.id} className={styles.instructorCard}>
-                  <CardHeader>
+                  <div className={styles.instructorImage} >
                     {avatarUrl && (
                       <img 
                         src={avatarUrl}
@@ -40,12 +39,26 @@ const InstructorsProfile = async () => {
                         className={styles.instructorImage}
                       />
                     )}
-                    <CardTitle>{instructor.name}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p>Phone: {instructor.phone}</p>
-                    <p>Email: {instructor.email}</p>
-                    <p>Availability: {extractTextFromRichText(instructor.availability)}</p>
+                    <CardTitle className={styles.instructorName}>{instructor.name}</CardTitle>
+                    
+                  </div>
+                  
+                  <CardContent  className={styles.cardContent}>
+                    <div className={styles.instructorInfo}>
+                      <img src="./images/Frame39.png" alt={instructor.name} className={styles.badge} />
+                      <p>{instructor.yearsOfExperience} years of experience</p>
+                    </div>
+                    <div className={styles.instructorInfo}>
+                      <img src="./images/Frame38.png" alt={instructor.name} className={styles.badge} />
+                      <p> {instructor.languages}</p>
+                    </div>
+                    
+                    <div className={styles.instructorInfo}> 
+                      <img src="./images/Frame40.png" alt={instructor.name} className={styles.badge} />  
+                      <p>{extractTextFromRichText(instructor.availability)}</p>
+                    </div>
+                    
+                    
                   </CardContent>
                 </Card>
               );
