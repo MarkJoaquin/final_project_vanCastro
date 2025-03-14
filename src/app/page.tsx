@@ -1,8 +1,3 @@
-import SelectorBtn from "./(components)/Button/SelectorBtn";
-import AlumniCarousel from "./(components)/Carousels/AlumniCarousel";
-import GoogleCarousel from "./(components)/Carousels/GoogleCarousel";
-import YoutubeCarousel from "./(components)/Carousels/YoutubeCarousel";
-import Dummy from "./(components)/Dummy/Dummy";
 import Hero from "./(components)/Hero/Hero";
 import WhyUs from './(components)/WhyUs/WhyUs'
 import Review from "./Review/Review";
@@ -10,7 +5,6 @@ import PickAPlan from "./(components)/PickAPlan/PickAPlan";
 import Steps from "./(components)/steps/Steps";
 import LicensedInstructors from "./(components)/Licensed_Instructors/Licensed_Instructors";
 import type { StepsSection } from "@/types/stepsSection";
-import Section from "./(components)/Section/Section";
 
 
 export default function Home() {
@@ -51,12 +45,7 @@ export default function Home() {
     },
   ]
 
-  
-
   const btnName = ["Alumni Review","Google Review","Video Review"];
-
-
-  
 
   const steps = [
     {
