@@ -1,5 +1,5 @@
 .sectionContainer {
-    padding: 2rem 0;
+    padding: 2rem 3rem;
 }
 
 .sectionContainer h2 {
@@ -42,4 +42,30 @@
 
 .viewPlansBtn:hover{
     background-color: #ffe08b;
+}
+
+@media only screen and (max-width: 480px) {
+
+    .sectionContainer{
+        padding: 1rem;
+    }
+
+    .sectionContainer h2{
+        font-size:22px;
+        line-height: 36px;
+    }
+
+    .viewPlansBtn{
+        padding: 0.5rem 3rem;
+    }
+
+}
+
+@media only screen and (min-width: 481px) and (max-width: 768px) {
+
+    .sectionContainer h2{
+        font-size: 28px;
+        line-height: 38px;
+    }
+    
 }

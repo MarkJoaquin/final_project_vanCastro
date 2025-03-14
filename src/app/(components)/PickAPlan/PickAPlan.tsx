@@ -6,6 +6,13 @@ import Link from "next/link";
 import SelectorBtn from "../Button/SelectorBtn";
 import PlanCard from './PlanCard';
 import styles from './PickAPlan.module.css';
+import {
+    Carousel,
+    CarouselContent,
+    CarouselItem,
+    CarouselNext,
+    CarouselPrevious,
+  } from "@/components/ui/carousel"
 
 type PlanProps = {
     category: string;
@@ -53,15 +60,26 @@ type PlanProps = {
             <h2>Pick What Fits You Best</h2>
             <SelectorBtn btnName={btnNames} onSelect={setSelectedSection}/>
             <div className={styles.cardSectionContainer}>
+                <Carousel key={selectedSection}>
                 <ul className={styles.cardList}>
+                    <CarouselContent>
                     {filterPlans.length > 0 ? (
                         filterPlans.map((plan:any) => {
-                            return <PlanCard data = {plan} key={plan.planId}/>
+                            return (
+                                <CarouselItem className="sm:basis-1/1 md:basis-1/2 lg:basis-1/3" key={plan.planId}>
+                                    <PlanCard data = {plan} />
+                                </CarouselItem>
+                            )
                         }
                     )):(
                         <p>No plans available for {selectedSection}</p>
                     )}
+                    </CarouselContent>
+                    <CarouselPrevious/>
+                    <CarouselNext/>
                 </ul>
+                </Carousel>
+                
             </div>
 
             {pathName === '/' && (

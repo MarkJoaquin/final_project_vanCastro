@@ -21,7 +21,7 @@ export default function PlanCard({data}: CardProps) {
     const { category, title, planName, price, featuresList, planId } = data
 
     return(
-        <li className={styles.cardItem}>
+        <div className={styles.cardItem}>
             {/* <p>{category}</p> */}
             <p className={styles.title}>{title}</p>
             <p className={styles.planName}>{planName}</p>
@@ -38,6 +38,6 @@ export default function PlanCard({data}: CardProps) {
             <div className={styles.btnContainer}>
                 <Link href={'/plans'} className={styles.bookingBtn}>Book Now</Link>
             </div>
-        </li>
+        </div>
     )
 }
