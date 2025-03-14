@@ -26,7 +26,7 @@ export default function PlanCard({data}: CardProps) {
             <p className={styles.title}>{title}</p>
             <p className={styles.planName}>{planName}</p>
             <div className={styles.priceContainer}>
-                <p className={styles.price}>$ {price}</p>
+                <p className={styles.price}>${price}</p>
             </div>
             <div className={styles.featuresList}>
             {featuresList.map((feature,index) => (
