@@ -1,6 +1,7 @@
-import Hero from "../(components)/hero/Hero";
+import Hero from "../(components)/Hero/Hero";
 import Dummy from "../(components)/Dummy/Dummy";
 import HereToHelp from "../(components)/HereToHelp/HereToHelp";
+import PickAPlan from "../(components)/PickAPlan/PickAPlan";
 
 export default function Plans() {
   const heroSection = {
@@ -25,6 +26,7 @@ export default function Plans() {
   return (
     <>
       <Hero data={heroSection} />
+      <PickAPlan/>
       {/* <Dummy /> */}
       <HereToHelp data={hereToHelp} />
     </>

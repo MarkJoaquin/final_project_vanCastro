@@ -1,6 +1,8 @@
 'use client'
 import { fetchPlans } from "@/api/contentful/fetchPlans"
 import { useState, useEffect } from "react";
+import {usePathname} from "next/navigation"
+import Link from "next/link";
 import SelectorBtn from "../Button/SelectorBtn";
 import PlanCard from './PlanCard';
 import styles from './PickAPlan.module.css';
@@ -15,10 +17,11 @@ type PlanProps = {
 }
 
  const PickAPlan = () => {
-
+    
     const btnNames = ['Class 7', 'Class 5', 'Class 4']
     const [selectedSection, setSelectedSection] = useState(btnNames[0]);
     const [plansData, setPlansData] = useState<PlanProps[]>([])
+    const pathName = usePathname();
 
     useEffect(()=>{
         const getPlans = async () => {
@@ -60,6 +63,12 @@ type PlanProps = {
                     )}
                 </ul>
             </div>
+
+            {pathName === '/' && (
+                <div className={styles.buttonContainer}>
+                    <Link href={'/plans'} className={styles.viewPlansBtn}>View Plans</Link>
+                </div>
+            )}
         </div>
     )
 }

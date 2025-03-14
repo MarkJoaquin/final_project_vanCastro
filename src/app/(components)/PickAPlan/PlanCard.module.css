@@ -1,8 +1,8 @@
 .cardItem{
     border: 2px var(--primary-color) solid;
-    /* max-width: 30%; */
-    width: 30%;
-    min-height: 25rem;
+    max-width: 30%;
+    /* width: 30%; */
+    min-height: 35rem;
     border-radius: 15px;
     padding: 1.6rem;
     display: flex;
@@ -61,4 +61,24 @@
     font-size: 13px;
     font-weight: 500;
     line-height: 19px;
+}
+
+.btnContainer{
+    margin-top: 2rem;
+}
+
+.bookingBtn{
+    text-decoration: none;
+    font-size: 23px;
+    font-weight: 700;
+    line-height: 27px;
+    color: black;
+    padding: 0.5rem 3rem;
+    border-radius: 15px;
+    background-color: var(--primary-color);
+    transition: background-color 0.2s ease-in-out;
+}
+
+.bookingBtn:hover{
+    background-color: #ffe08b;
 }
