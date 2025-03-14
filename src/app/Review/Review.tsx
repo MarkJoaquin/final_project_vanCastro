@@ -25,7 +25,7 @@ export default function Review({btnName}:selectBtnProps){
   }
   
   return(
-    <section>
+    <section className="mt-[60px]">
       <h2 className={`text-[50px] font-[700] text-center p-[30px] ${Style.reviewTitle}`}>Check Out Real Reviews</h2>
       <div className="pb-4">
         <SelectorBtn btnName={btnName} onSelect={setSelectedSection}/>

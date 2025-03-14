@@ -105,14 +105,14 @@ export default function Home() {
       <Hero data={heroSection} />
       <WhyUs data = {whyUsData}/>
       {/* <Dummy /> */}
+      <LicensedInstructors />
+      <Review btnName = {btnName}/>
       <Steps data = {steps as StepsSection[]} />
 
       {/* <AlumniCarousel/>
       <GoogleCarousel/>
       <YoutubeCarousel/> */}
 
-      <LicensedInstructors />
-      <Review btnName = {btnName}/>
     </>
   );
 }
