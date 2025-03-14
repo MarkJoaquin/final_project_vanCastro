@@ -1,54 +1,59 @@
-"use client"
-
-import { fetchInstructors } from "@/api/contentful/fetchInstructors";
-import type { DrivingInstructor } from "@/types/contentful";
-import { useEffect, useState } from "react";
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
+import { fetchInstructors } from "../../../api/contentful/fetchInstructors";
+import type { DrivingInstructor } from "../../../types/contentful";
+import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "../../../components/ui/card";
 import styles from "./Instructors_Profile.module.css";
 
-const InstructorsProfile = () => {
-    const [instructors, setInstructors] = useState<DrivingInstructor[]>([]);
+const InstructorsProfile = async () => {
+  
+    const instructorData = await fetchInstructors();
 
-    useEffect(() => {
-        const getInstructors = async () => {
-            const data = await fetchInstructors();
-            if (data) {
-                setInstructors(data.map((item: any) => item.fields));
-            }
-        };
-        getInstructors();
-    }, []);
+    if (!instructorData || !Array.isArray(instructorData)) {
+      return <div>No instructor data available</div>;
+    }
+
+    // Helper function to extract text from rich text field
+    const extractTextFromRichText = (richText: any) => {
+      if (!richText || !richText.content) return '';
+      return richText.content
+        .map((node: any) => node.content.map((textNode: any) => textNode.value).join(''))
+        .join(' ');
+    };
 
     return (
-        <div className={styles.profileContainer}>
-            {instructors.map((instructor, index) => {
-                const avatarUrl = (instructor.avatar as any)?.fields?.file?.url || '/default-avatar.png';
-                
-                return (
-                    <Card key={index} className={styles.profileCard}>
-                        <CardHeader>
-                            <img 
-                                src={avatarUrl} 
-                                alt={instructor.name} 
-                                className={styles.avatar}
-                            />
-                            <CardTitle>{instructor.name}</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <p><strong>Phone:</strong> {instructor.phone}</p>
-                            <p><strong>Email:</strong> {instructor.email}</p>
-                            <p><strong>Availability:</strong> {instructor.availability}</p>
-                            <p><strong>Years of Experience:</strong> {instructor.yearsOfExperience}</p>
-                            <p><strong>Languages:</strong> {instructor.languages.join(", ")}</p>
-                        </CardContent>
-                        <CardFooter>
-                            {/* Add any footer content here if needed */}
-                        </CardFooter>
-                    </Card>
-                );
+      <section className={styles.profileSection}>
+        <div className={styles.container}>
+          <p className={styles.title}>Expert Tutor Ready to Guide You!</p>
+          <div className={styles.instructorCards}>
+            {instructorData.map((item: any) => {
+              const instructor = item.fields as DrivingInstructor;
+              const avatarUrl = instructor.avatar?.fields?.file?.url 
+                ? `https:${instructor.avatar.fields.file.url}` 
+                : '';
+
+              return (
+                <Card key={item.sys.id} className={styles.instructorCard}>
+                  <CardHeader>
+                    {avatarUrl && (
+                      <img 
+                        src={avatarUrl}
+                        alt={instructor.name}
+                        className={styles.instructorImage}
+                      />
+                    )}
+                    <CardTitle>{instructor.name}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p>Phone: {instructor.phone}</p>
+                    <p>Email: {instructor.email}</p>
+                    <p>Availability: {extractTextFromRichText(instructor.availability)}</p>
+                  </CardContent>
+                </Card>
+              );
             })}
+          </div>
         </div>
+      </section>
     );
-};
+  } 
 
 export default InstructorsProfile;

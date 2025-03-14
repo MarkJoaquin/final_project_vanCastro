@@ -1,0 +1,17 @@
+.profileSection{
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    justify-content: flex-start;
+    overflow: visible;
+    padding: 4rem 0;
+    position: relative;
+    width: 100vw;   
+}
+
+.title{
+    font-size: 3rem !important;
+    font-weight: 700 ;
+    text-align: center;
+}
