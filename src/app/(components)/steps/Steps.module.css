@@ -52,7 +52,8 @@
     }
 
     .questioTitle{
-        font-size: 1.5rem !important;
+        font-size: 35px !important;
+        font-weight: 700 !important;
         line-height: 40px;
     }
 }
@@ -63,8 +64,8 @@
     }
 
     .questioTitle{
-        font-size: 1.7rem !important;
-        line-height: 45px;
+        font-size: 46px !important;
+        line-height: 50px;
     }
 
 }
@@ -77,8 +78,8 @@
     }
 
     .questioTitle{
-        font-size: 1.9rem;
-        line-height: 50px;
+        font-size: 50px !important;
+        line-height: 60px;
     }
 
 }
