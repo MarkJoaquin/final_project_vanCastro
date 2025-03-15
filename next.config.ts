@@ -22,6 +22,12 @@ const nextConfig: NextConfig = {
         port: "",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "senja-lh3.b-cdn.net",
+        port: "",
+        pathname: "/**",
+      }
     ],
     // domains: ['images.ctfassets.net'],
   },

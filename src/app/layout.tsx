@@ -1,8 +1,18 @@
 import type { Metadata } from "next";
 import { Aleo, Lato, Montserrat } from "next/font/google";
 import "./globals.css";
-import Footer from "./(components)/footer/Footer";
+import Footer from "./(components)/Footer/Footer";
 import Navbar from "./(components)/navbar/Navbar";
+
+// const geistSans = Geist({
+//   variable: "--font-geist-sans",
+//   subsets: ["latin"],
+// });
+
+// const geistMono = Geist_Mono({
+//   variable: "--font-geist-mono",
+//   subsets: ["latin"],
+// });
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -45,7 +55,7 @@ export default function RootLayout({
         className={`${montserrat.variable} ${aleo.variable} ${lato.variable} antialiased`}
       >
         <Navbar />
-        {children}
+          {children}
         <Footer />
       </body>
     </html>

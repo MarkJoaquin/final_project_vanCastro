@@ -1,21 +1,11 @@
 "use client"
 
 import StepCard from "./StepsCard";
-import Link from "next/link";
 import styles from "./Steps.module.css"
-
-type Props = {
-    name: string,
-    id: string,
-    title: string 
-    mainText: string[] | { title: string; description: string }[],
-    subText: string,
-    className: string 
-    LinkTo: string
-}
+import type { StepsSection } from "@/types/stepsSection";
 
 interface StepCardProps {
-    data: Props[]
+    data: StepsSection[]
 }
 
 export default function Steps({ data }: { data: StepCardProps['data'] }) {
@@ -29,7 +19,7 @@ export default function Steps({ data }: { data: StepCardProps['data'] }) {
             </div>
             <ul className={styles.stepsList}>
                {data.map((cardStep: Props) => (
-                <StepCard key = {cardStep.id} cardStep = {cardStep} /> 
+                <StepCard key={cardStep.id} cardStep={cardStep} /> 
                ))} 
             </ul>
         </div>
