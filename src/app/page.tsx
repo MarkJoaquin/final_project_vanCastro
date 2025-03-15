@@ -1,6 +1,6 @@
 import Hero from "./(components)/Hero/Hero";
 import WhyUs from './(components)/WhyUs/WhyUs'
-import Review from "./Review/Review";
+import Review from "./(components)/Review/Review";
 import PickAPlan from "./(components)/PickAPlan/PickAPlan";
 import Steps from "./(components)/steps/Steps";
 import LicensedInstructors from "./(components)/Licensed_Instructors/Licensed_Instructors";
