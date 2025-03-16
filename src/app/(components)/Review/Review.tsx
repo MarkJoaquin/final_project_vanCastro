@@ -1,8 +1,8 @@
 "use client"
-import SelectorBtn from "../(components)/Button/SelectorBtn";
-import AlumniCarousel from "../(components)/Carousels/AlumniCarousel";
-import GoogleCarousel from "../(components)/Carousels/GoogleCarousel";
-import YoutubeCarousel from "../(components)/Carousels/YoutubeCarousel";
+import SelectorBtn from "../Button/SelectorBtn";
+import AlumniCarousel from "../Carousels/AlumniCarousel";
+import GoogleCarousel from "../Carousels/GoogleCarousel";
+import YoutubeCarousel from "../Carousels/YoutubeCarousel";
 import Style from "./Review.module.css"
 import { useState } from "react";
 

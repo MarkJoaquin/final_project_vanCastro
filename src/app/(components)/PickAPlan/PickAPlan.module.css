@@ -1,0 +1,69 @@
+.sectionContainer {
+    padding: 2rem 3rem;
+}
+
+.sectionContainer h2 {
+    font-size: 48px;
+    line-height: 58px;
+    font-weight: 700;
+    font-family: 'Montserrat', sans-serif;
+    text-align: center;
+    padding: 2rem 0 ;
+}
+
+.cardSectionContainer{
+    padding: 2rem;
+}
+
+.cardList{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+
+}
+
+.buttonContainer{
+    display: flex;
+    justify-content: center;
+}
+
+.viewPlansBtn{
+    border: 4px var(--primary-color) solid;
+    border-radius: 7px;
+    padding: 0.5rem 4rem;
+    font-size: 23px;
+    line-height: 27px;
+    font-weight: 700;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.viewPlansBtn:hover{
+    background-color: #ffe08b;
+}
+
+@media only screen and (max-width: 480px) {
+
+    .sectionContainer{
+        padding: 1rem;
+    }
+
+    .sectionContainer h2{
+        font-size:22px;
+        line-height: 36px;
+    }
+
+    .viewPlansBtn{
+        padding: 0.5rem 3rem;
+    }
+
+}
+
+@media only screen and (min-width: 481px) and (max-width: 768px) {
+
+    .sectionContainer h2{
+        font-size: 28px;
+        line-height: 38px;
+    }
+    
+}

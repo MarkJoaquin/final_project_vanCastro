@@ -1,0 +1,198 @@
+.cardItem {
+  border: 4px var(--primary-color) solid;
+  min-height: 40rem;
+  border-radius: 15px;
+  padding: 1.6rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.package {
+  position: relative;
+  order: 1;
+}
+
+.mostPopularContainer {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* gap: 1rem; */
+  padding: 0.5rem 1rem;
+  border-radius: 30px;
+  width: 90%;
+  background-color: var(--primary-color);
+}
+
+.mostPopularLabel {
+  font-size: 25px;
+  line-height: 31px;
+  font-weight: 700;
+}
+
+.title {
+  font-size: 19px;
+  line-height: 23px;
+  font-weight: 500;
+}
+
+.planName {
+  font-size: 38px;
+  line-height: 46px;
+  font-weight: 700;
+  margin-bottom: 2rem;
+}
+
+.priceContainer {
+  background-color: var(--third-color);
+  border-radius: 50%;
+  min-width: 12rem;
+  min-height: 12rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.price {
+  font-size: 56px;
+  line-height: 67px;
+  font-weight: 700;
+}
+
+.featuresList {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.feature {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.feature p {
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 19px;
+}
+
+.btnContainer {
+  margin-top: 2rem;
+}
+
+.bookingBtn {
+  text-decoration: none;
+  font-size: 23px;
+  font-weight: 700;
+  line-height: 27px;
+  color: black;
+  padding: 0.5rem 3rem;
+  border-radius: 15px;
+  background-color: var(--primary-color);
+  transition: background-color 0.2s ease-in-out;
+}
+
+.bookingBtn:hover {
+  background-color: #ffe08b;
+}
+
+@media only screen and (min-width: 320px) and (max-width: 375px) {
+  
+    .cardItem {
+    min-height: 35rem !important;
+    padding: 3rem 1rem !important;
+    /* width: 25rem; */
+  }
+
+  .mostPopularLabel {
+    font-size: 12px !important;
+    /* line-height: 26px !important; */
+  }
+
+  .bookingBtn {
+    font-size: 14px !important;
+    padding: 0.4rem 2rem;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .cardItem {
+    padding-top: 0.5rem;
+    padding-bottom: 1rem;
+    min-height: 35rem;
+  }
+
+  .mostPopularLabel {
+    font-size: 18px;
+    line-height: 26px;
+  }
+
+  .planName {
+    font-size: 28px;
+    line-height: 36px;
+  }
+
+  .priceContainer {
+    min-width: 8rem;
+    min-height: 8rem;
+  }
+
+  .price {
+    font-size: 40px;
+    line-height: 51px;
+  }
+
+  .bookingBtn {
+    font-size: 15px;
+  }
+}
+
+@media only screen and (min-width: 1280px) {
+  .cardItem {
+    min-height: 40rem;
+    /* width: 25rem; */
+  }
+}
+
+@media only screen and (min-width: 481px) and (max-width: 768px) {
+  .mostPopularLabel {
+    font-size: 20px;
+    line-height: 26px;
+  }
+}
+
+@media only screen and (min-width: 769px) and (max-width: 1279px) {
+  .bookingBtn {
+    font-size: 18px;
+    line-height: 22px;
+  }
+
+  .mostPopularLabel {
+    font-size: 20px;
+    line-height: 26px;
+  }
+
+  .title {
+    font-size: 15px;
+    line-height: 18px;
+  }
+
+  .planName {
+    font-size: 33px;
+    line-height: 41px;
+  }
+
+  /* .mostPopularContainer img{
+
+    } */
+}
