@@ -1,51 +1,48 @@
-.container{
+.container {
     align-items: center;
     display: flex;
     flex-direction: column;
-    gap: 3rem !important;
+    gap: 3rem;
     justify-content: flex-start;
     overflow: visible;
-    padding: 4rem 0;
+    padding: 8rem 8rem;
     position: relative;
-    width: 100vw;   
+    width: 100vw;  
+    
 }
 
-.title{
-    font-size: 3rem !important;
-    font-weight: 700 ;
+.title {
+    font-size: 3rem ;
+    font-weight: 700;
     text-align: center;
 }
 
-.instructorCards{
-    align-items: center;
+.desktopCards {
     display: flex;
-    flex: none;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    gap: 106px;
-    height: min-content;
-    justify-content: flex-start;
-    overflow: visible;
-    padding: 0;
-    position: relative;
-    width: min-content;
-   
+    padding: 2rem;
+    gap: 2rem;
+    width: 100%;
 }
 
-.instructorCard{
-    padding: 2.1rem 2.7rem ;
+.mobileSwiper {
+    display: none;
+}
+
+.instructorCard {
+    padding: 2.1rem 2.7rem;
     border-radius: 1.2rem;
-    border-color: var( --primary-color) !important;
+    border-color: var(--primary-color) !important;
     border-width: 0.2rem;
     background-color: #fff;
     align-items: center;
     gap: 2.5rem;
-    justify-content:flex-start;
+    justify-content: flex-start;
     height: min-content;
-    width: 23.37rem;
+    width: 100%;
+    
 }
 
-.instructorImage{
+.instructorImage {
     display: block;
     width: 100%;
     height: 100%;
@@ -54,16 +51,15 @@
     border-radius: 50%;
 }
 
-.instructorName{
+.instructorName {
     font-size: 1.4rem;
     font-weight: 700;
     text-align: center;
     margin-top: 0.6rem;
     line-height: 1.78rem;
-
 }
 
-.cardContent{
+.cardContent {
     align-items: flex-start;
     display: flex;
     flex: none;
@@ -78,10 +74,9 @@
     width: 100%;
 }
 
-.instructorInfo{
+.instructorInfo {
     align-items: center;
-    display: flex
-;
+    display: flex;
     flex: none;
     flex-direction: row;
     flex-wrap: nowrap;
@@ -92,13 +87,159 @@
     padding: 0;
     position: relative;
     width: 100%;
-    
 }
 
-.instructorInfo .p{
+.instructorInfo p {
     text-align: center;
     justify-content: center;
     align-items: center;
-    font-size: 1rem;
+    font-size: 1.24rem ;
     font-weight: 500;
 }
+
+.contactButton {
+    background-color: var(--primary-color);
+    border-radius: 0.55rem;
+    display: flex;
+    width: fit-content;
+    align-items: center;
+    justify-content: center;
+    gap:1rem;
+    height: 2.9rem;
+    padding: 1.4rem 1.4rem;
+    text-decoration: none;
+    opacity: 1;
+    will-change: transform;
+    transform: none;
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+
+  
+
+
+
+@media screen and (max-width: 480px) {
+    .container {
+        padding: 1.5rem 1.5rem;
+    }
+    .desktopCards {
+        display: none;
+    }
+    
+    .mobileSwiper {
+        display: block;
+        width: 100%;
+    }
+    
+    .instructorCard {
+        width: 75%;
+        margin: 0 auto;
+        padding: 1.5rem;
+    }
+    .instructorName {
+        font-size: 1.2rem;
+        font-weight: 700;
+        text-align: center;
+        margin-top: 0.6rem;
+        line-height: 1.78rem;
+    }
+
+    .instructorInfo p {
+        font-size: 0.90rem !important;
+        
+    }
+
+    .contactButton{
+        font-size: 0.90rem !important;
+        width: 11rem;
+    }
+
+    .title {
+        font-size: 1rem !important;
+        font-weight: 700;
+        text-align: center;
+    }
+
+
+}
+
+@media screen and (min-width: 481px) and (max-width: 768px) {
+    .container{
+        padding: 1.5rem 1.5rem !important;
+    }
+    .desktopCards {
+        display: none;
+    }
+    
+    .mobileSwiper {
+        display: block;
+        width: 100%;
+    }
+    
+    .instructorCard {
+        width: 80%;
+        margin: 0 auto;
+        padding: 1.5rem;
+    }
+    .instructorInfo p {
+        font-size: 0.95rem !important;
+    }
+    .title {
+        font-size: 1.5rem !important;
+        font-weight: 700;
+        text-align: center;
+    }
+    .contactButton{
+        font-size: 0.95rem;
+    }
+   
+}
+
+@media (min-width: 769px) and (max-width: 1279px){
+    .container{
+        padding: 1.5rem 1.5rem !important;
+        gap: 1.5rem;
+        width: 100vw;
+    }
+    
+    .mobileSwiper{
+        display: none;
+    }
+
+    .instructorCard {
+        padding: 1.5rem 4rem;
+    }
+
+    .title {
+        font-size: 1.8rem !important;
+        font-weight: 700;
+        text-align: center;
+    }
+
+    .instructorInfo p {
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+        font-size: 1rem ;
+        font-weight: 500;
+    }
+    .instructorCard {
+        width: 80%;
+        margin: 0 auto;
+        padding: 1.5rem;
+    }
+    .contactButton{
+        font-size: 1.1rem;
+    }
+}
+
+
+
+
+
+
+
+
+
