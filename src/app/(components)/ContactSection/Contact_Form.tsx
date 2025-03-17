@@ -1,7 +1,5 @@
 "use client";
 
-import type React from "react";
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -17,14 +15,47 @@ export default function ContactForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission logic here
     console.log(formData);
+
+    if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
+      alert("Please enter a valid email address.");
+      return;
+    }
+
+    try {
+      const response = await fetch("/api/send-email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+        cache: "no-store",
+      });
+
+      if (response.ok) {
+        console.log("Email sent successfully");
+        alert("Email sent successfully");
+        setFormData({
+          name: "",
+          phone: "",
+          email: "",
+          message: "",
+        });
+      } else {
+        const errorData = await response.json();
+        console.error("Failed to send email:", errorData);
+        alert("Failed to send email: " + (errorData.message || "Unknown error"));
+      }
+    } catch (error) {
+      console.error("Error sending email:", error);
+      alert("There was an error sending your message. Please try again later.");
+    }
   };
 
   return (
     <form
       onSubmit={handleSubmit}
-      className="w-full max-w-md space-y-4 rounded-lg bg-zinc-900 p-6 w-lg:[25rem] h-[27rem] flex flex-col justify-around"
+      className="w-full max-w-md space-y-4 rounded-lg bg-zinc-900 p-6 lg:w-[25rem] h-[27rem] flex flex-col justify-around"
     >
       <Input
         placeholder="Name"
@@ -38,7 +69,7 @@ export default function ContactForm() {
         type="tel"
         value={formData.phone}
         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-        className="bg-white  py-5"
+        className="bg-white py-5"
         required
       />
       <Input
@@ -46,7 +77,7 @@ export default function ContactForm() {
         type="email"
         value={formData.email}
         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-        className="bg-white  py-5"
+        className="bg-white py-5"
         required
       />
       <Textarea
