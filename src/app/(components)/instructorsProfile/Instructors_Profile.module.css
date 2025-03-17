@@ -161,12 +161,12 @@
 
 }
 
-@media screen and (min-width: 481px) and (max-width: 768px) {
+@media screen and (min-width: 481px) and (max-width: 774px) {
     .container{
-        padding: 1.5rem 1.5rem !important;
+        padding: 1.3rem 1.3rem !important;
     }
     .desktopCards {
-        display: none;
+        display: none
     }
     
     .mobileSwiper {
@@ -175,9 +175,9 @@
     }
     
     .instructorCard {
-        width: 80%;
+        width: 85%;
         margin: 0 auto;
-        padding: 1.5rem;
+        padding: 1.1rem !important;
     }
     .instructorInfo p {
         font-size: 0.95rem !important;
@@ -193,20 +193,13 @@
    
 }
 
-@media (min-width: 769px) and (max-width: 1279px){
+@media (min-width: 775px) and (max-width: 1279px){
     .container{
-        padding: 1.5rem 1.5rem !important;
+        padding: 1.2rem 1.2rem !important;
         gap: 1.5rem;
         width: 100vw;
     }
-    
-    .mobileSwiper{
-        display: none;
-    }
 
-    .instructorCard {
-        padding: 1.5rem 4rem;
-    }
 
     .title {
         font-size: 1.8rem !important;
@@ -222,12 +215,12 @@
         font-weight: 500;
     }
     .instructorCard {
-        width: 80%;
+        width: 87%;
         margin: 0 auto;
-        padding: 1.5rem;
+        padding: 1rem;
     }
     .contactButton{
-        font-size: 1.1rem;
+        font-size: 1rem;
     }
 }
 
