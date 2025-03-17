@@ -7,7 +7,7 @@ import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "../../../c
 import styles from "./Instructors_Profile.module.css";
 import Link from "next/link";
 import { Swiper, SwiperSlide } from 'swiper/react';
-import {  Navigation, Pagination } from 'swiper/modules';
+import { Autoplay, Navigation, Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
@@ -53,17 +53,17 @@ const InstructorsProfile = () => {
   }
 
   const renderCard = (item: any) => {
-    const instructor = item.fields;
-    const avatarUrl = instructor.avatar?.fields?.file?.url 
-      ? `https:${instructor.avatar.fields.file.url}` 
+    const instructor = item.fields 
+    const avatar2Url = instructor.avatar2?.fields?.file?.url 
+      ? `https:${instructor.avatar2.fields.file.url}` 
       : '';
 
     return (
       <Card key={item.sys.id} className={styles.instructorCard}>
         <CardHeader>
-          {avatarUrl && (
+          {avatar2Url && (
             <img 
-              src={avatarUrl}
+              src={avatar2Url}
               alt={instructor.name}
               className={styles.instructorImage}
             />
@@ -114,7 +114,6 @@ const InstructorsProfile = () => {
             slidesPerView={1}
             pagination={{ clickable: true }}
             navigation
-            
           >
             {instructorData.map((item) => (
               <SwiperSlide key={item.sys.id}>
