@@ -88,15 +88,8 @@ export default function Home() {
       className: "stepThree",
       LinkTo: ""
     }
-  ];  
-
-    /* LicensedInstructors start */
-    const LicensedInstructorsSection = {
-      className: 'instructors-section',
-      children: <LicensedInstructors />
-    }
-    /* LicensedInstructors end */
-
+  ];
+  
   return (
     <>
    
@@ -106,7 +99,7 @@ export default function Home() {
       <Review btnName = {btnName}/>
       <Steps data = {steps as StepsSection[]} />
       <PickAPlan/>
-      
+
     </>
   );
 }
