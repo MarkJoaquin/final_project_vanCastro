@@ -6,8 +6,14 @@ export default function VancastroAward() {
     <div className={styles.vancastroAward}>
         <div className={styles.images}>
             <Image
-                src="https://framerusercontent.com/images/QPFnKBJVdKUtX9OAXcKoXrGVt8.png"
+                src="https://framerusercontent.com/images/SDVr17tl02j6UOosS3BI9EvopDA.png?scale-down-to=1024"
                 alt="Award 1"
+                width={300}
+                height={300}
+            />
+            <Image
+                src="https://framerusercontent.com/images/QPFnKBJVdKUtX9OAXcKoXrGVt8.png?scale-down-to=1024"
+                alt="Award 2"
                 width={300}
                 height={300}
             />
