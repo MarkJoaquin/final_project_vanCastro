@@ -1,0 +1,46 @@
+.gridTemplate{
+  grid-template-areas: 
+  "img1 text img2"
+  "img1 text img2"
+  "img1 btn img2"
+  ;
+}
+
+@media only screen and (max-width:950px){
+  .gridTemplate{
+    justify-content: center;
+    gap: 1rem;
+    grid-template-areas: 
+    "text text"
+    "text text"
+    "img1 img2"
+    "btn btn"
+    ;
+  }
+  .btnSize{
+    width: 100%;
+  }
+}
+
+@media only screen and (max-width:600px){
+  .titleFontSize{
+    font-size: 24px;
+  }
+  .btnSize{
+    width: 80%;
+  }
+}
+
+@media only screen and (max-width:425px){
+  .titleFontSize{
+    font-size: 16px;
+  }
+  .subtitleFontsize{
+    font-size: 12px;
+  }
+  .btnSize{
+    width: 80%;
+  }
+}
+
+

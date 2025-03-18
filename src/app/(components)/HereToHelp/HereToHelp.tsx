@@ -1,12 +1,22 @@
 import styles from "./HereToHelp.module.css";
 import Link from "next/link";
+import Image, { StaticImageData } from "next/image";
 
 type Props = {
-    title1: string;
-    title2: string;
-    subtitle: string;
+    title1: string[];
+    title2: string[];
+    subtitle: string[];
+    title1Color: string[];
+    title2Color: string[];
+    subtitleColor: string[];
+    img1:StaticImageData;
+    img2?:StaticImageData;
     buttonText: string;
     linkTo: string;
+    bgColor?: string;
+    btnColor: string;
+    btnTextColor: string;
+    type: string;
 };
 
 interface HereToHelpProps {
@@ -19,7 +29,7 @@ export default function HereToHelp({ data }: HereToHelpProps) {
     return (
         <div className={styles.hereToHelp}>
             <div className={styles.imageSide}>
-                <img src="./images/HereToHelp/here-to-help-icon.svg" alt="Here to Help" />
+                <Image src="./images/HereToHelp/here-to-help-icon.svg" alt="Here to Help" width={200} height={200} />
                 <Link href={`/${linkTo}`} className={styles.buttonMobile}>
                 {buttonText}
                 </Link>

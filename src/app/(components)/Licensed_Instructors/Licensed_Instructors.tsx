@@ -1,4 +1,4 @@
-import { fetchInstructors } from "@/api/contentful/fetchInstructors";
+import { fetchInstructors } from "@/app/api/contentful/fetchInstructors";
 import Image from "next/image";
 import "./Licensed_Instructors.css";
 import type { DrivingInstructor } from "@/types/contentful";

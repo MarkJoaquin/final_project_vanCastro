@@ -1,0 +1,31 @@
+.aboutVancastro {
+    margin-top: 8rem;
+    background: linear-gradient(
+        180.12752683851437deg,
+        #14120c 0%,
+        rgb(28, 23, 13) 34.06488597393036%,
+        rgb(64, 58, 44) 54.00000214576721%,
+        rgb(110, 110, 110) 100%
+    );
+    height: auto;
+    padding: 6rem 2rem;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.title {
+    font-size: 2.6rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.subtitle {
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: rgb(217, 217, 217);
+    padding: 0 25rem;
+    text-align: center;
+}
