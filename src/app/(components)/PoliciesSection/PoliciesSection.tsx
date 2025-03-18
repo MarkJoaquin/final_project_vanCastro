@@ -42,7 +42,7 @@ const PoliciesSection = () => {
                     return acc;
                 }, {} as Record<string, PoliciesProps[]>);
 
-                setPolicies(data);
+                setPolicies(groupedPolicies);
             } else {
                 console.error('Error fetching policies: no data available')
             }
@@ -62,21 +62,27 @@ const PoliciesSection = () => {
         <>
             <div id='policies' className={styles.policiesSection}>
                 <div className={styles.header}>
-                    <h2>Policy</h2>
-                    <p>The following policies apply to all services provided by VanCastro Driving School. Please review them carefully to understand your responsibilities and our commitments.</p>
+                    <h2 className={styles.sectionTitle}>Policy</h2>
+                    <p className={styles.sectionDescription}>The following policies apply to all services provided by VanCastro Driving School. Please review them carefully to understand your responsibilities and our commitments.</p>
                 </div>
                 <div className={styles.sectionContainer}>
-                <Accordion type="single" collapsible className="w-full">
+                <Accordion type="single" collapsible className={styles.accordionList}>
                 {Object.entries(policies).map(([title, groupedPolicies]) => (
                     <AccordionItem key={title} value={title}>
-                        <AccordionTrigger>{title}</AccordionTrigger>
+                        <div className={styles.mainAccordion}>
+                        <AccordionTrigger className={styles.mainTrigger}>
+                            <p className={styles.accordionTitle}>{title}</p>
+                        </AccordionTrigger>
                         <AccordionContent>
+                            <div  className={styles.subAccordion}>
                             <Accordion type="multiple" className="w-full">
                                 {groupedPolicies.map((policy, index) => (
                                     <ItemCard key={`${policy.subtitle}-${index}`} data={policy} />
                                 ))}
                             </Accordion>
+                            </div>
                         </AccordionContent>
+                        </div>
                     </AccordionItem>
                 ))}
             </Accordion>

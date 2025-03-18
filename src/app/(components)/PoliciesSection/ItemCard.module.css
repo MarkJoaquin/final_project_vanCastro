@@ -1,3 +1,28 @@
 /* .cardContainer{
     border: 1px black solid;
 } */
+
+.subTrigger{
+    /* border: 1px red solid; */
+    padding-left: 3rem;
+}
+.subTrigger:hover{
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.accordionSubtitle{
+    font-size: 21px;
+    line-height: 25px;
+    font-weight: 600;
+}
+
+.content{
+    padding-left: 4rem ;
+}
+
+.item{
+    font-size: 18px;
+    line-height: 28px;
+    font-weight: 400;
+}

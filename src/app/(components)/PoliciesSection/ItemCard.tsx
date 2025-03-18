@@ -22,8 +22,16 @@ export default function ItemCard({data}:CardProps){
     return (
         <div className={styles.cardContainer}>
             <AccordionItem value={`${subtitle}`}>
-                    <AccordionTrigger>{subtitle}</AccordionTrigger>
-                    <AccordionContent>{content}</AccordionContent>
+                    <div>
+                        <AccordionTrigger className={styles.subTrigger}>
+                            <p className = {styles.accordionSubtitle}>{subtitle}</p>
+                        </AccordionTrigger>
+                        <AccordionContent className={styles.content}>
+                            {content.map((item,index)=>(
+                            <li key={index} className={styles.item}>{item}</li>
+                        ))}
+                        </AccordionContent>
+                    </div>
             </AccordionItem>
         
         </div>
