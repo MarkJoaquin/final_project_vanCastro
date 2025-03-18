@@ -55,9 +55,9 @@ export default function Plans() {
   return (
     <>
       <Hero data={heroSection} />
-      <ICBCKnowledge data={ICBC_knowledge}/>
-      <PickAPlan/>
       <HereToHelp data={hereToHelp} />
+      <PickAPlan/>
+      <ICBCKnowledge data={ICBC_knowledge}/>
       {/* instructors */}
       <ContactSection />
     </>
