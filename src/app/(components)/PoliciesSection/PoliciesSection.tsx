@@ -1,6 +1,6 @@
 'use client'
 import { useState , useEffect, use } from 'react';
-import { fetchPoliciesNFaq } from '@/api/contentful/fetchPoliciesNFaq';
+import fetchPoliciesNFaq from '../../api/contentful/fetchPoliciesNFaqs';
 import styles from './PoliciesSection.module.css'
 import ItemCard from './ItemCard';
 import {
