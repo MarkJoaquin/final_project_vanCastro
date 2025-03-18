@@ -89,7 +89,7 @@ export default function ContactForm() {
       />
       <Button
         type="submit"
-        className="w-full bg-[var(--primary-color)] text-black font-semibold hover:bg-[#FDB813]/90"
+        className="w-full bg-[var(--primary-color)] text-black font-semibold hover:bg-[#FDB813]/90 cursor-pointer"
       >
         Send Message
       </Button>

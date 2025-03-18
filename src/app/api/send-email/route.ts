@@ -9,8 +9,8 @@ export async function POST(req: Request) {
     console.log(name, phone, email, message);
 
     const data = await resend.emails.send({
-      from: `${email}`, // Email address of the sender
-      to: "vancastro038@gmail.com",
+      from: 'onboarding@resend.dev', // Athorized sender
+      to: ["vancastro038@gmail.com",'markjoaquin2@gmail.com'],
       subject: `New Contact Form Submission from ${name}`,
       html: `
         <h2>New Contact Form Submission</h2>

@@ -76,7 +76,7 @@ type PlanProps = {
                     )}
                     </CarouselContent>
                     <CarouselPrevious/>
-                    <CarouselNext/>
+                    <CarouselNext/> 
                 </ul>
                 </Carousel>
                 

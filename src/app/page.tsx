@@ -106,6 +106,7 @@ export default function Home() {
       <Review btnName = {btnName}/>
       <Steps data = {steps as StepsSection[]} />
       <PickAPlan/>
+      
     </>
   );
 }
