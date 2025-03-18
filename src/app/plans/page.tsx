@@ -2,6 +2,10 @@ import Hero from "../(components)/Hero/Hero";
 import HereToHelp from "../(components)/HereToHelp/HereToHelp";
 import PickAPlan from "../(components)/PickAPlan/PickAPlan";
 import ContactSection from "../(components)/ContactSection/Contact_Us";
+import ContactBanner from "../(components)/ContactBarnner/ContactBanner";
+import hereToHelpImg from "@/../public/images/HereToHelp/here-to-help-icon.svg"
+import Person1Img from "@/../public/images/ICBC_knowledge/Person1.png"
+import Person2Img from "@/../public/images/ICBC_knowledge/Person2.png"
 
 export default function Plans() {
   const heroSection = {
@@ -34,7 +38,7 @@ export default function Plans() {
   const ICBC_knowledge = {
     title1: ["Taking the ICBC", "Knowledge Test"],
     title2: ["Let's Customize Your Driving Plan!"],
-    subtitle: ["Check out", "our partner for"],
+    subtitle: ["Check out", " our partner for"],
     title1Color: ["#000000","#FFAE00"],
     title2Color: ["#000000"],
     subtitleColor: ["#FFAE00","#000000"],
@@ -53,6 +57,8 @@ export default function Plans() {
       <Hero data={heroSection} />
       <PickAPlan/>
       <HereToHelp data={hereToHelp} />
+      {/* instructors */}
+      <ContactBanner data={ICBC_knowledge}/>
       <ContactSection />
     </>
   );

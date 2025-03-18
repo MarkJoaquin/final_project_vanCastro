@@ -66,7 +66,7 @@ export default function ContactBanner({ data }: HereToHelpProps) {
                             className={`${styles.style2img1}`}
                             src={img1}
                             alt={"img1"}
-                            height={165}
+                            height={320}
                             width={320}
                             style={{width:"165px", height:"320px", flexBasis:"1fr", gridArea:"style2img1"}}
                         />
