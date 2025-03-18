@@ -20,7 +20,7 @@ type PoliciesProps = {
 
 const PoliciesSection = () => {
     
-    const [policies, setPolicies] = useState<any>([]);
+    const [policies, setPolicies] = useState<Record<string, PoliciesProps[]>>({});
 
     useEffect(()=>{
         const getPolicies = async () => {
@@ -51,13 +51,6 @@ const PoliciesSection = () => {
 
     },[])
 
-    // useEffect(()=>{
-
-    // }, policies)
-    
-
-    // console.log('Policies: ', policies)
-
     return (
         <>
             <div id='policies' className={styles.policiesSection}>
@@ -66,22 +59,22 @@ const PoliciesSection = () => {
                     <p className={styles.sectionDescription}>The following policies apply to all services provided by VanCastro Driving School. Please review them carefully to understand your responsibilities and our commitments.</p>
                 </div>
                 <div className={styles.sectionContainer}>
-                <Accordion type="single" collapsible className={styles.accordionList}>
-                {Object.entries(policies).map(([title, groupedPolicies]) => (
-                    <AccordionItem className={styles.mainAccordion} key={title} value={title}>
-                        <AccordionTrigger className={styles.mainTrigger}>
-                            <p className={styles.accordionTitle}>{title}</p>
-                        </AccordionTrigger>
-                        <AccordionContent className={styles.subAccordion}>
-                            <Accordion type="multiple" className="w-full">
-                                {groupedPolicies.map((policy, index) => (
-                                    <ItemCard key={`${policy.subtitle}-${index}`} data={policy} />
-                                ))}
-                            </Accordion>
-                        </AccordionContent>
-                    </AccordionItem>
-                ))}
-            </Accordion>
+                    <Accordion type="single" collapsible className={styles.accordionList}>
+                        {Object.entries(policies).map(([title, groupedPolicies]:[string, PoliciesProps[]]) => (
+                            <AccordionItem className={styles.mainAccordion} key={title} value={title}>
+                                <AccordionTrigger className={styles.mainTrigger}>
+                                    <p className={styles.accordionTitle}>{title}</p>
+                                </AccordionTrigger>
+                                <AccordionContent className={styles.subAccordion}>
+                                    <Accordion type="multiple" className="w-full">
+                                        {groupedPolicies.map((policy: PoliciesProps, index:number) => (
+                                            <ItemCard key={`${policy.subtitle}-${index}`} data={policy} />
+                                        ))}
+                                    </Accordion>
+                                </AccordionContent>
+                            </AccordionItem>
+                        ))}
+                    </Accordion>
                 </div>
             </div>
         </>
