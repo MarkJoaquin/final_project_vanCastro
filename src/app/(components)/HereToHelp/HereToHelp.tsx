@@ -1,5 +1,6 @@
 import styles from "./HereToHelp.module.css";
 import Link from "next/link";
+import Image from "next/image";
 
 type Props = {
     title1: string;
@@ -19,7 +20,7 @@ export default function HereToHelp({ data }: HereToHelpProps) {
     return (
         <div className={styles.hereToHelp}>
             <div className={styles.imageSide}>
-                <img src="./images/HereToHelp/here-to-help-icon.svg" alt="Here to Help" />
+                <Image src="./images/HereToHelp/here-to-help-icon.svg" alt="Here to Help" width={200} height={200} />
                 <Link href={`/${linkTo}`} className={styles.buttonMobile}>
                 {buttonText}
                 </Link>
