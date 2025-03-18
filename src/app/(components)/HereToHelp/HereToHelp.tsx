@@ -1,13 +1,22 @@
 import styles from "./HereToHelp.module.css";
 import Link from "next/link";
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 
 type Props = {
-    title1: string;
-    title2: string;
-    subtitle: string;
+    title1: string[];
+    title2: string[];
+    subtitle: string[];
+    title1Color: string[];
+    title2Color: string[];
+    subtitleColor: string[];
+    img1:StaticImageData;
+    img2?:StaticImageData;
     buttonText: string;
     linkTo: string;
+    bgColor?: string;
+    btnColor: string;
+    btnTextColor: string;
+    type: string;
 };
 
 interface HereToHelpProps {
