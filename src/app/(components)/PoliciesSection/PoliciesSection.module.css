@@ -1,8 +1,7 @@
 .policiesSection{
-    margin-top: 8rem;
+    margin-top: 6rem;
     width: 100%;
-    padding: 1rem 4rem;
-
+    padding: 4rem;
 }
 
 .header{
@@ -29,6 +28,13 @@
     width: 60%;
 }
 
+.mainAccordion{
+    box-shadow: 0px 0px 30px -7px rgba(0,0,0,0.1);
+    border-radius: 10px;
+    border-left: 3px var(--primary-color) solid;
+    padding: 0 2rem;
+}
+
 .accordionTitle{
     font-size: 24px;
     line-height: 29px;
@@ -39,12 +45,18 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 1rem;
 }
 
 .mainTrigger{
-    border-left: 3px var(--primary-color) solid;
-    padding-left: 2rem ;
+    padding-left: 1rem;
+    display: flex;
+    align-items: center;
+}
+
+.mainTrigger svg {
+    height: 40px;
+    width: 40px;
 }
 
 .mainTrigger:hover{
@@ -52,7 +64,4 @@
     cursor: pointer;
 }
 
-.mainAccordion{
-    box-shadow: 0px 0px 30px -7px rgba(0,0,0,0.4);
-    border-radius: 10px;
-}
+

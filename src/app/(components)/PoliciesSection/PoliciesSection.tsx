@@ -68,21 +68,17 @@ const PoliciesSection = () => {
                 <div className={styles.sectionContainer}>
                 <Accordion type="single" collapsible className={styles.accordionList}>
                 {Object.entries(policies).map(([title, groupedPolicies]) => (
-                    <AccordionItem key={title} value={title}>
-                        <div className={styles.mainAccordion}>
+                    <AccordionItem className={styles.mainAccordion} key={title} value={title}>
                         <AccordionTrigger className={styles.mainTrigger}>
                             <p className={styles.accordionTitle}>{title}</p>
                         </AccordionTrigger>
-                        <AccordionContent>
-                            <div  className={styles.subAccordion}>
+                        <AccordionContent className={styles.subAccordion}>
                             <Accordion type="multiple" className="w-full">
                                 {groupedPolicies.map((policy, index) => (
                                     <ItemCard key={`${policy.subtitle}-${index}`} data={policy} />
                                 ))}
                             </Accordion>
-                            </div>
                         </AccordionContent>
-                        </div>
                     </AccordionItem>
                 ))}
             </Accordion>
