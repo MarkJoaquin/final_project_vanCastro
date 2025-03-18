@@ -1,6 +1,7 @@
 import Hero from "../(components)/Hero/Hero";
 import HereToHelp from "../(components)/HereToHelp/HereToHelp";
 import PickAPlan from "../(components)/PickAPlan/PickAPlan";
+import ContactSection from "../(components)/ContactSection/Contact_Us";
 
 export default function Plans() {
   const heroSection = {
@@ -27,6 +28,7 @@ export default function Plans() {
       <Hero data={heroSection} />
       <PickAPlan/>
       <HereToHelp data={hereToHelp} />
+      <ContactSection />
     </>
   );
 } 
