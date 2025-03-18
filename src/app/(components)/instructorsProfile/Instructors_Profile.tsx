@@ -4,13 +4,15 @@ import { useEffect, useState } from 'react';
 import { fetchInstructors } from "../../../api/contentful/fetchInstructors";
 import type { DrivingInstructor } from "../../../types/contentful";
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "../../../components/ui/card";
-import styles from "./Instructors_Profile.module.css";
+import styles from './Instructors.module.css';
 import Link from "next/link";
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, Navigation, Pagination } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel"
 
 const InstructorsProfile = () => {
   const [instructorData, setInstructorData] = useState<any[]>([]);
@@ -18,7 +20,7 @@ const InstructorsProfile = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const loadData = async () => {
+    const getInstructors = async () => {
       try {
         const data = await fetchInstructors();
         if (data && Array.isArray(data)) {
@@ -34,7 +36,7 @@ const InstructorsProfile = () => {
       }
     };
 
-    loadData();
+    getInstructors();
   }, []);
 
   const extractTextFromRichText = (richText: any) => {
@@ -97,7 +99,7 @@ const InstructorsProfile = () => {
   };
 
   return (
-    <section className={styles.profileSection}>
+    <div className={styles.profileSection}>
       <div className={styles.container}>
         <p className={styles.title}>Expert Tutor Ready to Guide You!</p>
         
@@ -106,24 +108,22 @@ const InstructorsProfile = () => {
           {instructorData.map((item) => renderCard(item))}
         </div>
 
-        {/* Mobile Swiper */}
-        <div className={styles.mobileSwiper}>
-          <Swiper
-            modules={[Pagination, Navigation]}
-            spaceBetween={16}
-            slidesPerView={1}
-            pagination={{ clickable: true }}
-            navigation
-          >
-            {instructorData.map((item) => (
-              <SwiperSlide key={item.sys.id}>
-                {renderCard(item)}
-              </SwiperSlide>
-            ))}
-          </Swiper>
+        {/* Mobile Carousel */}
+        <div className={styles.mobileCarousel}>
+          <Carousel>
+            <CarouselContent>
+              {instructorData.map((item) => (
+                <CarouselItem key={item.sys.id} className="sm:basis-1/1 md:basis-1/2 lg:basis-1/3">
+                  {renderCard(item)}
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious />
+            <CarouselNext />
+          </Carousel>
         </div>
       </div>
-    </section>
+    </div>
   );
 };
 

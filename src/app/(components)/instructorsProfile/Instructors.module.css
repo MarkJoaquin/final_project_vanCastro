@@ -5,31 +5,29 @@
     gap: 3rem;
     justify-content: flex-start;
     overflow: visible;
-    padding: 8rem 8rem;
+    padding: 8rem 9rem;
     position: relative;
     width: 100vw;  
-    
 }
 
 .title {
-    font-size: 3rem ;
+    font-size: 2.5rem ;
     font-weight: 700;
     text-align: center;
 }
 
 .desktopCards {
     display: flex;
-    padding: 2rem;
-    gap: 2rem;
+    gap: 3rem;
     width: 100%;
 }
 
-.mobileSwiper {
+.mobileCarousel {
     display: none;
 }
 
 .instructorCard {
-    padding: 2.1rem 2.7rem;
+    padding: 3rem 1.5rem;
     border-radius: 1.2rem;
     border-color: var(--primary-color) !important;
     border-width: 0.2rem;
@@ -38,7 +36,7 @@
     gap: 2.5rem;
     justify-content: flex-start;
     height: min-content;
-    width: 100%;
+    width: 100%
     
 }
 
@@ -52,7 +50,7 @@
 }
 
 .instructorName {
-    font-size: 1.4rem;
+    font-size: 1.6rem;
     font-weight: 700;
     text-align: center;
     margin-top: 0.6rem;
@@ -80,7 +78,7 @@
     flex: none;
     flex-direction: row;
     flex-wrap: nowrap;
-    gap: 16px;
+    gap: 14px;
     height: min-content;
     justify-content: flex-start;
     overflow: visible;
@@ -93,7 +91,7 @@
     text-align: center;
     justify-content: center;
     align-items: center;
-    font-size: 1.24rem ;
+    font-size: 1.14rem ;
     font-weight: 500;
 }
 
@@ -116,24 +114,26 @@
 }
 
 
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 488px) {
     .container {
-        padding: 1.5rem 1.5rem;
+        padding: 2rem 3rem !important;
+        gap: 0;
+        width: 100%;
     }
 
     .desktopCards {
         display: none;
     }
     
-    .mobileSwiper {
+    .mobileCarousel {
         display: block;
         width: 100%;
     }
     
     .instructorCard {
-        width: 78%;
+        width: 100%;
         margin: 0 auto;
-        padding: 1.5rem;
+        padding: 0.97rem;
     }
 
     .instructorName {
@@ -145,7 +145,7 @@
     }
 
     .instructorInfo p {
-        font-size: 0.85rem !important;
+        font-size: 13px !important;
     }
 
     .contactButton{
@@ -159,77 +159,69 @@
         text-align: center;
     }
 
-
 }
 
-@media screen and (min-width: 481px) and (max-width: 774px) {
-    .container{
-        padding: 1.3rem 1.3rem !important;
+@media screen and (min-width: 488px) and (max-width: 768px) {
+    .container {
+        padding: 2rem 3rem !important;
+        gap: 0;
     }
+
     .desktopCards {
-        display: none
+        display: none;
     }
-    
-    .mobileSwiper {
+
+    .mobileCarousel {
         display: block;
-        width: 100%;
+        width: 100% !important;
+        padding: 2rem 1rem
     }
     
     .instructorCard {
-        width: 85%;
         margin: 0 auto;
         padding: 1.1rem !important;
     }
+
     .instructorInfo p {
-        font-size: 0.95rem !important;
+        font-size: 0.94rem !important;
     }
+
     .title {
         font-size: 1.5rem !important;
         font-weight: 700;
         text-align: center;
     }
+
     .contactButton{
         font-size: 0.95rem;
     }
 }
 
-@media (min-width: 775px) and (max-width: 1279px){
-    .container{
-        padding: 1.2rem 1.2rem !important;
-        gap: 1.5rem;
-        width: 100vw;
+@media (min-width: 768px) and (max-width: 1100px){
+    .container {
+        padding: 2rem 3rem !important;  
     }
 
-    .title {
-        font-size: 1.8rem !important;
-        font-weight: 700;
-        text-align: center;
-    }
-
-    .instructorInfo p {
-        text-align: center;
-        justify-content: center;
-        align-items: center;
-        font-size: 1rem ;
-        font-weight: 500;
+    .desktopCards {
+        padding: 0;
+        gap: 1.5rem !important;
     }
 
     .instructorCard {
-        width: 87%;
-        margin: 0 auto;
-        padding: 1rem;
+        padding: 1.2rem !important;
+    }
+
+    .instructorInfo p {
+        font-size: 0.97rem !important;
+    }
+
+    .title {
+        font-size: 1.9rem !important;
+        font-weight: 700;
+        text-align: center;
     }
 
     .contactButton{
         font-size: 1rem;
     }
 }
-
-
-
-
-
-
-
-
-
