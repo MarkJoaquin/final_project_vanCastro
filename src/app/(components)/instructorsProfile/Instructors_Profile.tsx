@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { fetchInstructors } from "../../../api/contentful/fetchInstructors";
+import { fetchInstructors } from "../../api/contentful/fetchInstructors";
 import type { DrivingInstructor } from "../../../types/contentful";
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "../../../components/ui/card";
 import styles from './Instructors.module.css';
