@@ -1,5 +1,5 @@
 'use client'
-import { fetchPlans } from "@/api/contentful/fetchPlans"
+import { fetchPlans } from "@/app/api/contentful/fetchPlans"
 import { useState, useEffect } from "react";
 import {usePathname} from "next/navigation"
 import Link from "next/link";
@@ -76,7 +76,7 @@ type PlanProps = {
                     )}
                     </CarouselContent>
                     <CarouselPrevious/>
-                    <CarouselNext/>
+                    <CarouselNext/> 
                 </ul>
                 </Carousel>
                 
