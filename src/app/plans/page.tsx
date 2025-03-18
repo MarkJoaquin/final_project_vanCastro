@@ -2,10 +2,10 @@ import Hero from "../(components)/Hero/Hero";
 import HereToHelp from "../(components)/HereToHelp/HereToHelp";
 import PickAPlan from "../(components)/PickAPlan/PickAPlan";
 import ContactSection from "../(components)/ContactSection/Contact_Us";
-import ContactBanner from "../(components)/ContactBarnner/ContactBanner";
 import hereToHelpImg from "@/../public/images/HereToHelp/here-to-help-icon.svg"
 import Person1Img from "@/../public/images/ICBC_knowledge/Person1.png"
 import Person2Img from "@/../public/images/ICBC_knowledge/Person2.png"
+import ICBCKnowledge from "../(components)/ICBCKnowledge/ICBCKnowledge";
 
 export default function Plans() {
   const heroSection = {
@@ -55,10 +55,10 @@ export default function Plans() {
   return (
     <>
       <Hero data={heroSection} />
+      <ICBCKnowledge data={ICBC_knowledge}/>
       <PickAPlan/>
       <HereToHelp data={hereToHelp} />
       {/* instructors */}
-      <ContactBanner data={ICBC_knowledge}/>
       <ContactSection />
     </>
   );
