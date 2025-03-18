@@ -1,182 +1,278 @@
-.stepOne{
-    background-color: var(--third-color);
+.stepOne {
+  background-color: var(--third-color);
 }
 
-.stepTwo{
-    background-color: var(--secoundary-color);
+.stepOne .stepIdName {
+  color: var(--third-color) !important;
+}
+.stepTwo {
+  background-color: var(--secoundary-color);
 }
 
-.stepThree{
-    background-color: var(--primary-color);
+.stepTwo .stepIdName {
+  color: var(--secoundary-color) !important;
 }
 
-.sectionTitle{
+.stepThree {
+  background-color: var(--primary-color);
+}
+.stepThree .stepIdName {
+  color: var(--primary-color) !important;
+}
+
+.Link {
+  text-decoration: underline;
+  color: red;
+}
+
+.Link:hover {
+  color: var(--primary-color);
+  text-decoration-color: var(--primary-color);
+}
+
+.mainStep {
+  align-content: flex-start;
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  gap: 16px;
+  height: min-content;
+  width: 100%;
+  justify-content: flex-start;
+  overflow: visible;
+  padding: 3rem;
+  position: relative;
+}
+
+.stepContainer {
+  align-content: center;
+  align-items: center;
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  gap: 14px;
+  justify-content: center;
+  overflow: visible;
+  padding: 0 5rem;
+  position: relative;
+}
+
+.stepId {
+  align-content: center;
+  align-items: center;
+  background-color: #2f2f2f;
+  border-radius: 50px;
+  display: flex;
+  flex: none;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 10px;
+  height: min-content;
+  justify-content: center;
+  overflow: visible;
+  padding: 8px 35px;
+  position: relative;
+  font-size: 2.3rem;
+  color: var(--primary-color);
+  font-weight: 700;
+  width: fit-content;
+  margin-bottom: 1rem;
+}
+
+.StepTitle {
+  text-align: center;
+  font-size: 2.813rem;
+  font-weight: 700;
+
+  margin-bottom: 1.5rem;
+}
+
+.mainTextContainer {
+  width: 65%;
+}
+
+.mainText {
+  display: flex;
+  flex-direction: column;
+  font-size: 2.2rem;
+  font-weight: 500;
+  line-height: 48px !important;
+  text-align: center;
+
+  margin-bottom: 1.3rem;
+
+  font-size: 1.6rem;
+  font-weight: lighter;
+  line-height: 35px !important;
+}
+
+.titleDescription {
+  line-height: 48px !important;
+  font-size: 1.8rem !important;
+}
+
+.subText {
+  font-size: 1.2rem !important;
+  line-height: 2rem;
+  text-align: center;
+  width: 50%;
+}
+
+.withTitle {
+  font-size: 30px;
+}
+
+.link {
+  text-decoration: underline;
+  color: var(--primary-color);
+  cursor: pointer;
+}
+
+.link:hover {
+  color: #0088ff;
+}
+
+.innerTitle{
+    font-weight: bold;
+    font-size: 1.8rem;
+}
+
+.innerDescription{
+    font-weight: normal;
+}
+
+@media screen and (max-width: 480px) {
+  .mainStep {
+    display: flex;
     align-content: flex-start;
-    align-items: flex-start;
-    display: flex;
-    flex: none;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    gap: 0px;
-    height: 1727px;
-    justify-content: flex-start;
-    overflow: visible;
-    padding: 64px 0;
-    position: relative;
+    padding: 3rem 2rem;
     width: 100%;
+  }
+
+  .stepContainer {
+    padding: 3px;
+  }
+
+  .StepTitle {
+    text-align: center;
+  }
+
+  .stepId {
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+  }
+
+  .StepTitle {
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+  }
+
+  .subText {
+    font-size: 0.8rem !important;
+    line-height: 23px;
+    margin: 0rem 2.3rem;
+  }
+
+  .mainText {
+    font-size: 0.9rem;
+    margin-bottom: 8px !important;
+    margin: 0rem 1rem;
+    line-height: 23px !important;
+  }
+
+  .titleDescription {
+    line-height: 23px !important;
+
+    font-size: 0.8rem !important;
+  }
 }
 
-.mainStep{
+@media screen and (min-width: 481px) and (max-width: 768px) {
+  .mainStep {
+    display: flex;
     align-content: flex-start;
-    display: flex;
-    flex: none;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    gap: 16px;
-    height: min-content;
-    justify-content: flex-start;
-    overflow: visible;
-    padding: 60px 423px;
-    position: relative;
+    padding: 3rem 2rem !important;
+  }
+
+  .stepContainer {
+    padding: 0.7rem;
     width: 100%;
-}
+  }
 
-.stepContainer{
-    align-content: center;
-    align-items: center;
-    display: flex;
-    flex: none;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    gap: 14px;
-    height: min-content;
-    justify-content: center;
-    overflow: visible;
-    padding: 0;
-    position: relative;
-}
+  .stepId {
+    margin-bottom: 1rem;
+    font-size: 1.6rem;
+  }
 
-.stepId{
-    align-content: center;
-    align-items: center;
-    background-color: #2f2f2f;
-    border-radius: 30px;
-    display: flex;
-    flex: none;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    gap: 10px;
-    height: min-content;
-    justify-content: center;
-    overflow: visible;
-    padding: 10px 32px;
-    position: relative;
-    font-size: 36px;
-    color: var(--primary-color);
-    font-weight: 700;
-}
-
-.StepTitle{
-    font-size: 45px;
-    font-weight: 700;
-    font-family: var(--font-primary);
-}
-
-.mainText{
-    display: flex;
-    flex-direction: column;
-    font-size: 24px;
-    font-weight: 500;
-    line-height: 30px !important;
+  .StepTitle {
     text-align: center;
+    margin-bottom: 1rem;
+    font-size: 2rem;
+  }
+
+  .mainText {
+    font-size: 1.2rem;
+    margin-bottom: 1.1rem !important;
+    margin: 0rem 1rem;
+    line-height: 25px !important;
+  }
+
+  .subText {
+    font-size: 1rem !important;
+    margin: 0.6rem 2.3rem;
+    line-height: 25px !important;
+  }
+
+  .titleDescription {
+    line-height: 2.2rem !important;
     font-family: var(--font-primary);
+    font-size: 1.1rem !important;
+  }
 }
 
-.titleDescription{
-    line-height: 45px !important;
-    font-family: var(--font-primary);
-    font-size: 24px !important;
-}
+@media (min-width: 769px) and (max-width: 1279px) {
+  .mainStep {
+    display: flex;
+    align-content: flex-start;
+    padding: 3rem 3rem !important;
+    width: 100%;
+  }
 
-.subText{
-    font-size: 20px !important;
-    line-height: 25px;
+  .stepContainer {
+    padding: 1rem;
+    gap: 0;
+  }
+
+  .StepTitle {
     text-align: center;
+  }
+
+  .stepId {
+    margin-bottom: 1rem;
+    font-size: 1.7rem;
+  }
+
+  .StepTitle {
+    font-size: 1.9rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .mainText {
+    font-size: 1.4rem;
+    margin-bottom: 1.1rem !important;
+    margin: 0rem 1rem;
+  }
+
+  .subText {
+    font-size: 1.2rem !important;
+    margin: 0.6rem 2.3rem;
+  }
+
+  .titleDescription {
+    line-height: 2.5rem !important;
     font-family: var(--font-primary);
-}
-
-.withTitle{
-    font-size: 30px;
-}
-
-@media (max-width: 467px) {
-    .sectionTitle{
-        height: auto;
-        padding: 20px 0;
-    }
-
-    .mainStep{
-        display: flex;
-        align-content: flex-start;
-        padding: 20px 20px;
-        width: 100%;
-    }
-
-    .stepContainer{
-        padding: 10px;
-    }
-    
-    .StepTitle{
-        text-align: center;
-    }
-}
-
-@media (min-width: 768px) and (max-width: 1024px) {
-    .sectionTitle {
-        height: auto;
-        padding: 40px 0;
-    }
-
-    .mainStep {
-        display: flex;
-        align-content: flex-start;
-        padding: 40px 100px;
-        width: 100%;
-    }
-
-    .stepContainer {
-        padding: 20px;
-        gap: 20px;
-    }
-
-    .stepId {
-        font-size: 32px;
-        padding: 12px 40px;
-        border-radius: 40px;
-    }
-
-    .StepTitle {
-        text-align: center;
-        font-size: 40px;
-        margin-bottom: 10px;
-    }
-
-    .mainText {
-        font-size: 22px;
-        line-height: 28px;
-    }
-
-    .titleDescription {
-        font-size: 24px;
-        line-height: 40px;
-    }
-
-    .subText {
-        font-size: 20px;
-        line-height: 24px;
-    }
-
-    .withTitle {
-        font-size: 30px;
-    }
+    font-size: 1.3rem !important;
+  }
 }

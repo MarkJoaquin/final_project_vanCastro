@@ -1,5 +1,3 @@
-/* @import '../../globals.css'; */
-
 .heroComponent {
   margin-top: 8rem;
   width: 100%;
@@ -106,7 +104,7 @@
 
 .heroText {
   font-size: 24px;
-  font-weight: 600;
+  font-weight: 300;
   line-height: 22px;
 }
 
@@ -124,11 +122,24 @@
   }
 
   .heroText {
-    font-weight: 600;
     line-height: 30px;
     font-size: 1.5rem !important;
     width: 62% !important;
     margin: 0 auto;
+  }
+
+  .plansHero{
+    align-items: center;
+  }
+
+  .plansHeroTitle{
+    width: 100% !important;
+    text-align: center;
+  }
+
+  .plansHeroText{
+    width: 100% !important;
+    text-align: center;
   }
 
 }
@@ -140,6 +151,10 @@
     margin-top: 5rem;
   }
 
+  .plansHero{
+    align-items: center;
+  }
+
   .heroTitle {
     font-weight: 700;
     line-height: 60px;
@@ -147,18 +162,36 @@
     width: 50% !important;
   }
 
+  .plansHeroTitle{
+    width: 100% !important;
+    text-align: center;
+  }
+
+  .plansHeroText{
+    width: 100% !important;
+    text-align: center;
+  }
+
   .heroText {
-    font-weight: 600;
     line-height: 30px;
     font-size: 1.5rem !important;
     width: 65% !important;
     margin: 0 auto;
   }
+
+
 }
 
 @media only screen and (min-width: 769px) and (max-width: 1279px) {
   .heroComponent {
     margin-top: 5rem;
+  }
+  .plansHero{
+    align-items: center;
+  }
+  .plansHero h1, .plansHero p{
+    width: 100%;
+    text-align: center;
   }
 }
 
