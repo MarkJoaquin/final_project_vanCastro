@@ -1,11 +1,13 @@
 .subTrigger{
     padding-left: 2rem;
+    display: flex;
+    align-items: center;
 }
 .subTrigger:hover{
     text-decoration: none;
     cursor: pointer;
+    background-color: rgb(216, 208, 208);
 }
-
 .subTrigger svg {
     height: 30px;
     width: 30px;
@@ -24,4 +26,52 @@
     font-size: 18px;
     line-height: 28px;
     font-weight: 400;
+}
+
+@media only screen and (max-width: 480px) {
+    .subTrigger{
+        padding-left: 0.5rem;
+    }
+    .accordionSubtitle{
+        font-size: 16px;
+        line-height: 20px;
+    }
+    .content{
+        padding-left: 1rem;
+    }
+    .item{
+        font-size: 13px;
+        line-height: 23px;
+    }
+}
+
+@media only screen and (min-width: 481px) and (max-width: 768px) {
+    .subTrigger{
+        padding-left: 0.5rem;
+    }
+    .accordionSubtitle{
+        font-size: 16px;
+        line-height: 20px;
+    }
+    .content{
+        padding-left: 1rem;
+    }
+    .item{
+        font-size: 13px;
+        line-height: 23px;
+    }
+}
+
+@media only screen and (min-width: 769px) and (max-width: 1279px) {
+    .subTrigger{
+        padding-left: 1rem;
+    }
+
+    .content{
+        padding-left: 2rem;
+    }
+}
+
+@media only screen and (min-width: 1280px) {
+
 }
