@@ -119,7 +119,7 @@
 
     .buttonMobile {
         display: flex;
-        width: fit-content !important;
+        width: 80% !important;
         padding: 1rem 2.1rem !important;
     }
 }
