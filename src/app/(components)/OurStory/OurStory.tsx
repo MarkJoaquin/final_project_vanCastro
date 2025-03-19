@@ -6,6 +6,7 @@ export default function OurStory() {
     <div className={styles.ourStory}>
         <div className={styles.title}>
             <h3>Our Story</h3>
+            <div className={styles.span}></div>
         </div>
         <div className={styles.images}>
             <Image
