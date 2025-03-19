@@ -1,6 +1,9 @@
 import AboutVancastro from "../(components)/AboutVancastro/AboutVancastro";
+import OurStory from "../(components)/OurStory/OurStory";
 import NeedHelpICBC from "../(components)/NeedHelpICBC/NeedHelpICBC";
-import sampleImg from "@/../public/images/yellowFacebook.png"
+import callImg from "@/../public/images/NeedHelpICBC/call.png"
+import facebookImg from "@/../public/images/NeedHelpICBC/FacebookImg.png"
+import instagramImg from "@/../public/images/NeedHelpICBC/InstagramImg.png"
 
 export default function Contact() {
     const aboutVancastro = {
@@ -13,16 +16,18 @@ export default function Contact() {
             title2:"ICBC Knowledge Test?",
             subTitle:`Connect with Our Partner!`,
             cardInfo:{
-                phoneIcon:sampleImg,
+                phoneIcon:callImg,
                 phoneNumber:"+1 (236)-513-2741",
                 email:"icbcknowledgetestmaterial@gmail.com",
-                socialMediaIcon:[sampleImg,sampleImg]
+                socialMediaIcon:[facebookImg,instagramImg],
+                socialMediaLink:["https://www.facebook.com/ICBCKnowledgeTestMaterial/","https://www.instagram.com/digicraft.designs/"]
             },
         }
     
     return (
         <>
             <AboutVancastro data={aboutVancastro} />
+            <OurStory />
             <NeedHelpICBC data={NeedHelpICBCdata}/>
 
         </>

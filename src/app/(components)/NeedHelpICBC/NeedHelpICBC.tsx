@@ -10,6 +10,7 @@ interface NeedHelpICBCtype {
     phoneNumber:string;
     email:string;
     socialMediaIcon:StaticImageData[];
+    socialMediaLink:string[];
   }
 }
 
@@ -22,7 +23,7 @@ export default function NeedHelpICBC({data}:NeedHelpICBCtypeProps) {
 
 
     return (
-        <section>
+        <section className="bg-[#F7f7F7]">
           <div>
             <h2>{title1}</h2>
             <h2>{title2}</h2>

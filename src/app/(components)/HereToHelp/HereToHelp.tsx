@@ -37,7 +37,9 @@ export default function HereToHelp({ data }: HereToHelpProps) {
             <div className={styles.infoSide}>
                 <h3 className={styles.changingTitle}>{title1}</h3>
                 <h3>{title2}</h3>
+                <Image className={styles.quote1} src="./images/HereToHelp/com-2.svg" alt="Here to Help" width={200} height={200} />
                 <p>{subtitle}</p>
+                <Image className={styles.quote2} src="./images/HereToHelp/com-1.svg" alt="Here to Help" width={200} height={200} />
                 <Link href={`/${linkTo}`} className={styles.button}>
                 {buttonText}
                 </Link>
