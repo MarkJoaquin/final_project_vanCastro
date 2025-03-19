@@ -5,6 +5,7 @@
 .stepOne .stepIdName {
   color: var(--third-color) !important;
 }
+
 .stepTwo {
   background-color: var(--secoundary-color);
 }
