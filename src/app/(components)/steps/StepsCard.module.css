@@ -74,7 +74,7 @@
   overflow: visible;
   padding: 8px 35px;
   position: relative;
-  font-size: 2.3rem;
+  font-size: 2.1rem;
   color: var(--primary-color);
   font-weight: 700;
   width: fit-content;
@@ -83,7 +83,7 @@
 
 .StepTitle {
   text-align: center;
-  font-size: 2.813rem;
+  font-size: 2.1rem;
   font-weight: 700;
 
   margin-bottom: 1.5rem;
@@ -96,13 +96,10 @@
 .mainText {
   display: flex;
   flex-direction: column;
-  font-size: 2.2rem;
   font-weight: 500;
   line-height: 48px !important;
   text-align: center;
-
   margin-bottom: 1.3rem;
-
   font-size: 1.6rem;
   font-weight: lighter;
   line-height: 35px !important;
@@ -110,7 +107,7 @@
 
 .titleDescription {
   line-height: 48px !important;
-  font-size: 1.8rem !important;
+  font-size: 1.6rem !important;
 }
 
 .subText {
@@ -136,7 +133,7 @@
 
 .innerTitle{
     font-weight: bold;
-    font-size: 1.8rem;
+    font-size: 1.75rem;
 }
 
 .innerDescription{
@@ -182,11 +179,15 @@
     line-height: 23px !important;
   }
 
+  .innerTitle{
+    font-size: 0.87rem !important;
+  }
+
   .titleDescription {
     line-height: 23px !important;
-
     font-size: 0.8rem !important;
   }
+
 }
 
 @media screen and (min-width: 481px) and (max-width: 768px) {
@@ -203,13 +204,13 @@
 
   .stepId {
     margin-bottom: 1rem;
-    font-size: 1.6rem;
+    font-size: 1.7rem;
   }
 
   .StepTitle {
     text-align: center;
     margin-bottom: 1rem;
-    font-size: 2rem;
+    font-size: 1.7rem;
   }
 
   .mainText {
@@ -217,6 +218,10 @@
     margin-bottom: 1.1rem !important;
     margin: 0rem 1rem;
     line-height: 25px !important;
+  }
+
+  .innerTitle{
+    font-size: 0.87rem !important;
   }
 
   .subText {
