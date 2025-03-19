@@ -1,5 +1,5 @@
 import AboutVancastro from "../(components)/AboutVancastro/AboutVancastro";
-import VancastroAward from "../(components)/VancastroAward/VancastroAward";
+import OurStory from "../(components)/OurStory/OurStory";
 
 export default function Contact() {
     const aboutVancastro = {
@@ -10,7 +10,7 @@ export default function Contact() {
     return (
         <>
             <AboutVancastro data={aboutVancastro} />
-            <VancastroAward />
+            <OurStory />
         </>
     );
 }
