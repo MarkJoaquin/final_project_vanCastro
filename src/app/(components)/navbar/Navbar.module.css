@@ -72,6 +72,17 @@
   color: var(--primary-color);;
 }
 
+.bookingLink{
+    width: 8rem;
+    background-color: var(--primary-color);
+    border-radius: 1.3rem;
+    padding: 0.5rem 1rem;
+    color: black;
+    font-size: 1.2rem;
+    text-align: center;
+    font-weight: 700;
+}
+
 
 @media screen and (max-width: 480px){
     .navLinks {
@@ -200,8 +211,8 @@
     }
 
     .navbarSection{
-        margin-left: 91px;
-        margin-right: 91px;
+        margin-left:  50px;
+        margin-right: 50px;
     }
 
     .mobileMenuButton {
@@ -246,8 +257,8 @@
     }
 
     .navbarSection{
-        margin-left: 91px;
-        margin-right: 91px;
+        margin-left: 70px;
+        margin-right: 70px;
     }
 
     .mobileMenuButton {
