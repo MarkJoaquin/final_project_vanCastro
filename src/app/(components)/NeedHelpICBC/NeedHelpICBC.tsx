@@ -1,12 +1,36 @@
+import { StaticImageData } from "next/image";
+import CardTemplate1 from "../Card/CardTemplate1";
 
-export default function NeedHelpICBC() {
-//    const { title1, title2, subtitle, title1Color, title2Color, subtitleColor, img1, img2, buttonText, linkTo, bgColor, btnTextColor, type, btnColor } = data;
+interface NeedHelpICBCtype {
+  title1:string;
+  title2:string;
+  subTitle:string;
+  cardInfo:{
+    phoneIcon:StaticImageData;
+    phoneNumber:string;
+    email:string;
+    socialMediaIcon:StaticImageData[];
+  }
+}
+
+interface NeedHelpICBCtypeProps {
+  data:NeedHelpICBCtype
+}
+
+export default function NeedHelpICBC({data}:NeedHelpICBCtypeProps) {
+    const { title1, title2, subTitle, cardInfo } = data;
 
 
     return (
         <section>
-          <div></div>
-          <div>card</div>
+          <div>
+            <h2>{title1}</h2>
+            <h2>{title2}</h2>
+          </div>
+          <div>
+            <p>{subTitle}</p>
+          </div>
+          <CardTemplate1 cardInfo={cardInfo}/>
         </section>
     );
 }
