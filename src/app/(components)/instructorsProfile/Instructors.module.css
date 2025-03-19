@@ -2,8 +2,8 @@
     align-items: center;
     display: flex;
     flex-direction: column;
-    gap: 3rem;
-    justify-content: flex-start;
+    gap: 2rem;
+    justify-content: center;
     overflow: visible;
     padding: 8rem 9rem;
     position: relative;
@@ -11,7 +11,7 @@
 }
 
 .title {
-    font-size: 2.5rem ;
+    font-size: 2.3rem ;
     font-weight: 700;
     text-align: center;
 }
@@ -20,6 +20,9 @@
     display: flex;
     gap: 3rem;
     width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
 }
 
 .mobileCarousel {
@@ -27,6 +30,9 @@
 }
 
 .instructorCard {
+    display: flex;
+    justify-content: center;
+    align-items: center !important;
     padding: 3rem 1.5rem;
     border-radius: 1.2rem;
     border-color: var(--primary-color) !important;
@@ -36,21 +42,23 @@
     gap: 2.5rem;
     justify-content: flex-start;
     height: min-content;
-    width: 100%
+    width: 40%
     
 }
 
 .instructorImage {
     display: block;
-    width: 100%;
-    height: 100%;
+    margin: auto;
+    align-items: center;
+    width: 50%;
+    height: 50%;
     border-radius: inherit;
     object-fit: fill;
     border-radius: 50%;
 }
 
 .instructorName {
-    font-size: 1.6rem;
+    font-size: 1.5rem;
     font-weight: 700;
     text-align: center;
     margin-top: 0.6rem;
@@ -88,7 +96,7 @@
 }
 
 .instructorInfo p {
-    text-align: center;
+    text-align:start;
     justify-content: center;
     align-items: center;
     font-size: 1.14rem ;
@@ -109,7 +117,7 @@
     opacity: 1;
     will-change: transform;
     transform: none;
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     font-weight: 700;
 }
 
@@ -145,11 +153,12 @@
     }
 
     .instructorInfo p {
+        text-align: start;
         font-size: 13px !important;
     }
 
     .contactButton{
-        font-size: 0.90rem !important;
+        font-size: 0.87rem !important;
         width: 11rem;
     }
 
@@ -184,6 +193,7 @@
 
     .instructorInfo p {
         font-size: 0.94rem !important;
+        text-align: start;
     }
 
     .title {

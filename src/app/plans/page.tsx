@@ -57,6 +57,7 @@ export default function Plans() {
     <>
       <Hero data={heroSection} />
       <HereToHelp data={hereToHelp} />
+      <InstructorsProfile/>
     </>
   );
 } 
