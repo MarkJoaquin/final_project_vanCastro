@@ -1,5 +1,6 @@
 import { StaticImageData } from "next/image";
 import CardTemplate1 from "../Card/CardTemplate1";
+import styles from "./NeedHelpICBC.module.css"
 
 interface NeedHelpICBCtype {
   title1:string;
@@ -23,13 +24,13 @@ export default function NeedHelpICBC({data}:NeedHelpICBCtypeProps) {
 
 
     return (
-        <section className="bg-[#F7f7F7]">
-          <div>
-            <h2>{title1}</h2>
-            <h2>{title2}</h2>
+        <section className="pt-[2rem] pb-[2rem] bg-[#F7f7F7]">
+          <div className={`text-[44px] ${styles.titleFont}`}>
+            <h2 className="text-center font-bold leading-10">{title1}</h2>
+            <h2 className="text-center font-bold">{title2}</h2>
           </div>
           <div>
-            <p>{subTitle}</p>
+            <p className={`text-[27px] text-center mt-4 mb-10 ${styles.subTitleFont}`}>{subTitle}</p>
           </div>
           <CardTemplate1 cardInfo={cardInfo}/>
         </section>
