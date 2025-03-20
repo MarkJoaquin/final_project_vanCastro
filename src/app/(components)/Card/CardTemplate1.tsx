@@ -1,5 +1,8 @@
+"use client"
+
 import Image, { StaticImageData } from "next/image";
 import styles from "./CardTemplate.module.css"
+import Link from "next/link";
 
 interface CardInfoType{
   phoneIcon:StaticImageData;
@@ -16,7 +19,11 @@ interface CardInfoProps{
 export default function CardTemplate1({cardInfo}:CardInfoProps){
   const { phoneIcon, phoneNumber, email, socialMediaIcon, socialMediaLink} = cardInfo
 
-  const iconHandler = (link:string) => {
+  const convertPhoneNumber = () => {
+    const convertPhone = phoneNumber.replace(/[\-,() ]/g, "")
+    return convertPhone
+  }
+  const linkHandler = (link:string) => {
     console.log("clicked",link)
   }
 
@@ -30,24 +37,30 @@ export default function CardTemplate1({cardInfo}:CardInfoProps){
           width={23}
           height={23}
         />
-        <p className={`text-[20px] ${styles.fontSizeS}`}>{phoneNumber}</p>
+        <a href={`tel:${convertPhoneNumber()}`}>
+          <p className={`text-[20px] ml-[10px] hover:text-[#ffc21c] ${styles.fontSizeS}`}>{phoneNumber}</p>
+        </a>
       </div>
     </div>
     <div>
       <h3 className={`text-[20px] font-bold mt-4 ${styles.fontSizeS}`}>Email</h3>
-      <p className={`text-[20px] mt-2 ${styles.fontSizeS}`}>{email}</p>
+      <a href={`mailto:${email}`}>
+        <p className={`text-[20px] mt-2 hover:text-[#ffc21c] ${styles.fontSizeS}`} style={{}}>{email}</p>
+      </a>
     </div>
     <div className="mt-8">
       <h3 className={`text-[20px] font-bold ${styles.fontSizeS}`}>Social media</h3>
       <div className="flex gap-4 mt-2">
         {socialMediaIcon.map((item,index)=>{
-          return <Image
-                    key={index}
-                    src={item}
-                    alt="icon"
-                    width={50}
-                    height={50}
-                  />
+          return <Link key={index} href={socialMediaLink[index]} rel="noopener noreferrer" target="_blank">
+            <Image
+              key={index}
+              src={item}
+              alt="icon"
+              width={50}
+              height={50}
+            />
+          </Link>
         }      
         )}
       </div>
