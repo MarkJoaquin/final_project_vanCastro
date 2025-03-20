@@ -52,7 +52,7 @@
   color: white;
   font-weight: 500;
   font-size: 20px;
-}
+} 
 
 .singleNavLink:hover {
   color: var(--primary-color);
@@ -96,6 +96,9 @@
         background-color: rgb(20, 18, 12);
         padding: 20px;
         z-index: 999;
+    }
+    .bookingLink{
+        margin-left: 20px;
     }
 
     .navLinks.open {
@@ -150,6 +153,9 @@
         padding: 20px;
         z-index: 999;
     }
+    .bookingLink{
+        margin-left: 20px;
+    }
 
     .navLinks.open {
         display: flex;
@@ -195,8 +201,12 @@
         left: 0;
         right: 0;
         background-color: rgb(20, 18, 12);
-        padding: 20px;
+        padding: 0px !important;
         z-index: 999;
+    }
+
+    .bookingLink{
+        margin-left: 70px;
     }
 
     .navLinks.open {
@@ -211,8 +221,8 @@
     }
 
     .navbarSection{
-        margin-left:  50px;
-        margin-right: 50px;
+        margin-left:  60px;
+        margin-right: 60px;
     }
 
     .mobileMenuButton {
@@ -241,15 +251,20 @@
         left: 0;
         right: 0;
         background-color: rgb(20, 18, 12);
-        padding: 20px;
+        padding: 0px;
         z-index: 999;
+    }
+
+    .bookingLink{
+        margin-left: 70px;
+        padding: 5px;
     }
 
     .navLinks.open {
         display: flex;
         flex-direction: column;
         gap: 20px;
-        padding: 20px;
+        padding: 10px;
     }
 
     .singleNavLink{
