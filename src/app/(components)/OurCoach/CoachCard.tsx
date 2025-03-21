@@ -34,16 +34,16 @@ export default function CoachCard({data}:CoachCard){
             </div>
             <div className={styles.content}>
                 <h3 className={styles.name}>{name}</h3>
-                <div>
+                <div className={styles.phoneContainer}>
                     <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--primary-color)]">
                         <div className="flex h-7 w-7 items-center justify-center rounded-sm bg-[#2f2f2f]">
                         <ImWhatsapp className="h-4 w-4 text-[var(--primary-color)]" />
                         </div>
                     </div>
 
-                    <p>{phone}</p>
+                    <p className={styles.phone}>{phone}</p>
                 </div>
-                <p>{description}</p>
+                <p className={styles.description}>{description}</p>
             </div>
         </div>
     )

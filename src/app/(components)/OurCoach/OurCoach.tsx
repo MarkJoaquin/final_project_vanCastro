@@ -96,7 +96,7 @@ const OurCoach = async () => {
         </p>
         <span className={styles.span}></span>
       </div>
-      <div className="cardContainer">
+      <div className={styles.cardContainer}>
         {/* {coachData.map((coach, index)=>(
                     <CoachCard key={index} data = {coach}/>
                  ))} */}
