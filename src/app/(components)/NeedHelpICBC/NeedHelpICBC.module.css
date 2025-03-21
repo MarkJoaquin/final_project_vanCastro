@@ -1,0 +1,8 @@
+@media only screen and (max-width:800px){
+  .titleFont{
+    font-size: 20px;
+  }
+  .subTitleFont{
+    font-size: 18px;
+  }
+}

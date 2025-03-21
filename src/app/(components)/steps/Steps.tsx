@@ -9,17 +9,20 @@ interface StepCardProps {
 }
 
 export default function Steps({ data }: { data: StepCardProps['data'] }) {
+   
+
     return (      
         <div className={styles.sectionStep}>
             <div className={styles.sectionTitle}>
-                <p className={styles.questioTitle}>How it Works?</p>
-                <p className={styles.questioTitle}>Follow 3 Simple Steps</p>
+                <p className={styles.questionTitle}>How it Works?</p>
+                <p className={styles.questionTitle}>Follow 3 Simple Steps</p>
             </div>
             <ul className={styles.stepsList}>
-               {data.map((cardStep: StepsSection) => (
+               {data.map((cardStep: Props) => (
                 <StepCard key={cardStep.id} cardStep={cardStep} /> 
                ))} 
             </ul>
         </div>
+
     );
 }

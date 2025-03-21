@@ -1,0 +1,9 @@
+@media only screen and (max-width:800px){
+  .cardComponent{
+    width: 305px;
+    padding: 46px 15px;
+  }
+  .fontSizeS{
+    font-size: 14px;
+  }
+}

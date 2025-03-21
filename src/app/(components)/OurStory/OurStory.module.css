@@ -1,0 +1,221 @@
+.ourStorySection{
+    background-color: #f7f7f7;
+}
+
+.ourStory {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 2rem;
+    grid-template-areas:
+        "title title" 
+        "img info";
+    width: 90%;
+    margin: auto;
+    padding: 6rem 0;
+}
+
+.title {
+    grid-area: title;
+    margin-bottom: 4rem;
+    display: flex;
+    width: fit-content;
+    flex-direction: column;
+    align-items: center;
+}
+
+.title h3 {
+    font-size: 2.6rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.title .span {
+    height: 10px;
+    width: 100%;
+    text-align: center;
+    background: linear-gradient(to right, transparent, var(--primary-color), transparent);
+}
+
+.images {
+    grid-area: img;
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    align-items: end;
+}
+
+.img1 {
+    border-radius: 20px;
+    width: 50%;
+}
+
+.img2 {
+    border-radius: 20px;
+    width: fit-content;
+    width: 40%;
+}
+
+.infoSide {
+    grid-area: info;
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    grid-template-areas: 
+        "story"
+        "cards";
+    height: 100%;
+}
+
+.storyText {
+    grid-area: story;
+    font-size: 1.2rem;
+    font-weight: 400;
+}
+
+.cardsContainer {
+    grid-area: cards;
+    display: grid;
+    width: 100%;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+}
+
+.cards {
+    display: flex;
+    min-width: 130px;
+    max-width: 288px;
+    width: 100%;
+    height: auto;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background-color: white;
+    -webkit-box-shadow: 0px 0px 5px 1px rgba(0,0,0,0.26);
+    -moz-box-shadow: 0px 0px 5px 1px rgba(0,0,0,0.26);
+    box-shadow: 0px 0px 5px 1px rgba(0,0,0,0.26);
+    margin: auto;
+}
+
+.cards h2 {
+    font-size: 1.6rem;
+}
+
+.cards p {
+    font-size: 0.9rem;
+    color: rgb(110, 110, 110);
+}
+
+@media (min-width: 700px) and (max-width: 1219px) {
+    .ourStory {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "title"
+            "img"
+            "info";
+        padding: 4rem 1rem;
+    }
+
+    .title {
+        align-items: flex-start;
+        justify-content: flex-start;
+        padding: 0 1rem;
+        margin: 0;
+    }
+
+    .title h3 {
+        margin: 0;
+        margin-top: 1rem;
+    }
+
+    .images {
+        flex-direction: row;
+        gap: 1.5rem;
+        margin-bottom: 3rem;
+    }
+
+    .img2 {
+        order: 1;
+    }
+
+    .img1 {
+        order: 2;
+    }
+
+    .infoSide {
+        grid-template-rows: 0.9fr 1fr;
+        gap: 1rem;
+    }
+
+    .storyText {
+        padding: 0 1rem;
+        text-align: center;
+        margin-bottom: 1rem;
+    }
+
+    .cardsContainer {
+        padding: 0 1rem;
+        justify-content: center;
+        grid-template-columns: 1fr 1fr
+    }
+
+}
+
+@media (max-width: 699px) {
+    .ourStory {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "title"
+            "img"
+            "info";
+        padding: 4rem 0rem;
+    }
+
+    .title {
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .img1 {
+        width: 60%;
+    }
+
+    .img2 {
+        width: 60%;
+    }
+
+    .title h3 {
+        margin: 0;
+        margin-top: 1rem;
+    }
+
+    .images {
+        flex-direction: column;
+        max-width: 100%;
+        align-items: center;
+        gap: 1.5rem;
+        margin-bottom: 0;
+    }
+
+    .infoSide {
+        grid-template-rows: 1fr auto;
+        gap: 1rem;
+    }
+
+    .storyText {
+        padding: 0;
+        text-align: center;
+        margin-bottom: 1rem;
+    }
+
+    .storyText p {
+        font-size: 1.1rem;
+    }
+
+    .cardsContainer {
+        justify-content: center;
+        grid-column: auto;
+    }
+}
