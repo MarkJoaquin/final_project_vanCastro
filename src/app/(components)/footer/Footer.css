@@ -3,6 +3,14 @@ footer {
     color: white;
 }
 
+.footer-container{
+    padding: 2rem;
+}
+
+.footer-copyright{
+    padding: 2rem;
+}
+
 footer h3 {
     font-size: large;
     font-weight: 700;
@@ -48,6 +56,8 @@ span {
     }
 
     .footer-contact, .footer-location {
+        width: 100%;
+        word-break: break-all;
         margin-bottom: 3rem;
     }
 

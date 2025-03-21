@@ -3,11 +3,11 @@ import Link from "next/link";
 
 export default function Footer() {
     return (
-        <footer className="p-15">
+        <footer className="w-[100%]">
             <div className="footer-container flex justify-between border-b pb-6">
                 <div className="footer-contact justify-items-start order-tablet-1">
                     <h3>Contact</h3>
-                    <p className="footer-element"><span>Phone</span></p>
+                    <p  className="footer-element"><span>Phone</span></p>
                     <div className=" footer-element contact-driver">
                         <img className="phone-icon" src="./footer/footer-phone.svg"/>
                         <p className="pr-3">Anderson</p>
