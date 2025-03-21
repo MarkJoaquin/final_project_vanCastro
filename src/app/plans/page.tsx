@@ -56,8 +56,16 @@ export default function Plans() {
   return (
     <>
       <Hero data={heroSection} />
+<<<<<<< HEAD
       <HereToHelp data={hereToHelp} />
       <InstructorsProfile/>
+=======
+      <PickAPlan/>
+      <ICBCKnowledge data={ICBC_knowledge}/>
+      {/* instructors */}
+      <HereToHelp data={hereToHelp} />
+      <ContactSection />
+>>>>>>> d30a3b8f22ae264fd4cfcf4ab7a3d0d407961949
     </>
   );
 } 
