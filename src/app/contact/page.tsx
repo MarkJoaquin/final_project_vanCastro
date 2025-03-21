@@ -1,4 +1,7 @@
 import AboutVancastro from "../(components)/AboutVancastro/AboutVancastro";
+import LetUsKnow from "../(components)/LetUsKnow/LetUsKnow";
+
+
 
 export default function Contact() {
     const aboutVancastro = {
@@ -9,6 +12,7 @@ export default function Contact() {
     return (
         <>
             <AboutVancastro data={aboutVancastro} />
+            <LetUsKnow color={"bg-zinc-900"}/>
         </>
     );
 }
