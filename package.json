@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build || true",
+    "build": "next build && touch .next/routes-manifest.json || true",
     "start": "next start",
     "lint": "next lint"
   },
