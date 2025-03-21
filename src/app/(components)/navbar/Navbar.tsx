@@ -57,13 +57,6 @@ export default function Navbar() {
                             <Link href="/plans">Plans</Link>
                         </li>
                         <li 
-                            className={`${styles.singleNavLink} ${activeLink === "bookings" ? 
-                                 styles.active : ""}`} 
-                            onClick={() => handleNavbarLinkClick("bookings")}
-                        >
-                            <Link href="/booking">Booking</Link>
-                        </li>
-                        <li 
                             className={`${styles.singleNavLink} ${activeLink === "faq" ? 
                                  styles.active : ""}`} 
                             onClick={() => handleNavbarLinkClick("faq")}
@@ -77,6 +70,12 @@ export default function Navbar() {
                         >
                             <Link href="/contact">Contact</Link>
                         </li>
+                        <button 
+                            className={styles.bookingLink} 
+                            onClick={() => handleNavbarLinkClick("bookings")}
+                        >
+                            <Link href="/booking">Booking</Link>
+                        </button>
                     </ul>
                 </div>
             </nav>

@@ -1,4 +1,5 @@
 import AboutVancastro from "../(components)/AboutVancastro/AboutVancastro";
+import LetUsKnow from "../(components)/LetUsKnow/LetUsKnow";
 import OurStory from "../(components)/OurStory/OurStory";
 import NeedHelpICBC from "../(components)/NeedHelpICBC/NeedHelpICBC";
 import callImg from "@/../public/images/NeedHelpICBC/call.png"
@@ -30,6 +31,7 @@ export default function Contact() {
             <OurStory />
             <NeedHelpICBC data={NeedHelpICBCdata}/>
 
+            <LetUsKnow />
         </>
     );
 }
