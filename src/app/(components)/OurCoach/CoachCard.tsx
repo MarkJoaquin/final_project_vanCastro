@@ -10,12 +10,10 @@ interface CoachCard {
 export default function CoachCard({data}:CoachCard){
 
     const {avatar3, name, phone, description} = data;
-    // console.log('Avatar: ', avatar3.fields?.file.url)
 
     return(
         <div className={styles.cardContainer}>
             <div className={styles.imageContainer}>
-                {/* <img src={image} alt={name} /> */}
                 <Image
                 src = {(('https:' + avatar3?.fields.file.url) as string) || '' }
                 alt = {(name as string) || ''}

@@ -1,27 +1,4 @@
-/* .cardContainer{
-    border: 1px red solid;
-    border-radius: 150px;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #F4F2EB;
-}
-
-.content{
-    border: 1px green solid;
-    width: 120%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    padding: 1rem;
-    gap: 2rem;
-}
- */
-
-
  .cardContainer{
-    /* border: 1px red solid; */
     background-color: #F4F2EB;
     border-radius: 150px;
     display: flex;
@@ -35,7 +12,6 @@
  }
 
  .content{
-    /* border: 1px black solid; */
     width: 70%;
     display: flex;
     flex-direction: column;
