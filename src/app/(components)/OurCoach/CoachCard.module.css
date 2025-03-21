@@ -1,4 +1,4 @@
-.cardContainer{
+/* .cardContainer{
     border: 1px red solid;
     border-radius: 150px;
     width: 100%;
@@ -6,18 +6,6 @@
     justify-content: center;
     align-items: center;
     background-color: #F4F2EB;
-}
-
-.imageContainer{
-    border: 1px black solid;
-    height: 100%;
-}
-
-.imageContainer img{
-    width: 100%;
-    height: 150%;
-    border-radius: 150px;
-
 }
 
 .content{
@@ -29,6 +17,32 @@
     padding: 1rem;
     gap: 2rem;
 }
+ */
+
+
+ .cardContainer{
+    /* border: 1px red solid; */
+    background-color: #F4F2EB;
+    border-radius: 150px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+ }
+
+ .imageContainer img{
+    border-radius: 150px;
+    height: 100%;
+ }
+
+ .content{
+    /* border: 1px black solid; */
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    padding-right: 4rem;
+    gap: 2rem;
+ }
 
 .name {
     font-size: 30px;
@@ -40,7 +54,6 @@
     display: flex;
     align-items: center;
     gap: 1rem;
-    /* border: 1px red solid; */
 }
 
 .phone{
@@ -55,3 +68,96 @@
     font-weight: 400;
 }
 
+@media only screen and (max-width: 480px) {
+    .cardContainer{
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 1rem;
+    }
+
+    .content{
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+        padding-right: 0;
+        text-align: center;
+        gap: 0rem;
+        padding: 1rem;
+    }
+    .name {
+        font-size: 20px;
+        line-height: 23px;
+    }
+    
+    .phoneContainer{
+        gap: 0;
+    }
+
+    .phone{
+        font-size: 12px;
+        line-height: 19px;
+    }
+    
+    .description{
+        font-size: 10px;
+        line-height: 23px;
+    }
+}
+
+@media only screen and (min-width: 481px) and (max-width: 768px) {
+    .cardContainer{
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 1rem;
+    }
+
+    .content{
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+        padding-right: 0;
+        text-align: center;
+        gap: 0rem;
+        padding: 2rem;
+    }
+    .name {
+        font-size: 25px;
+        line-height: 28px;
+    }
+    
+    .phone{
+        font-size: 19px;
+        line-height: 24px;
+    }
+    
+    .description{
+        font-size: 15px;
+        line-height: 28px;
+    }
+}
+
+@media only screen and (min-width: 769px) and (max-width: 1279px) {
+    .content{
+        padding-right: 1rem;
+        width: 80%;
+        gap: 1rem;
+    }
+    .name {
+        font-size: 25px;
+        line-height: 28px;
+    }
+    
+    .phone{
+        font-size: 19px;
+        line-height: 24px;
+    }
+    
+    .description{
+        font-size: 15px;
+        line-height: 28px;
+    }
+}
+
+@media only screen and (min-width: 1280px) {}

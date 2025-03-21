@@ -3,18 +3,9 @@ import Image from "next/image";
 import styles from './CoachCard.module.css'
 import { DrivingInstructor } from '@/types/contentful';
 
-
-// type Props = {
-//     image:string;
-//     name: string;
-//     phoneNumber: string;
-//     description: string
-// }
-
 interface CoachCard {
     data: Partial<DrivingInstructor>
 }
-
 
 export default function CoachCard({data}:CoachCard){
 

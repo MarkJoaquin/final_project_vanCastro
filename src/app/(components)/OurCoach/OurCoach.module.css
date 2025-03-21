@@ -35,3 +35,32 @@
     flex-direction: column;
     gap: 2rem;
 }
+
+@media only screen and (max-width: 480px) {
+    .sectionContainer{
+        padding: 1rem;
+    }
+    .cardContainer{
+        padding: 1rem 0rem;
+    }
+}
+
+@media only screen and (min-width: 481px) and (max-width: 768px) {
+    .sectionContainer{
+        padding: 2rem;
+    }
+    .cardContainer{
+        padding: 1rem;
+    }
+}
+
+@media only screen and (min-width: 769px) and (max-width: 1279px) {
+    .sectionContainer{
+        padding: 2rem;
+    }
+    .cardContainer{
+        padding: 1rem;
+    }
+}
+
+@media only screen and (min-width: 1280px) {}
