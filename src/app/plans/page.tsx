@@ -1,4 +1,4 @@
-import Hero from "../(components)/Hero/Hero";
+import Hero from "../(components)/hero/Hero";
 import HereToHelp from "../(components)/HereToHelp/HereToHelp";
 import PickAPlan from "../(components)/PickAPlan/PickAPlan";
 import ContactSection from "../(components)/ContactSection/Contact_Us";
