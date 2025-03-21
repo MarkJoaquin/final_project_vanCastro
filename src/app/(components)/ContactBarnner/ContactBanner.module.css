@@ -1,0 +1,35 @@
+.gridTemplateStyle1{
+  grid-template-areas: 
+  "img1 text";
+}
+.gridTemplateStyle2{
+  grid-template-areas: 
+  "style2img1 style2text style2img2";
+}
+
+@media only screen and (max-width:1000px){
+  .gridTemplateStyle1{
+    justify-content: center;
+    grid-template-areas: 
+    "text"
+    "img1";
+  }
+  .style1img1{
+    justify-self: center;
+  }
+  .gridTemplateStyle2{
+    justify-content: center;
+    grid-template-areas: 
+    "style2text style2text"
+    "style2img1 style2img2";
+  }  
+  .style2img1{
+    justify-self: end;
+  }
+}
+
+@media only screen and (max-width:600px){
+  .titleFontSize{
+    font-size: 24px;
+  }
+}

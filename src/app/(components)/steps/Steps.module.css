@@ -1,0 +1,94 @@
+.sectionStep{
+    align-content: flex-start;
+    align-items: flex-start;
+    display: flex;
+    flex: none;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 0px;
+    
+    justify-content: flex-start;
+    overflow: visible;
+    padding: 0 0 64px 0;
+    position: relative;
+    width: 100%;
+}
+
+.sectionTitle{
+    background-color: #fff;
+    display: flex;
+    height: 269px;
+    overflow: visible;
+    position: relative;
+    width: 100%;
+    flex-direction: column;
+    justify-content: center;
+   
+}
+
+.stepsList{
+    width: 100%;
+}
+
+.steplist{
+    width: 100%;
+}
+
+.questioTitle{
+
+    text-align: center;
+    font-weight: 700 !important;
+    line-height: 60px;
+    font-size: 3rem;
+}
+.ul{
+    width: 100%;
+
+}
+
+@media screen and (max-width: 480px) {
+    .sectionTitle{
+        padding: 3rem 2rem;
+    }
+
+    .questioTitle{
+        font-size: 35px !important;
+        font-weight: 700 !important;
+        line-height: 40px;
+    }
+}
+
+@media screen and (min-width: 481px) and (max-width: 768px){
+    .sectionTitle{
+        padding: 3rem 2rem;
+    }
+
+    .questioTitle{
+        font-size: 46px !important;
+        line-height: 50px;
+    }
+
+}
+
+
+
+@media (min-width: 769px) and (max-width: 1279px){
+    .sectionTitle{
+        padding: 0 5rem !important;
+    }
+
+    .questioTitle{
+        font-size: 50px !important;
+        line-height: 60px;
+    }
+
+}
+
+
+
+
+
+
+
+
+

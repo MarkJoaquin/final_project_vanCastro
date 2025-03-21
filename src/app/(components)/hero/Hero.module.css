@@ -1,0 +1,199 @@
+.heroComponent {
+  margin-top: 8rem;
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow-x: hidden;
+}
+
+.videoBackground {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -10;
+  overflow-x: hidden;
+}
+
+.heroContainer {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  color: white;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 0;
+}
+
+.homeHero {
+  height: 100%;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3rem;
+  text-align: center;
+  margin: auto;
+}
+
+.homeHero h1 {
+  width: 60%;
+  margin: 0 auto;
+}
+
+.plansHero {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3rem;
+  padding: 0 2rem;
+}
+
+.plansHero h1 {
+  width: 60%;
+}
+
+.plansHero p {
+  width: 60%;
+}
+
+.mainContent {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.heroTitle {
+  font-size: 64px;
+  font-weight: 700;
+  line-height: 70px;
+}
+
+.heroLink {
+  text-decoration: none;
+  font-size: 23px;
+  font-weight: 700;
+  line-height: 27px;
+  color: black;
+  padding: 0.5rem 3rem;
+  border-radius: 15px;
+  background-color: var(--primary-color);
+  transition: background-color 0.2s ease-in-out;
+  /* background-color: #FFCE47; ; */
+}
+
+.heroLink:hover {
+  background-color: #ffe08b;
+}
+
+.heroText {
+  font-size: 24px;
+  font-weight: 300;
+  line-height: 22px;
+}
+
+/* Media Queries */
+
+/* Mobile Vertical */
+@media only screen and (max-width: 480px) {
+  .heroComponent {
+    margin-top: 5rem;
+  }
+  .heroTitle {
+    font-size: 2.5rem !important;
+    font-weight: 700;
+    line-height: 50px;
+  }
+
+  .heroText {
+    line-height: 30px;
+    font-size: 1.5rem !important;
+    width: 62% !important;
+    margin: 0 auto;
+  }
+
+  .plansHero{
+    align-items: center;
+  }
+
+  .plansHeroTitle{
+    width: 100% !important;
+    text-align: center;
+  }
+
+  .plansHeroText{
+    width: 100% !important;
+    text-align: center;
+  }
+
+}
+
+/* Mobile Horizontal */
+@media only screen and (min-width: 481px) and (max-width: 768px) {
+
+  .heroComponent {
+    margin-top: 5rem;
+  }
+
+  .plansHero{
+    align-items: center;
+  }
+
+  .heroTitle {
+    font-weight: 700;
+    line-height: 60px;
+    font-size: 3rem !important;
+    width: 50% !important;
+  }
+
+  .plansHeroTitle{
+    width: 100% !important;
+    text-align: center;
+  }
+
+  .plansHeroText{
+    width: 100% !important;
+    text-align: center;
+  }
+
+  .heroText {
+    line-height: 30px;
+    font-size: 1.5rem !important;
+    width: 65% !important;
+    margin: 0 auto;
+  }
+
+
+}
+
+@media only screen and (min-width: 769px) and (max-width: 1279px) {
+  .heroComponent {
+    margin-top: 5rem;
+  }
+  .plansHero{
+    align-items: center;
+  }
+  .plansHero h1, .plansHero p{
+    width: 100%;
+    text-align: center;
+  }
+}
+
+/* @media only screen and (min-width: 1280px) {
+} */

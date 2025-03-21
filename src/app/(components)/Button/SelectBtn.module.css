@@ -1,0 +1,18 @@
+.isActive{
+  background-color: rgb(255, 206, 71);border-radius: 21.46px;
+  font-weight: 600;
+}
+.nonActive{
+  color: rgb(255,255,255);
+}
+
+@media screen and (max-width: 480px) {
+  .isActive{
+    background-color: rgb(255, 206, 71);border-radius: 21.46px;
+    font-weight: 600;
+  }
+  .nonActive{
+    color: rgb(255,255,255);
+  }
+  
+}
