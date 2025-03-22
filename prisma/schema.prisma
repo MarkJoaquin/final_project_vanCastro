@@ -13,3 +13,169 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Student {
+  id              String   @id @default(cuid()) @map("_id") @db.ObjectId
+  email           String   @unique
+  name            String
+  language        String?
+  phone           String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  licenses        License[]
+  lessonRequests  Lessons_request[]
+  roadTests       Road_test[]
+  lessons         Lesson[]        
+
+  @@map("students")
+}
+
+model Instructor {
+  id                    String   @id @default(cuid()) @map("_id") @db.ObjectId
+  name                  String
+  languages             String[]
+  phone                 String
+  email                 String   @unique
+  password              String
+  license_number        String?
+  experience_years      Int
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  availability          Availability[]
+  lessonRequests        Lessons_request[]
+  lessons               Lesson[]         
+
+  @@map("instructors")
+}
+
+model Availability {
+  id              String   @id @default(cuid()) @map("_id") @db.ObjectId
+  instructorId    String   @db.ObjectId
+  startTime       String
+  endTime         String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  instructor      Instructor @relation(fields: [instructorId], references: [id])
+
+  @@map("availability")
+}
+
+model Location {
+  id              String   @id @default(cuid()) @map("_id") @db.ObjectId
+  name            String
+  address         String
+  city            String
+  state           String
+  zip             String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("locations")
+}
+
+model Plan {
+  id              String   @id @default(cuid()) @map("_id") @db.ObjectId
+  name            String
+  description     String
+  lessons         Int
+  price           Float
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("plans")
+}
+
+model License {
+  id              String   @id @default(cuid()) @map("_id") @db.ObjectId
+  student_id      String   @unique @db.ObjectId
+  license_type    String
+  license_number  String
+  expiration_date DateTime
+
+  student         Student @relation(fields: [student_id], references: [id])
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("license")
+}
+
+model Lessons_request {
+  id              String    @id @default(cuid()) @map("_id") @db.ObjectId
+  student_id      String    @db.ObjectId
+  instructor_id   String    @db.ObjectId
+  lesson_date     DateTime
+  lesson_time     String
+  lesson_duration String
+  lesson_location String
+  lesson_plan     String
+  lesson_price    String
+  lesson_status   String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  student         Student   @relation(fields: [student_id], references: [id])
+  instructor      Instructor @relation(fields: [instructor_id], references: [id])
+
+  @@map("lessons_request")
+}
+
+model Road_test {
+  id             String   @id @default(cuid()) @map("_id") @db.ObjectId
+  student_id     String   @db.ObjectId
+  city           String
+  address        String
+  zip            String
+
+  student        Student @relation(fields: [student_id], references: [id])
+
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@map("road_test")
+}
+
+model Transit_time{
+  id             String   @id @default(cuid()) @map("_id") @db.ObjectId
+  from_city      String
+  to_city        String
+  time           String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt 
+
+  @@map("transit_time")
+}
+
+model Schedule{
+  id            String   @id @default(cuid()) @map("_id") @db.ObjectId
+  date         DateTime
+  startTime    String
+  endTime      String
+  duration     String
+
+  @@map("schedule")
+}
+
+model Lesson{
+  id            String   @id @default(cuid()) @map("_id") @db.ObjectId
+  student_id    String   @db.ObjectId
+  instructor_id String   @db.ObjectId
+  date          DateTime
+  startTime     String
+  endTime       String
+  duration      String
+  location      String
+  plan          String
+  price         String
+  status        String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  student       Student   @relation(fields: [student_id], references: [id])
+  instructor    Instructor @relation(fields: [instructor_id], references: [id])
+
+  @@map("lessons")
+
+}
