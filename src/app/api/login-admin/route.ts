@@ -1,3 +1,4 @@
+import { hashCompare, hashPassword } from "@/lib/hashPass";
 import { NextResponse, NextRequest } from "next/server";
 
 const admin = [
@@ -23,11 +24,14 @@ export async function POST(request: Request) {
     if (!body.email || !body.password) {
       return NextResponse.json({ message: "Missing admin" });
     }
-
+    
+    const hashedPassword = await hashPassword(body.password)
+    console.log("this is hashCompare",await hashCompare(body.password,hashedPassword))
+    
     return NextResponse.json({
       message: "post admin",
-      admin: body.admin,
-      email:body.email,
+      email: body.email,
+      password: hashedPassword,
     });
   } catch (error) {
     console.error("Error sending admin info:", error);
