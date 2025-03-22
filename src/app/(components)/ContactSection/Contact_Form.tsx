@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import styles from '../LetUsKnow/LetUsKnow.module.css'; // Importing the CSS module
 
 export default function ContactForm() {
   const [formData, setFormData] = useState({
@@ -55,7 +56,7 @@ export default function ContactForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="w-full max-w-md space-y-4 rounded-lg bg-zinc-900 p-6 lg:w-[25rem] h-[27rem] flex flex-col justify-around"
+      className={`${styles.formSection} [w-full max-w-md space-y-4 rounded-lg p-6 lg:w-[25rem] h-[27rem] flex flex-col justify-around]`} // Applying the new class
     >
       <Input
         placeholder="Name"
@@ -89,7 +90,7 @@ export default function ContactForm() {
       />
       <Button
         type="submit"
-        className="w-full bg-[var(--primary-color)] text-black font-semibold hover:bg-[#FDB813]/90 cursor-pointer"
+        className={styles.button} // Applying the new button styles
       >
         Send Message
       </Button>

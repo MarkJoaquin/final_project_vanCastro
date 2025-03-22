@@ -5,6 +5,7 @@
 .stepOne .stepIdName {
   color: var(--third-color) !important;
 }
+
 .stepTwo {
   background-color: var(--secoundary-color);
 }
@@ -74,16 +75,16 @@
   overflow: visible;
   padding: 8px 35px;
   position: relative;
-  font-size: 2.3rem;
+  font-size: 1.7rem;
   color: var(--primary-color);
   font-weight: 700;
-  width: fit-content;
+  
   margin-bottom: 1rem;
 }
 
 .StepTitle {
   text-align: center;
-  font-size: 2.813rem;
+  font-size: 2rem;
   font-weight: 700;
 
   margin-bottom: 1.5rem;
@@ -96,21 +97,18 @@
 .mainText {
   display: flex;
   flex-direction: column;
-  font-size: 2.2rem;
   font-weight: 500;
   line-height: 48px !important;
   text-align: center;
-
   margin-bottom: 1.3rem;
-
-  font-size: 1.6rem;
+  font-size: 1.5rem;
   font-weight: lighter;
   line-height: 35px !important;
 }
 
 .titleDescription {
   line-height: 48px !important;
-  font-size: 1.8rem !important;
+  font-size: 1.5rem !important;
 }
 
 .subText {
@@ -118,6 +116,10 @@
   line-height: 2rem;
   text-align: center;
   width: 50%;
+}
+
+.innerTitle{
+  font-size: 1.2rem;
 }
 
 .withTitle {
@@ -136,23 +138,25 @@
 
 .innerTitle{
     font-weight: bold;
-    font-size: 1.8rem;
+    font-size: 1.5rem;
 }
 
 .innerDescription{
+    font-size: 1.4rem;
     font-weight: normal;
 }
 
 @media screen and (max-width: 480px) {
   .mainStep {
     display: flex;
-    align-content: flex-start;
-    padding: 3rem 2rem;
+    padding: 2rem 1rem;
     width: 100%;
   }
 
   .stepContainer {
-    padding: 3px;
+    padding: 1px 5px;
+    text-align: center;
+    width: 100%;
   }
 
   .StepTitle {
@@ -165,35 +169,52 @@
   }
 
   .StepTitle {
-    font-size: 1.5rem;
-    margin-bottom: 8px;
+    font-size: 1.3rem;
+    margin-bottom: 2px;
+    text-align: center;
   }
 
   .subText {
-    font-size: 0.8rem !important;
-    line-height: 23px;
-    margin: 0rem 2.3rem;
+    font-size: 0.59rem !important;
+    line-height: 15px;
+    width: 65%;
+   
+  }
+  .mainTextContainer{
+    width: 80%;
+    text-align: center;
+    
   }
 
   .mainText {
-    font-size: 0.9rem;
-    margin-bottom: 8px !important;
-    margin: 0rem 1rem;
-    line-height: 23px !important;
+    font-size: 0.76rem;
+    height: fit-content;
+    margin-bottom: 0px !important;
+    line-height: 17px !important;
+    width: 90%;
+  }
+
+  .innerTitle{
+    font-size: 0.78rem !important;
   }
 
   .titleDescription {
     line-height: 23px !important;
-
     font-size: 0.8rem !important;
   }
+
+  .innerDescription{
+    font-size: 0.665rem;
+    margin-bottom: 0.5rem;
+  }
+
 }
 
-@media screen and (min-width: 481px) and (max-width: 768px) {
+@media screen and (min-width: 481px) and (max-width: 769px) {
   .mainStep {
     display: flex;
     align-content: flex-start;
-    padding: 3rem 2rem !important;
+    padding: 2rem 1rem !important;
   }
 
   .stepContainer {
@@ -209,20 +230,34 @@
   .StepTitle {
     text-align: center;
     margin-bottom: 1rem;
-    font-size: 2rem;
+    font-size: 1.6rem;
+  }
+
+  .mainTextContainer{
+    width: 90%;
+    text-align: center;
+    
   }
 
   .mainText {
-    font-size: 1.2rem;
+    font-size: 1rem;
     margin-bottom: 1.1rem !important;
     margin: 0rem 1rem;
     line-height: 25px !important;
   }
 
+  .innerTitle{
+    font-size: 1.1rem !important;
+  }
+
+  .innerDescription{
+    font-size: 0.95rem;
+  }
+
   .subText {
-    font-size: 1rem !important;
-    margin: 0.6rem 2.3rem;
-    line-height: 25px !important;
+    width: 50%;
+    font-size: 0.75rem !important;
+    line-height: 20px !important;
   }
 
   .titleDescription {
@@ -230,6 +265,7 @@
     font-family: var(--font-primary);
     font-size: 1.1rem !important;
   }
+
 }
 
 @media (min-width: 769px) and (max-width: 1279px) {
@@ -251,12 +287,17 @@
 
   .stepId {
     margin-bottom: 1rem;
-    font-size: 1.7rem;
+    font-size: 1.6rem;
   }
 
   .StepTitle {
-    font-size: 1.9rem;
+    font-size: 1.75rem;
     margin-bottom: 1.5rem;
+  }
+
+  .mainTextContainer{
+    width: 90%;
+    text-align: center;
   }
 
   .mainText {
@@ -265,8 +306,17 @@
     margin: 0rem 1rem;
   }
 
+  .innerTitle{
+    font-size: 1.35rem !important;
+  }
+
+  .innerDescription{
+    font-size: 1.15rem;
+  }
+
   .subText {
-    font-size: 1.2rem !important;
+    width: 50%;
+    font-size: 1rem !important;
     margin: 0.6rem 2.3rem;
   }
 

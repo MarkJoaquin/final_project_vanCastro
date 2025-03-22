@@ -6,6 +6,7 @@ import hereToHelpImg from "@/../public/images/HereToHelp/here-to-help-icon.svg"
 import Person1Img from "@/../public/images/ICBC_knowledge/Person1.png"
 import Person2Img from "@/../public/images/ICBC_knowledge/Person2.png"
 import ICBCKnowledge from "../(components)/ICBCKnowledge/ICBCKnowledge";
+import InstructorsProfile from "../(components)/instructorsProfile/Instructors_Profile";
 
 export default function Plans() {
   const heroSection = {
@@ -57,7 +58,7 @@ export default function Plans() {
       <Hero data={heroSection} />
       <PickAPlan/>
       <ICBCKnowledge data={ICBC_knowledge}/>
-      {/* instructors */}
+      <InstructorsProfile />
       <HereToHelp data={hereToHelp} />
       <ContactSection />
     </>
