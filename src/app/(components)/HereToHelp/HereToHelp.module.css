@@ -68,7 +68,7 @@
 
 .button::after {
     background-color: var(--primary-color);
-    border-radius: 8px;
+    border-radius: 5px;
     content: '';
     display: block;
     height: 100%;
