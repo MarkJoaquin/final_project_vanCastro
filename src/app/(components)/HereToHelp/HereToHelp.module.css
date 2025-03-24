@@ -57,7 +57,7 @@
 /* Button Animation */
 
 .button {
-  border: 2px solid black;
+  border: 4px solid black;
   overflow: hidden;
   position: relative;
   text-decoration: none;
@@ -88,7 +88,7 @@
 }
 
 .button:hover {
-    border: 2px solid transparent;
+    border: 4px solid transparent;
     color: black;
     transform: scale(1.05);
     will-change: transform;
