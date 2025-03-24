@@ -46,7 +46,7 @@
 /* Button animation */
 
 .btnSize {
-  border: 2px solid var(--primary-color);
+  border: 2px solid var(--primary-color) !important;
   overflow: hidden;
   position: relative;
   text-decoration: none;
