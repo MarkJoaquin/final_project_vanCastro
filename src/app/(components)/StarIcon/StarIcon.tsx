@@ -1,6 +1,11 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 
-export default function StarIcon() {
-  return <FontAwesomeIcon icon={faStar} style = {{fontSize: '20px'}}/>;
+
+type StarIconProps = {
+  className?: string;
+};
+
+export default function StarIcon({ className }: StarIconProps) {
+  return <FontAwesomeIcon icon={faStar} style={{ fontSize: '20px' }} className={className} />;
 }
