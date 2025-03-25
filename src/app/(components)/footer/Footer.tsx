@@ -9,12 +9,12 @@ export default function Footer() {
                     <h3>Contact</h3>
                     <p  className="footer-element"><span>Phone</span></p>
                     <div className=" footer-element contact-driver">
-                        <img className="phone-icon" src="./footer/footer-phone.svg"/>
+{/*                         <img className="phone-icon" src="./footer/footer-phone.svg"/> */}
                         <p className="pr-3">Anderson</p>
                         <p className="flex hover-element">+1 604-600-9173</p>
                     </div>
                     <div className="footer-element contact-driver">
-                        <img className="phone-icon" src="./footer/footer-phone.svg"/>
+{/*                         <img className="phone-icon" src="./footer/footer-phone.svg"/> */}
                         <p className="pr-3">Andresa</p>
                         <p className="flex hover-element">+1 778-680-5613</p>
                     </div>
@@ -39,19 +39,19 @@ export default function Footer() {
                     <p className="footer-element hover-element">Contact</p>
                 </div>
                 <div className="footer-logo mobile-first order-tablet-4">
-                    <img className="mb-5" src="./footer/vancastro-logo.svg" alt="Logo" />
+{/*                     <img className="mb-5" src="./footer/vancastro-logo.svg" alt="Logo" /> */}
                     <div className="social-media flex justify-between">
                         <div className="div-social-logo flex justify-center">
-                            <img className="social-logo" src="./footer/footer-facebook.svg" alt="Facebook" />
+{/*                             <img className="social-logo" src="./footer/footer-facebook.svg" alt="Facebook" /> */}
                         </div>
                         <div className="div-social-logo flex justify-center">
-                            <img className="social-logo" src="./footer/footer-instagram.svg" alt="Instagram" />    
+{/*                             <img className="social-logo" src="./footer/footer-instagram.svg" alt="Instagram" />     */}
                         </div>
                         <div className="div-social-logo flex justify-center">
-                            <img className="social-logo" src="./footer/footer-youtube.svg" alt="Youtube" />
+{/*                             <img className="social-logo" src="./footer/footer-youtube.svg" alt="Youtube" /> */}
                         </div>
                         <div className="div-social-logo flex justify-center">
-                            <img className="social-logo" src="./footer/footer-whatsapp.svg" alt="Whatsapp" />
+{/*                             <img className="social-logo" src="./footer/footer-whatsapp.svg" alt="Whatsapp" /> */}
                         </div>
                     </div>
                 </div>

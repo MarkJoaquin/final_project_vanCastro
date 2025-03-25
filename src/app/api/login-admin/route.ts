@@ -2,8 +2,8 @@ import { hashCompare, hashPassword } from "@/lib/hashPass";
 import { NextResponse, NextRequest } from "next/server";
 
 const admin = [
-  { id: 1, adminName: "admin1", email:"email1", password:"pass" },
-  { id: 2, adminName: "admin2", email:"email2", password:"pass" },
+  { id: 1, name: "admin1", languages:["English"], phone:"12345", email:"email1@123", password:"email1@123" },
+  { id: 2, name: "admin2", languages:["English"], phone:"12345", email:"email2@234", password:"email2@234" },
 ];
 
 export async function GET() {
@@ -26,14 +26,25 @@ export async function POST(request: Request) {
     }
     
     const hashedPassword = await hashPassword(body.password)
-    console.log("this is hashCompare",await hashCompare(body.password,hashedPassword))
-    
+
+    //check all admin info
+    const findAdmin = admin.find((data)=>{
+      return data.email === body.email
+    })
+
+    if(findAdmin && await hashCompare(findAdmin.email,hashedPassword)){
+      console.log("FindAdmin",findAdmin)
+      return NextResponse.redirect(`/admin/Dashboard`)
+    } else {
+      return NextResponse.redirect(`/admin`)
+    }
+/* 
     return NextResponse.json({
       message: "post admin",
       email: body.email,
       password: hashedPassword,
     });
-  } catch (error) {
+ */  } catch (error) {
     console.error("Error sending admin info:", error);
     return NextResponse.json({ success: false, error: "Failed to login" });
   }
