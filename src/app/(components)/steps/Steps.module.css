@@ -5,24 +5,23 @@
     flex: none;
     flex-direction: column;
     flex-wrap: nowrap;
-    gap: 0px;
     justify-content: flex-start;
     overflow: visible;
     padding: 0 0 64px 0;
     position: relative;
     width: 100%;
+   
 }
 
 .sectionTitle{
     background-color: #fff;
     display: flex;
-    height: 269px;
     overflow: visible;
     position: relative;
     width: 100%;
     flex-direction: column;
-    justify-content: center;
-   
+    justify-content: center;  
+    padding: 3rem 2rem;
 }
 
 .stepsList{
@@ -46,11 +45,12 @@
 
 @media screen and (max-width: 480px) {
     .sectionTitle{
-        padding: 3rem 2rem;
+        padding: 2rem 2rem;
+        gap: 0px !important;
     }
 
     .questionTitle{
-        font-size: 1.7rem !important;
+        font-size: 1.2rem !important;
         font-weight: 700 !important;
         line-height: 40px;
     }
@@ -72,7 +72,7 @@
 
 @media (min-width: 770px) and (max-width: 1279px){
     .sectionTitle{
-        padding: 0 5rem !important;
+        padding: 3rem 2rem;
     }
 
     .questionTitle{
