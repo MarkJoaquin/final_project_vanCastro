@@ -1,7 +1,14 @@
+"use client"
 import "./Footer.css";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 export default function Footer() {
+
+    const toAdmin = ()=>{
+        redirect("/admin")
+    }
+
     return (
         <footer className="w-[100%]">
             <div className="footer-container flex justify-between border-b pb-6">
@@ -38,7 +45,7 @@ export default function Footer() {
                     <p className="footer-element hover-element">FAQ</p>
                     <p className="footer-element hover-element">Contact</p>
                 </div>
-                <div className="footer-logo mobile-first order-tablet-4">
+                <div className="footer-logo mobile-first order-tablet-4" onClick={()=>{toAdmin()}}>
                     <img className="mb-5" src="./footer/vancastro-logo.svg" alt="Logo" />
                     <div className="social-media flex justify-between">
                         <div className="div-social-logo flex justify-center">

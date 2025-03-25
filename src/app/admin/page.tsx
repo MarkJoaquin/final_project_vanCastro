@@ -18,35 +18,10 @@ export default async function admin() {
   return (
       <div className="h-[100vh] pt-40">
           <h1>This is the admin page</h1>
-          <AdminLogin/>
           <LogoutBtn/>
           <h2>Server Session</h2>
-          <pre>{JSON.stringify(session)}</pre>
-          <h2>client Call</h2>
-          <User/>
+          <pre>{JSON.stringify(session.user?.name)}</pre>
+          <pre>{JSON.stringify(session.user?.email)}</pre>
       </div>
   )
-/* 
-  const { status } = useSession({
-    required:true,
-    onUnauthenticated(){
-      console.log("Not logged in!!")
-    }
-  })
-
-  if(status === "loading"){
-    return <>
-      <div className="h-[100vh] pt-40">
-        <LoginBtn/>
-      </div>
-    </>
-  }
-
-  return <>
-    <div className="h-[100vh] pt-40">
-      Hello Admin
-      <LogoutBtn/>
-
-    </div>
-  </> */
 }

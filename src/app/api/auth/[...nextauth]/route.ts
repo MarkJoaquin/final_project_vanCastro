@@ -8,11 +8,12 @@ const admin = [
 
 export const authOptions: NextAuthOptions = {
   session:{
-    strategy: "jwt"
+    strategy: "jwt",
+    maxAge: 1 * 24 * 60 * 60,
   },
   providers:[
     CredentialsProvider({
-      name:'Sign in',
+      name:'Email',
       credentials:{
         email:{
           label:"Email",
@@ -54,7 +55,11 @@ export const authOptions: NextAuthOptions = {
         }
       }
     })
-  ]
+  ],
+
+  pages: {
+    signIn: "/auth"
+  }
 }
 
 const handler = NextAuth(authOptions)

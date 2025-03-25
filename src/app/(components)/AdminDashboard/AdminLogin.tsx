@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import styles from '../LetUsKnow/LetUsKnow.module.css'; // Importing the CSS module
+import { signIn } from "next-auth/react";
 
 export default function AdminLogin() {
   const [adminLogin, setAdminLogin] = useState({
@@ -11,41 +12,18 @@ export default function AdminLogin() {
     password: "",
   });
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log(adminLogin);
+  const loginHandler = async () => {
+    const result = await signIn("credentials",{
+      email:adminLogin.email,
+      password:adminLogin.password,
+      redirect:true,
+      callbackUrl:"/admin"
+    })
 
-    try {
-      const response = await fetch("/api/login-admin", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(adminLogin),
-        cache: "no-store",
-      });
-
-      if (response.ok) {
-        console.log("Login OK",await response.json());
-        alert("Login");
-        setAdminLogin({
-          email: "",
-          password: "",
-        });
-      } else {
-        const errorData = await response.json();
-        console.error("Failed to send email:", errorData);
-        alert("Failed to send email: " + (errorData.message || "Unknown error"));
-      }
-    } catch (error) {
-      console.error("Login Error:", error);
-      alert("Email or Password is wrong");
-    }
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
+    <div
       className={`${styles.formSection} [w-full max-w-md space-y-4 rounded-lg p-6 lg:w-[25rem] h-[27rem] flex flex-col justify-around]`} // Applying the new class
     >
       <Input
@@ -65,11 +43,11 @@ export default function AdminLogin() {
         required
       />
       <Button
-        type="submit"
         className={styles.button} // Applying the new button styles
+        onClick={loginHandler}
       >
         Login
       </Button>
-    </form>
+    </div>
   );
 }
