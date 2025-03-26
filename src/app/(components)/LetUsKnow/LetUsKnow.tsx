@@ -1,6 +1,6 @@
 
 import styles from "./LetUsKnow.module.css"
-import ContactForm from "../ContactSection/Contact_Form"; // Importing the ContactForm component
+import ContactForm from "../ContactSection/Contact_Form"; 
 
 export default function LetUsKnow() {
   return (
