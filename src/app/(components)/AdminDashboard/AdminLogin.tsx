@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import styles from '../LetUsKnow/LetUsKnow.module.css'; // Importing the CSS module
 import { signIn } from "next-auth/react";
+import { redirect } from "next/navigation";
 
 export default function AdminLogin() {
   const [adminLogin, setAdminLogin] = useState({
@@ -16,10 +17,16 @@ export default function AdminLogin() {
     const result = await signIn("credentials",{
       email:adminLogin.email,
       password:adminLogin.password,
-      redirect:true,
-      callbackUrl:"/admin"
+      redirect:false,
+/*       callbackUrl:"/admin" */
     })
-
+    console.log("RREESSULT",result)
+    if (result?.ok === false) {
+      alert("Email or Password was wrong,,,");
+      setAdminLogin({email:'',password:''})
+    } else {
+      redirect('/admin');
+    }
   };
 
   return (
