@@ -1,9 +1,10 @@
+import { hashCompare, hashPassword } from '@/lib/hashPass';
 import NextAuth, { type NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 
 const admin = [
-  { id: 1, name: "admin1", languages:["English"], phone:"12345", email:"email1@123", password:"email1@123" },
-  { id: 2, name: "admin2", languages:["English"], phone:"12345", email:"email2@234", password:"email2@234" },
+  { id: 1, name: "admin1", languages:["English"], phone:"12345", email:"email1@123", password:"$2b$10$kYS3MFkjoY2j8RabUxTsoeqMdRqStJbzt14Pm1JoKoUoi0vdmQ2y6" }, //initial Password "email1@123"
+  { id: 2, name: "admin2", languages:["English"], phone:"12345", email:"email2@234", password:"$2b$10$5IlHpfAT8rNmoF/EqyMCKuh81OO9i0Pa6TbSpyUpLPM7Yk02FM29O" }, //initial Password "email2@234"
 ];
 
 export const authOptions: NextAuthOptions = {
@@ -41,8 +42,9 @@ export const authOptions: NextAuthOptions = {
           return null
         }
 
-        const isPasswordValid = true
-        //const isPasswordValid =  await hashCompare(credentials.email,hashedPassword)
+//        const hashedPassword = await hashPassword("email2@234")
+        const isPasswordValid =  await hashCompare(credentials.password,user.password)
+        console.log("Password",isPasswordValid)
 
         if (!isPasswordValid){
           return null
