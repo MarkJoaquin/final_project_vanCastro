@@ -80,6 +80,9 @@
     font-size: 1.2rem;
     text-align: center;
     font-weight: 700;
+
+    /* for animation */
+    transition: background 0.1s linear;
 }
 
 /* Animation booking button */
