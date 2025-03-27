@@ -6,10 +6,13 @@ async function main() {
 
   console.log('❌Removing current data❌')
 
-  await prisma.instructor.deleteMany()
   await prisma.availability.deleteMany()
+  await prisma.instructor.deleteMany()
+  await prisma.planToClass.deleteMany()
   await prisma.planClass.deleteMany()
   await prisma.plan.deleteMany()
+  await prisma.location.deleteMany()
+  await prisma.transitTime.deleteMany()
 
   console.log('✅Current data removed✅')
 
@@ -363,6 +366,16 @@ async function main() {
 
   const transitTime6 = await prisma.transitTime.create({
     data: { fromCity: 'Burnaby', toCity: 'Vancouver', time: 30 }
+  })
+
+  /* Localities */
+
+  await prisma.location.createMany({
+    data: [
+      { name: 'North Vancouver', address: '2555 25th St', city: 'North Vancouver', zip: 'V5A 1A1' },
+      { name: 'Vancouver', address: '2555 25th St', city: 'Vancouver', zip: 'V5A 1A1' },
+      { name: 'Burnaby', address: '2555 25th St', city: 'Burnaby', zip: 'V5A 1A1' }
+    ]
   })
 
   console.log('Seed completado!')

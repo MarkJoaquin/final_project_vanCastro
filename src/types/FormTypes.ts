@@ -1,4 +1,3 @@
-
 export type PlanClass = {
     id: string;
     name: string;
@@ -18,4 +17,6 @@ export type Plan = {
 export type FormData = {
     licenseClass: string;
     plan: string;
+    instructor: string;
+    location: string;
 }

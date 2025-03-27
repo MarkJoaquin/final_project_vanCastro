@@ -86,6 +86,8 @@ model Location {
   address   String
   city      String
   zip       String
+
+  lessons   Lesson[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -212,7 +214,7 @@ model Lesson {
   startTime      String
   endTime        String
   duration       String
-  location       String
+  locationId     String        @db.ObjectId
   plan           String
   price          String
   status         LessonStatus
@@ -223,6 +225,7 @@ model Lesson {
 
   student    Student    @relation(fields: [studentId], references: [id])
   instructor Instructor @relation(fields: [instructorId], references: [id])
+  location   Location   @relation(fields: [locationId], references: [id])
 
   @@map("lessons")
 }
