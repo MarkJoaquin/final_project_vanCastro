@@ -4,6 +4,15 @@ const prisma = new PrismaClient()
 
 async function main() {
 
+  console.log('❌Removing current data❌')
+
+  await prisma.instructor.deleteMany()
+  await prisma.availability.deleteMany()
+  await prisma.planClass.deleteMany()
+  await prisma.plan.deleteMany()
+
+  console.log('✅Current data removed✅')
+
   console.log('🌱Iniciando seed...')
 
   // Crear instructores y guardar sus IDs
@@ -98,7 +107,7 @@ async function main() {
     data: {
       name: 'Road lesson',
       description: 'Standard passenger vehicle license - Basic package',
-      lessons: 10,
+      lessons: 1,
       price: 100,
       time: 90,
       planClasses: {
