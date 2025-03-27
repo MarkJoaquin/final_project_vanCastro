@@ -1,4 +1,5 @@
 import AboutVancastro from "../(components)/AboutVancastro/AboutVancastro";
+import OurCoach from "../(components)/OurCoach/OurCoach";
 import LetUsKnow from "../(components)/LetUsKnow/LetUsKnow";
 import OurStory from "../(components)/OurStory/OurStory";
 import NeedHelpICBC from "../(components)/NeedHelpICBC/NeedHelpICBC";
@@ -29,8 +30,8 @@ export default function Contact() {
         <>
             <AboutVancastro data={aboutVancastro} />
             <OurStory />
+            <OurCoach/>
             <NeedHelpICBC data={NeedHelpICBCdata}/>
-
             <LetUsKnow />
         </>
     );
