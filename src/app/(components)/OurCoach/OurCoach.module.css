@@ -1,0 +1,66 @@
+.sectionContainer{
+    padding: 2rem 4rem;
+}
+
+.header{
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+}
+
+.sectionTitle{
+    font-size: 48px;
+    line-height: 48px;
+    font-weight: 700;
+}
+
+.sectionDescription{
+    font-size: 24px;
+    line-height: 30px;
+    font-weight: 500;
+}
+
+.span{
+    height: 10px;
+    width: 30%;
+    background: linear-gradient(to right, transparent, var(--primary-color), transparent);
+}
+
+.cardContainer{
+    padding: 1rem 6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+@media only screen and (max-width: 480px) {
+    .sectionContainer{
+        padding: 1rem;
+    }
+    .cardContainer{
+        padding: 1rem 0rem;
+    }
+}
+
+@media only screen and (min-width: 481px) and (max-width: 768px) {
+    .sectionContainer{
+        padding: 2rem;
+    }
+    .cardContainer{
+        padding: 1rem;
+    }
+}
+
+@media only screen and (min-width: 769px) and (max-width: 1279px) {
+    .sectionContainer{
+        padding: 2rem;
+    }
+    .cardContainer{
+        padding: 1rem;
+    }
+}
+
+@media only screen and (min-width: 1280px) {}
