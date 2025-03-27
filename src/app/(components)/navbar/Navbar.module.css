@@ -85,8 +85,15 @@
 /* Animation booking button */
 
 .bookingLink:hover {
+    background-color: black;
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+    border-radius: 1.3rem;
+}
+
+.bookingLink:hover {
   animation-name: bounce;
-  animation-duration: 0.5s;
+  animation-duration: 0.6s;
   animation-timing-function: ease-in-out;
   animation-delay: 0s;
   animation-direction: alternate;
