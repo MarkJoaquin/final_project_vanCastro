@@ -36,7 +36,7 @@ export default function OurStory() {
         className={`${styles.ourStorySection}`}
         >
         <div className={styles.ourStory}>
-            {/* Título con animación */}
+            
             <div
             className={`${styles.title} ${styles.slideUp} ${
                 isVisible ? styles.active : ""
@@ -46,7 +46,7 @@ export default function OurStory() {
             <div className={styles.span}></div>
             </div>
 
-            {/* Imágenes con animación */}
+            
             <div
             className={`${styles.images} ${styles.slideUp} ${
                 isVisible ? styles.active : ""
