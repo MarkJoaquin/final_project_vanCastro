@@ -1,8 +1,11 @@
+//"use client"
+
 import { Button } from '@/components/ui/button';
 import styles from '../LetUsKnow/LetUsKnow.module.css'; // Importing the CSS module
 import Image from 'next/image';
 import EditIcon from '@/../public/images/Admin/Edit_100_100.png'
 import DeleteIcon from '@/../public/images/Admin/Delete_100_100.png'
+import { useAdminDataContext } from '@/app/(context)/adminContext';
 
 export interface Instructor {
   id: string;
@@ -17,20 +20,33 @@ export interface Instructor {
   updatedAt: string;
 }
 
-export default async function AdminSetting() {
+export interface InstructorProps {
+  instructorData:Instructor[]|null;
+  isEdit:boolean;
+}
 
-  const res = await fetch("http://localhost:3000/api/instructors", {
-    cache: "no-store",
-    next: { revalidate: 0 },
-  });
-  const data:Instructor[] = await res.json();
+export default function AdminSetting() {
+  
+  const {instructorData,isEdit} = useAdminDataContext();
 
-  console.log("data in SSC:", data);
+  const settingContents = () => {
+    if(isEdit){
+      return <></>
+    }else{
+      return
+    }
+
+  }
+
+  console.log("data in SSC:", instructorData);
   return (
     <div
-      className={`${styles.formSection} w-full max-w-md space-y-4 rounded-lg p-6 lg:w-[25rem] h-[27rem] flex flex-col justify-around m-auto`} // Applying the new class
+      className={`${styles.formSection} w-full max-w-md space-y-2 rounded-lg p-6 lg:w-[25rem] h-[27rem] flex flex-col justify-around m-auto`} // Applying the new class
     >
-      {data.map((item,index)=>{
+      <h3 className='font-bold'>Choose Instructor</h3>
+
+      {settingContents()}
+      {instructorData?.map((item,index)=>{
         return <div key={index} className='flex justify-between items-center'>
           <h3 className='bg-white basis-2/3 pl-[1rem]'>{item.name}</h3>
           <div className='flex gap-1'>

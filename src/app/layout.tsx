@@ -3,7 +3,7 @@ import { Aleo, Lato, Montserrat } from "next/font/google";
 import "./globals.css";
 import Footer from "./(components)/footer/Footer";
 import Navbar from "./(components)/navbar/Navbar";
-import { Providers } from "./providers";
+import { SessionProviders } from "./providers";
 
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
@@ -56,9 +56,9 @@ export default function RootLayout({
         className={`${montserrat.variable} ${aleo.variable} ${lato.variable} antialiased`}
       >
         <Navbar />
-          <Providers>
+          <SessionProviders>
             {children}
-          </Providers>
+          </SessionProviders>
         <Footer />
       </body>
     </html>

@@ -1,4 +1,5 @@
 import AdminNav from "../(components)/AdminDashboard/AdminNav";
+import { AdminDataContextProvider } from "../(context)/adminContext";
 
 export default function RootLayout({
   children,
@@ -6,8 +7,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (<>
-    <AdminNav/>
-    {children}
+    <AdminDataContextProvider>
+      <AdminNav/>
+      {children}
+    </AdminDataContextProvider>
   </>
   );
 }
