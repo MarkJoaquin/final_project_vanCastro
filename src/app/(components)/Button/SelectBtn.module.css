@@ -27,8 +27,8 @@
   display: flex;
   position: relative;
   background-color: rgb(47, 47, 47);
-  border-radius: 5rem;
-  padding: 0.4rem 0.6rem; 
+  border-radius: 2rem;
+  padding: 0.4rem 0.4rem; 
   margin: 0rem auto;
   overflow: hidden;
   width: 80%; 
@@ -42,9 +42,9 @@
   position: absolute;
   top: 10%;
   transform: translateY(-50%); 
-  left: 1rem; 
+  left: 0.5rem; 
   height: 80%; 
-  width: calc((100% - 2rem) / var(--btn-count)); 
+  width: calc((100% - 1rem) / var(--btn-count)); 
   background-color: var(--primary-color);
   border-radius: 5rem;
   transition: transform 0.3s ease;
