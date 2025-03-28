@@ -106,6 +106,17 @@
     color: rgb(110, 110, 110);
 }
 
+.slideUp {
+    opacity: 0; 
+    transform: translateY(50px); 
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out; 
+  }
+  
+  .slideUp.active {
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+
 @media (min-width: 700px) and (max-width: 1219px) {
     .ourStory {
         grid-template-columns: 1fr;
