@@ -1,6 +1,36 @@
 import prisma from "@/lib/prisma";
 import { NextResponse, NextRequest } from "next/server";
 
+export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
+  const { id } = params;
+
+  if( !id ){
+    return NextResponse.json(
+      { status: "error", message: "Instructor ID is required" },
+      { status: 400 }
+    );
+  }
+  console.log("FindUnique before",id)
+
+  try {
+    const InstructorData = await prisma.instructor.findUnique({
+      where:{
+        id: id
+      },
+    });
+
+    console.log("FindUnique",id)
+
+    return NextResponse.json({
+      status: "success",
+      data: InstructorData,
+    });
+  } catch (error) {
+    console.error("Error updating Instructor Info:", error);
+    return NextResponse.json({ success: false, error: "Failed to get Instructor Info" });
+  }
+}
+
 export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
   const { id } = params;
   const body = await request.json();
