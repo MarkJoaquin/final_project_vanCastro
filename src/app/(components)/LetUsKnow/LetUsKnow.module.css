@@ -51,6 +51,19 @@
     background-color: rgb(60, 60, 60); 
 }
 
+/* Animation slide up */
+
+.slideUp {
+    opacity: 0; 
+    transform: translateY(50px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out; 
+}
+
+.slideUp.active {
+    opacity: 1; 
+    transform: translateY(0); 
+}
+
 
 @media screen and (max-width: 481px){
     .questionSection{
