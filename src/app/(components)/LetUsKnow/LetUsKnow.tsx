@@ -5,7 +5,7 @@ import ContactForm from "../ContactSection/Contact_Form"; // Importing the Conta
 export default function LetUsKnow() {
   return (
     <div className={styles.questionSection}>
-      <div className={styles.question}>
+      <div className={`${styles.question} ${styles.slideUp}`}>
         <div className={styles.title}> 
           <p >Questions?</p>
           <p>Let Us Know!</p>

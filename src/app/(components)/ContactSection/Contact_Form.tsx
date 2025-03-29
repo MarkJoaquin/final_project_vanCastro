@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import styles from "../LetUsKnow/LetUsKnow.module.css"; 
+import styles from '../LetUsKnow/LetUsKnow.module.css'; 
 
 export default function ContactForm() {
   const [formData, setFormData] = useState({
@@ -13,31 +13,6 @@ export default function ContactForm() {
     email: "",
     message: "",
   });
-
-  const [isVisible, setIsVisible] = useState(false);
-  const formRef = useRef<HTMLFormElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const entry = entries[0];
-        if (entry.isIntersecting) {
-          setIsVisible(true); 
-        }
-      },
-      { threshold: 0.2 } 
-    );
-
-    if (formRef.current) {
-      observer.observe(formRef.current);
-    }
-
-    return () => {
-      if (formRef.current) {
-        observer.unobserve(formRef.current);
-      }
-    };
-  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -80,11 +55,8 @@ export default function ContactForm() {
 
   return (
     <form
-      ref={formRef}
       onSubmit={handleSubmit}
-      className={`${styles.formSection} ${styles.slideUp} ${
-        isVisible ? styles.active : ""
-      } [w-full max-w-md space-y-4 rounded-lg p-6 lg:w-[25rem] h-[27rem] flex flex-col justify-around]`}
+      className={`${styles.formSection} ${styles.slideUp} [w-full max-w-md space-y-4 rounded-lg p-6 lg:w-[25rem] h-[27rem] flex flex-col justify-around]`} 
     >
       <Input
         placeholder="Name"
