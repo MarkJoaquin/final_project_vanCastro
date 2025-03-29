@@ -27,7 +27,7 @@ export default function CardTemplate1({cardInfo}:CardInfoProps){
     console.log("clicked",link)
   }
 
-  return <div className={`w-[586px] h-[355px] rounded-xl bg-white shadow-lg inset-shadow-2xs p-[46px] m-auto ${styles.cardComponent}`}>
+  return <div className={`w-[586px] h-[355px] rounded-xl bg-white shadow-lg inset-shadow-2xs p-[46px] m-auto ${styles.cardComponent} ${styles.slideUp}`}>
     <div>
       <h3 className={`text-[20px] font-bold ${styles.fontSizeS}`}>Phone</h3>
       <div className="flex mt-2">
