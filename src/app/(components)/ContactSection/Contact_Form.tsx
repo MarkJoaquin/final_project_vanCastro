@@ -74,7 +74,7 @@ export default function ContactForm() {
 
   return (
     <>
-      <form onSubmit={handleSubmit} className={`${formClasses}`}>
+      <form onSubmit={handleSubmit} className={`${formClasses} ${styles.slideUp}`}>
         <Input
           placeholder="Name"
           value={formData.name}
