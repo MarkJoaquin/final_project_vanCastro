@@ -1,6 +1,7 @@
-
 import ItemCard from './ItemCard'
 import styles from './WhyUs.module.css'
+import { motion } from 'framer-motion'
+
 type Props = {
     id: number,
     title: string,

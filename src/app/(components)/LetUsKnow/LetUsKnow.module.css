@@ -8,7 +8,6 @@
     height: min-content;
     overflow: visible;
     position: relative;
-    
 }
 
 .question {
@@ -20,9 +19,18 @@
     width: 39.188rem;
 }
 
-.formSection{
+.formLetUsKnow{
+    width: 100%;
+    max-width: 38rem;
+    height: auto;
+    gap : 1rem;
+    border-radius: 0.7rem;
+    padding: 1.5rem;  
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     background-color: var(--primary-color); 
-    width: 38rem;
+    width: 35rem;
     height: min-content;
 }
 
@@ -71,6 +79,66 @@
     animation-delay: 3s;
 }
 
+/* LetUsKnow.module.css */
+
+/*  Dialogo Styles */
+.dialogOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.2);  
+    z-index: 999;  
+  }
+
+.dialogContent {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    box-shadow: 0 4px 12px rgb(60, 60, 60);
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    gap: 4px;
+    transform: translate(-50%, -50%); 
+    z-index: 1000; 
+    box-shadow: 0px 0px 15px 3px rgba(0, 0, 0, 0.1)
+  }
+  
+  .dialogTitle {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .dialogDescription {
+    font-size: 1rem;
+    margin-bottom: 20px;
+  }
+  
+  .dialogButton {
+    margin-left: auto;
+    background-color: var(--primary-color);  
+    color: #fff;
+    padding: 0.3rem 0.3rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: fit-content;
+    text-align: center;
+  }
+  
+  .dialogButton:hover {
+    background-color: #f5a623;
+  }
+  
+
 
 @media screen and (max-width: 481px){
     .questionSection{
@@ -83,7 +151,7 @@
         gap: 1.35rem; 
     }
 
-    .formSection{
+    .formLetUsKnow{
         width: 100%;
     }
 
@@ -94,6 +162,11 @@
 
     .button{
         font-size: 0.80rem;
+    }
+
+    .dialogContent{
+        width: 80%;
+        padding: 1.1rem 1.1rem;
     }
 }
 
@@ -109,7 +182,7 @@
        
     }
 
-    .formSection{
+    .formLetUsKnow{
         width: 100%;
     }
 
@@ -120,6 +193,10 @@
 
     .button{
         font-size: 1rem;
+    }
+
+    .dialogContent{
+        width: 80%;
     }
 }
 
@@ -134,7 +211,7 @@
         
      }
  
-     .formSection{
+     .formLetUsKnow{
          width: 100%;
 
      }
@@ -147,4 +224,8 @@
      .button{
          font-size: 1.1rem;
      }
+
+     .dialogContent{
+        width: 100%;
+    }
 }

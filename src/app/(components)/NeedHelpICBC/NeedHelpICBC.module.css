@@ -16,6 +16,11 @@
   animation-delay: 3s;
 }
 
+@media only screen and (max-width: 480px){
+  
+}
+
+
 @media only screen and (max-width:800px){
   .titleFont{
     font-size: 20px;
