@@ -37,7 +37,7 @@ export default function StepCard({ cardStep }: StepCardProps) {
             className={styles.stepId}
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }} 
-            viewport={{ once: true, amount: 0.5 }} 
+            viewport={{ once: true, amount: 0.2 }} 
             transition={{ delay: 0.5, duration: 0.5 }}
           >
             <div className={styles.stepIdName}>
@@ -50,7 +50,7 @@ export default function StepCard({ cardStep }: StepCardProps) {
               className={styles.StepTitle}
               initial={{ opacity: 0, x: -50 }}
               whileInView={{ opacity: 1, x: 0 }} 
-              viewport={{ once: true, amount: 0.5 }} 
+              viewport={{ once: true, amount: 0.2 }} 
               transition={{ delay: 0.7, duration: 0.6 }}
             >
               {cardStep.title}
@@ -65,8 +65,8 @@ export default function StepCard({ cardStep }: StepCardProps) {
                       className={`${styles.mainText} ${styles.titleDescription} ${styles.withTitle}`}
                       initial={{ opacity: 0, x: -50 }}
                       whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true, amount: 0.5 }}
-                      transition={{ delay: 1 + index * 0.2, duration: 0.6 }}
+                      viewport={{ once: true, amount: 0.1 }}
+                      transition={{ delay: 1 + index * 0.2, duration: 0.3 }}
                     >
                       <strong className={styles.innerTitle}>{text.title}</strong>
                       <span className={styles.innerDescription}>{text.description} </span>
@@ -75,10 +75,10 @@ export default function StepCard({ cardStep }: StepCardProps) {
                     <motion.p
                       key={index}
                       className={styles.mainText}
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true, amount: 0.5 }}
-                      transition={{ delay: 1 + index * 0.2, duration: 0.6 }}
+                      initial={{ opacity: 0, x: -50}}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true, amount: 0.2 }}
+                      transition={{ delay: 1 + index * 0.2, duration: 0.3}}
                     >
                       {text}
                     </motion.p>
@@ -92,8 +92,8 @@ export default function StepCard({ cardStep }: StepCardProps) {
                 className={styles.subText}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }} 
-                viewport={{ once: true, amount: 0.5 }} 
-                transition={{ delay: 1.5, duration: 0.5 }}
+                viewport={{ once: true, amount: 0.2 }} 
+                transition={{ delay: 1.2, duration: 0.3 }}
               >
                 {cardStep.subText.text}{' '}
                 <Link
