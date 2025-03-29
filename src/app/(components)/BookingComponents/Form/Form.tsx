@@ -8,6 +8,8 @@ import { useLocalStorageWithExpiration } from '@/hooks/useLocalStorageWithExpira
 import { Button } from "@/components/ui/button"
 import type { PlanClass, Plan, FormData } from '@/types/FormTypes'
 import Image from 'next/image'
+import DatePicker from 'react-datepicker'
+import "react-datepicker/dist/react-datepicker.css"
 
 const BookingForm = () => {
     const form = useForm<FormData>({
@@ -15,20 +17,24 @@ const BookingForm = () => {
             licenseClass: '',
             plan: '',
             instructor: '',
-            location: ''
+            location: '',
+            dateTime: null
         }
     })
 
-    const { register, control, watch, reset, formState: { errors } } = form
+    const { register, control, watch, reset, formState: { errors }, setValue } = form
 
     const [classes, setClasses] = useState<PlanClass[]>([])
     const [instructors, setInstructors] = useState<any[]>([])
     const [locations, setLocations] = useState<any[]>([])
+    const [availableTimes, setAvailableTimes] = useState<any[]>([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
 
     const selectedClass = watch('licenseClass')
     const selectedInstructor = watch('instructor')
+    const selectedLocation = watch('location')
+    const selectedDateTime = watch('dateTime')
     const [showLearningPermitDialog, setShowLearningPermitDialog] = useState(false)
     const EXPIRATION_TIME = 24 * 60 * 60 * 1000 // 24 hours in milliseconds
     const [learningPermitStatus, setLearningPermitStatus] = useLocalStorageWithExpiration('learningPermitAnswer', EXPIRATION_TIME)
@@ -40,7 +46,7 @@ const BookingForm = () => {
             try {
                 const [classesRes, instructorsRes, locationsRes] = await Promise.all([
                     fetch('/api/classes'),
-                    fetch('/api/instructors'),
+                    fetch('/api/instructors_for_form'),
                     fetch('/api/locations')
                 ])
 
@@ -67,6 +73,88 @@ const BookingForm = () => {
 
         fetchData()
     }, [])
+
+    // Fetch instructor availability when instructor is selected
+    useEffect(() => {
+        const fetchAvailability = async () => {
+            if (!selectedInstructor) {
+                setAvailableTimes([])
+                return
+            }
+
+            try {
+                const response = await fetch(`/api/availability/${selectedInstructor}`)
+                if (!response.ok) {
+                    throw new Error('Failed to fetch availability')
+                }
+                const data = await response.json()
+                setAvailableTimes(data)
+            } catch (err) {
+                console.error('Error loading availability:', err)
+                setError('Failed to load instructor availability')
+            }
+        }
+
+        fetchAvailability()
+    }, [selectedInstructor])
+
+    // Helper function to check if a time is within instructor's availability
+    const isTimeWithinAvailability = (time: Date) => {
+        if (!availableTimes.length) return false
+
+        const hours = time.getHours()
+        const minutes = time.getMinutes()
+        const timeString = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`
+
+        return availableTimes.some(slot => {
+            const start = slot.startTime
+            const end = slot.endTime
+            return timeString >= start && timeString <= end
+        })
+    }
+
+    // Helper function to get available time intervals
+    const getTimeIntervals = () => {
+        if (!availableTimes.length) return []
+
+        const intervals = []
+        const currentSlot = availableTimes[0] // We'll use the first slot's times
+
+        const [startHour, startMinute] = currentSlot.startTime.split(':').map(Number)
+        const [endHour, endMinute] = currentSlot.endTime.split(':').map(Number)
+
+        let currentTime = new Date()
+        currentTime.setHours(startHour, startMinute, 0)
+
+        const endTime = new Date()
+        endTime.setHours(endHour, endMinute, 0)
+
+        while (currentTime <= endTime) {
+            intervals.push(new Date(currentTime))
+            currentTime = new Date(currentTime.getTime() + 15 * 60000) // Add 15 minutes
+        }
+
+        return intervals
+    }
+
+    // Helper function to check if a date is a weekend
+    const isWeekend = (date: Date) => {
+        const day = date.getDay()
+        return day === 0 || day === 6 // 0 is Sunday, 6 is Saturday
+    }
+
+    // Get the date 2 weeks from now
+    const getStartDate = () => {
+        const date = new Date()
+        date.setDate(date.getDate() + 14) // Add 14 days
+        
+        // If it lands on a weekend, move to next Monday
+        while (isWeekend(date)) {
+            date.setDate(date.getDate() + 1)
+        }
+        
+        return date
+    }
 
     // Handle Class 7 validation
     useEffect(() => {
@@ -130,7 +218,7 @@ const BookingForm = () => {
                         {selectedClass && (
                             <>
                                 <div className="mt-6">
-                                    <h3 className="text-xl font-semibold mb-4">Select Your Plan</h3>
+                                    <h3 className="text-xl font-semibold">Select Your Plan</h3>
                                     <p className="text-sm text-gray-500 mb-4">* Taxes are not included in the price.</p>
                                     <div className="grid grid-cols-1 gap-4">
                                         {classes.find(c => c.id === selectedClass)?.plans.map((plan) => (
@@ -253,6 +341,39 @@ const BookingForm = () => {
                                         ))}
                                     </div>
                                 </div>
+
+                                {selectedLocation && selectedInstructor && (
+                                    <div className="mt-6">
+                                        <h3 className="text-xl font-semibold mb-4">Select Date and Time</h3>
+                                        <div className="space-y-4">
+                                            <DatePicker
+                                                selected={selectedDateTime}
+                                                onChange={(date) => setValue('dateTime', date)}
+                                                showTimeSelect
+                                                inline
+                                                minDate={getStartDate()}
+                                                maxDate={new Date(Date.now() + 120 * 24 * 60 * 60 * 1000)} // 120 days ahead
+                                                timeIntervals={15}
+                                                includeTimes={getTimeIntervals()}
+                                                filterTime={isTimeWithinAvailability}
+                                                filterDate={(date) => !isWeekend(date)}
+                                                timeFormat="HH:mm"
+                                                dateFormat="MMMM d, yyyy h:mm aa"
+                                                className="w-full"
+                                            />
+                                            {errors.dateTime && (
+                                                <p className="text-sm text-red-500 text-center">
+                                                    {errors.dateTime.message}
+                                                </p>
+                                            )}
+                                            {availableTimes.length === 0 && (
+                                                <p className="text-sm text-gray-500 text-center">
+                                                    No available time slots for the selected instructor
+                                                </p>
+                                            )}
+                                        </div>
+                                    </div>
+                                )}
                             </>
                         )}
                     </div>

@@ -19,4 +19,5 @@ export type FormData = {
     plan: string;
     instructor: string;
     location: string;
+    dateTime: Date | null;
 }

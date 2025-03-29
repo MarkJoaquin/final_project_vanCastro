@@ -52,9 +52,19 @@ async function main() {
         endTime: '17:00',
       },
       {
+        instructorId: instructor1.id,
+        startTime: '10:00',
+        endTime: '18:00',
+      },
+      {
         instructorId: instructor2.id,
-        startTime: '09:00',
-        endTime: '17:00',
+        startTime: '08:00',
+        endTime: '16:00',
+      },
+      {
+        instructorId: instructor2.id,
+        startTime: '11:00',
+        endTime: '19:00',
       },
     ],
   })
