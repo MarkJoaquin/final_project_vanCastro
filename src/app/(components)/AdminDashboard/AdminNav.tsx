@@ -4,8 +4,10 @@ import Image from "next/image"
 import Setting from "@/../public/images/Admin/Setting_100_100.png"
 import { LogoutBtn } from "@/components/ui/LoginLogoutBtn"
 import Link from "next/link"
+import { useAdminDataContext } from "@/app/(context)/adminContext"
 
 export default function AdminNav(){
+  const { loginedInstructorData } = useAdminDataContext();
 
   return <>
     <div className="h-[128px] bg-[#14120C]">
@@ -15,7 +17,7 @@ export default function AdminNav(){
         <p className="underline">Dashboard</p>
       </Link>
       <div className="flex gap-[1rem] items-center">
-        <Link href="/admin/setting">
+        <Link href={`/admin/${loginedInstructorData?.email}`}>
           <Image
             src={Setting}
             alt="setting"

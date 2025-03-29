@@ -13,13 +13,17 @@ export interface Instructor {
   updatedAt: string;
 }
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Dashboard from "../(components)/AdminDashboard/AdminDashboard";
 import { useAdminDataContext } from "../(context)/adminContext";
+import { useSession } from "next-auth/react";
 
 export default function Admin() {
+  //Session part
+  const { data: session } = useSession();
+
   //Fetch the instructor Data
-  const {instructorData, updateInstructorData } = useAdminDataContext();
+  const { allInstructorData,updateAllInstructorData, updateLoginedInstructorData } = useAdminDataContext();
   
   useEffect(() => {
     const fetchData = async () => {
@@ -28,23 +32,30 @@ export default function Admin() {
           cache: "no-store",
         });
         const data: Instructor[] = await res.json();
-        updateInstructorData(data);
-//        setInstructorLoading(false);
+        updateAllInstructorData(data);
       } catch (error) {
         console.error("Error fetching data:", error);
-//        setInstructorLoading(false);
       }
     };
 
     fetchData();
   }, []); 
 
+  //This is for setting part. It doesn't relate with login part.
+  //The data is null, Sho is fixing this part
+  useEffect(()=>{
+    if(session){
+      const loginedData = JSON.stringify(session.user?.email);
+      console.log("HEREEEEEE",loginedData)
+      //-> got session email address...
+            
+      updateLoginedInstructorData(session?.user?.email||null)
+    }
+  },[allInstructorData])
+
   return (
     <div>
       <Dashboard/>
-{/*       {instructorLoading? <h3 className="text-center">Loading,,,</h3>: 
-        <AdminSetting instructorData={instructorData}/>
-      } */}
     </div>
   );
 }

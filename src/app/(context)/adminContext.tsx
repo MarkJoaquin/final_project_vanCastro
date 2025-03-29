@@ -16,26 +16,31 @@ export interface Instructor {
 }
 
 type State = {
-  instructorData: Instructor[] | null;
-  isEdit: number | false;
-  updateInstructorData: (data:Instructor[])=>void;
-  openEdit: (value:number|false)=>void;
+  allInstructorData: Instructor[] | null;
+  loginedInstructorData: Instructor | null;
+  updateAllInstructorData: (data:Instructor[])=>void;
+  updateLoginedInstructorData: (email:string|null)=>void;
 }
 
 const AdminDataContext = createContext<State | undefined>(undefined); 
 
 const AdminDataContextProvider: React.FC<{children: React.ReactNode}> = ({children}) => {
-  const [instructorData, setInstructorData] = useState<Instructor[] | null>(null);
-  const [isEdit,setIsEdit] = useState<number|false>(false);
+  const [allInstructorData, setAllInstructorData] = useState<Instructor[] | null>(null);
+  const [loginedInstructorData, setLoginedInstructorData] = useState<Instructor|null>(null);
 
-  const updateInstructorData = (value:Instructor[]) => {
-    setInstructorData(value);
+  const updateAllInstructorData = (value:Instructor[]) => {
+    setAllInstructorData(value);
   };
-  const openEdit = (value:number|false)=>{
-    setIsEdit(value);
+  const updateLoginedInstructorData = (email:string|null) => {
+    if(allInstructorData){
+      const checkInstructor = allInstructorData.find((instructor)=>{
+        return instructor.email === email
+      }) || null
+      setLoginedInstructorData(checkInstructor)
+    }
   }
 
-  const value = { instructorData,isEdit, updateInstructorData, openEdit};
+  const value = { allInstructorData,loginedInstructorData, updateAllInstructorData, updateLoginedInstructorData};
 
   return (
     <AdminDataContext.Provider value={value}>

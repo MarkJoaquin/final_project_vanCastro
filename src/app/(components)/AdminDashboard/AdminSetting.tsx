@@ -27,30 +27,21 @@ export interface InstructorProps {
 
 export default function AdminSetting() {
   
-  const {instructorData,isEdit} = useAdminDataContext();
+  const {allInstructorData} = useAdminDataContext();
 
-  const settingContents = () => {
-    if(isEdit){
-      return <></>
-    }else{
-      return
-    }
-
-  }
-
-  console.log("data in SSC:", instructorData);
+  console.log("data in SSC:", allInstructorData);
   return (
     <div
       className={`${styles.formSection} w-full max-w-md space-y-2 rounded-lg p-6 lg:w-[25rem] h-[27rem] flex flex-col justify-around m-auto`} // Applying the new class
     >
-      <h3 className='font-bold'>Choose Instructor</h3>
+      <h3 className='font-bold'>Instructor Information</h3>
 
-      {settingContents()}
-      {instructorData?.map((item,index)=>{
+      {allInstructorData?.map((item,index)=>{
         return <div key={index} className='flex justify-between items-center'>
           <h3 className='bg-white basis-2/3 pl-[1rem]'>{item.name}</h3>
           <div className='flex gap-1'>
-            <Image
+
+{/*             <Image
               className='hover:cursor-pointer'
               src={EditIcon}
               alt='Edit'
@@ -66,14 +57,14 @@ export default function AdminSetting() {
               height={100}
               style={{width:"35px",height:"35px"}}
             />
-          </div>
+ */}          </div>
         </div>
       })}
 
       <Button
         className={`${styles.button} mt-[2rem]`} // Applying the new button styles
       >
-        Add New Admin
+        Click to Update
       </Button> 
     </div>
   );
