@@ -1,5 +1,5 @@
 import Hero from "./(components)/Hero/Hero";
-import WhyUs from './(components)/WhyUs/WhyUs'
+import WhyUs from './(components)/WhyUs/WhyUs';
 import Review from "./(components)/Review/Review";
 import PickAPlan from "./(components)/PickAPlan/PickAPlan";
 import Steps from "./(components)/steps/Steps";

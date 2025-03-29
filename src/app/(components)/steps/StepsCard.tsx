@@ -24,20 +24,20 @@ interface StepCardProps {
 export default function StepCard({ cardStep }: StepCardProps) {
   return (
     <li>
-      {/* Animación de entrada cuando la tarjeta está en la vista */}
+     
       <motion.div
         className={`${styles.mainStep} ${styles[cardStep.className]}`}
-        initial={{ opacity: 0, y: 50 }}  // Inicialmente invisible y desplazada hacia abajo
-        whileInView={{ opacity: 1, y: 0 }} // Se anima a la vista (cuando se ve en pantalla)
-        viewport={{ once: true, amount: 0.5 }} // Se dispara cuando la tarjeta esté al menos al 50% en la vista
-        transition={{ duration: 0.8 }}  // Duración de la animación
+        initial={{ opacity: 0, y: 50 }}  
+        whileInView={{ opacity: 1, y: 0 }} 
+        viewport={{ once: true, amount: 0.5 }} 
+        transition={{ duration: 0.8 }}  
       >
         <div className={styles.stepContainer}>
           <motion.div
             className={styles.stepId}
             initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }} // Se anima cuando entra en la vista
-            viewport={{ once: true, amount: 0.5 }} // Se dispara al 50% visible
+            whileInView={{ opacity: 1 }} 
+            viewport={{ once: true, amount: 0.5 }} 
             transition={{ delay: 0.5, duration: 0.5 }}
           >
             <div className={styles.stepIdName}>
@@ -49,8 +49,8 @@ export default function StepCard({ cardStep }: StepCardProps) {
             <motion.p
               className={styles.StepTitle}
               initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }} // Se anima cuando entra en la vista
-              viewport={{ once: true, amount: 0.5 }} // Se dispara al 50% visible
+              whileInView={{ opacity: 1, x: 0 }} 
+              viewport={{ once: true, amount: 0.5 }} 
               transition={{ delay: 0.7, duration: 0.6 }}
             >
               {cardStep.title}

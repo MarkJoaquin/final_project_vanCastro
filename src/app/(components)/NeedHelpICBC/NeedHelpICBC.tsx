@@ -24,7 +24,7 @@ export default function NeedHelpICBC({data}:NeedHelpICBCtypeProps) {
 
 
     return (
-        <section className="pt-[2rem] pb-[2rem] bg-[#F7f7F7]">
+        <section  className="pt-[2rem] pb-[2rem] bg-[#F7f7F7]">
           <div className={`text-[44px] ${styles.titleFont}`}>
             <h2 className="text-center font-bold leading-10">{title1}</h2>
             <h2 className="text-center font-bold">{title2}</h2>
