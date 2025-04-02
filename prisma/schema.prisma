@@ -154,7 +154,8 @@ model LessonsRequest {
   studentId     String        @db.ObjectId
   instructorId  String        @db.ObjectId
   lessonDate    DateTime
-  lessonTime    String
+  startTime     String
+  endTime       String
   lessonDuration String
   lessonLocation String
   lessonPlan    String
@@ -167,7 +168,7 @@ model LessonsRequest {
   student    Student    @relation(fields: [studentId], references: [id])
   instructor Instructor @relation(fields: [instructorId], references: [id])
 
-  @@map("lessons_request")
+  @@map("lessonsRequest")
 }
 
 model RoadTest {

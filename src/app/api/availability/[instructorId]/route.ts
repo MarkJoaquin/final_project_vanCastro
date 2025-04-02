@@ -22,6 +22,7 @@ export async function GET(
             }
         })
 
+        // console.log('Availability found:', JSON.stringify(availability, null, 2))
         return NextResponse.json(availability)
     } catch (error) {
         console.error('Error fetching availability:', error)

@@ -28,10 +28,15 @@ const BookingForm = () => {
     const [instructors, setInstructors] = useState<any[]>([])
     const [locations, setLocations] = useState<any[]>([])
     const [availableTimes, setAvailableTimes] = useState<any[]>([])
+    const [unavailableTimeSlots, setUnavailableTimeSlots] = useState<any[]>([])
+    const [validatingTimeSlot, setValidatingTimeSlot] = useState(false)
+    const [timeSlotError, setTimeSlotError] = useState<string | null>(null)
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
+    const [selectedDate, setSelectedDate] = useState<Date | null>(null)
 
     const selectedClass = watch('licenseClass')
+    const selectedPlan = watch('plan')
     const selectedInstructor = watch('instructor')
     const selectedLocation = watch('location')
     const selectedDateTime = watch('dateTime')
@@ -89,6 +94,11 @@ const BookingForm = () => {
                 }
                 const data = await response.json()
                 setAvailableTimes(data)
+                
+                // Inicializar la fecha seleccionada con la fecha actual o la fecha de inicio
+                const startDate = getStartDate()
+                // console.log('Selected date:', startDate)
+                setSelectedDate(startDate)
             } catch (err) {
                 console.error('Error loading availability:', err)
                 setError('Failed to load instructor availability')
@@ -96,21 +106,131 @@ const BookingForm = () => {
         }
 
         fetchAvailability()
-    }, [selectedInstructor])
+    }, [selectedInstructor]) 
 
-    // Helper function to check if a time is within instructor's availability
+    // Fetch unavailable time slots when date or instructor changes
+    useEffect(() => {
+        const fetchUnavailableSlots = async () => {
+            if (!selectedInstructor || !selectedDate) {
+                return
+            }
+
+            try {
+                const formattedDate = selectedDate.toISOString().split('T')[0]
+                
+                /* console.log('Consultando slots no disponibles para:', {
+                    instructorId: selectedInstructor,
+                    date: formattedDate
+                }) */
+                
+                const response = await fetch(`/api/lessons/unavailable?instructorId=${selectedInstructor}&date=${formattedDate}`)
+                
+                if (!response.ok) {
+                    throw new Error('Failed to fetch unavailable time slots')
+                }
+                
+                const data = await response.json()
+                console.log('Slots no disponibles recibidos desde frontend:', data)
+                setUnavailableTimeSlots(data)
+            } catch (err) {
+                console.error('Error loading unavailable time slots:', err)
+            }
+        }
+
+        fetchUnavailableSlots()
+    }, [selectedInstructor, selectedDate])
+
+    // También inicializamos la fecha seleccionada cuando el componente se monta
+    useEffect(() => {
+        // Establecer la fecha inicial como la fecha de inicio (2 semanas en el futuro)
+        const startDate = getStartDate()
+        setSelectedDate(startDate)
+    }, [])
+
+    // Validate time slot against existing lessons when date/time is selected
+    useEffect(() => {
+        const validateTimeSlot = async () => {
+            if (!selectedDateTime || !selectedInstructor || !selectedPlan) {
+                return
+            }
+
+            setValidatingTimeSlot(true)
+            setTimeSlotError(null)
+
+            try {
+                const hours = selectedDateTime.getHours()
+                const minutes = selectedDateTime.getMinutes()
+                const timeString = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`
+
+                const response = await fetch('/api/lessons/validate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        instructorId: selectedInstructor,
+                        lessonDate: selectedDateTime.toISOString(),
+                        lessonTime: timeString,
+                        planId: selectedPlan
+                    }),
+                })
+
+                const data = await response.json()
+
+                if (!data.isAvailable) {
+                    setTimeSlotError(data.message || 'This time slot is not available')
+                    setValue('dateTime', null)
+                }
+            } catch (err) {
+                console.error('Error validating time slot:', err)
+                setTimeSlotError('Failed to validate time slot availability')
+            } finally {
+                setValidatingTimeSlot(false)
+            }
+        }
+
+        validateTimeSlot()
+    }, [selectedDateTime, selectedInstructor, selectedPlan, setValue])
+
+    // Función de filtrado para el DatePicker
+    const filterTime = (time: Date) => {
+        const hours = time.getHours()
+        const minutes = time.getMinutes()
+        const timeString = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`
+        const dateStr = time.toISOString().split('T')[0]
+
+        // Verificar si el slot está marcado como no disponible
+        const isUnavailable = unavailableTimeSlots.some(slot => {
+            /* console.log('Verificando slot:', slot) */
+            const slotDate = slot.date ? new Date(slot.date).toISOString().split('T')[0] : dateStr
+            if (slotDate !== dateStr) return false
+
+            const [startHour, startMinute] = slot.startTime.split(':').map(Number)
+            const [endHour, endMinute] = slot.endTime.split(':').map(Number)
+
+            const timeInMinutes = hours * 60 + minutes
+            const startInMinutes = startHour * 60 + startMinute
+            const endInMinutes = endHour * 60 + endMinute
+
+            // Bloquear completamente el slot, incluyendo el tiempo de finalización
+            return timeInMinutes >= startInMinutes && timeInMinutes <= endInMinutes
+        })
+
+        return !isUnavailable
+    }
+
+    // Validar disponibilidad
     const isTimeWithinAvailability = (time: Date) => {
-        if (!availableTimes.length) return false
-
         const hours = time.getHours()
         const minutes = time.getMinutes()
         const timeString = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`
 
-        return availableTimes.some(slot => {
-            const start = slot.startTime
-            const end = slot.endTime
-            return timeString >= start && timeString <= end
+        // Verificar disponibilidad del instructor
+        const isAvailable = availableTimes.some(slot => {
+            return timeString >= slot.startTime && timeString <= slot.endTime
         })
+
+        return isAvailable
     }
 
     // Helper function to get available time intervals
@@ -348,22 +468,61 @@ const BookingForm = () => {
                                         <div className="space-y-4">
                                             <DatePicker
                                                 selected={selectedDateTime}
-                                                onChange={(date) => setValue('dateTime', date)}
+                                                onChange={(date) => {
+                                                    setValue('dateTime', date)
+                                                    // Update selected date for fetching unavailable slots
+                                                    if (date) {
+                                                        const dateOnly = new Date(date)
+                                                        dateOnly.setHours(0, 0, 0, 0)
+                                                        if (!selectedDate || selectedDate.getTime() !== dateOnly.getTime()) {
+                                                            setSelectedDate(dateOnly)
+                                                        }
+                                                    }
+                                                }}
+                                                onMonthChange={(date) => {
+                                                    // When month changes, update selected date
+                                                    const dateOnly = new Date(date)
+                                                    dateOnly.setHours(0, 0, 0, 0)
+                                                    setSelectedDate(dateOnly)
+                                                }}
                                                 showTimeSelect
                                                 inline
                                                 minDate={getStartDate()}
                                                 maxDate={new Date(Date.now() + 120 * 24 * 60 * 60 * 1000)} // 120 days ahead
                                                 timeIntervals={15}
                                                 includeTimes={getTimeIntervals()}
-                                                filterTime={isTimeWithinAvailability}
+                                                filterTime={filterTime}
                                                 filterDate={(date) => !isWeekend(date)}
                                                 timeFormat="HH:mm"
                                                 dateFormat="MMMM d, yyyy h:mm aa"
                                                 className="w-full"
+                                                dayClassName={(date) => {
+                                                    // Resaltar la fecha seleccionada
+                                                    return date.toDateString() === (selectedDateTime?.toDateString() || '') 
+                                                        ? "bg-blue-500 text-white rounded-full" 
+                                                        : ""  
+                                                }}
+                                                timeClassName={(time) => {
+                                                    // Usar filterTime para determinar la disponibilidad
+                                                    if (!filterTime(time)) {
+                                                        return "text-red-300 line-through cursor-not-allowed"
+                                                    }
+                                                    return "text-blue-600"
+                                                }}
                                             />
                                             {errors.dateTime && (
                                                 <p className="text-sm text-red-500 text-center">
                                                     {errors.dateTime.message}
+                                                </p>
+                                            )}
+                                            {timeSlotError && (
+                                                <p className="text-sm text-red-500 text-center">
+                                                    {timeSlotError}
+                                                </p>
+                                            )}
+                                            {validatingTimeSlot && (
+                                                <p className="text-sm text-blue-500 text-center">
+                                                    Validating time slot availability...
                                                 </p>
                                             )}
                                             {availableTimes.length === 0 && (
