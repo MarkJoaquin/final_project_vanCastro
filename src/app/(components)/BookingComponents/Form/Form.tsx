@@ -197,13 +197,34 @@ const BookingForm = () => {
         const hours = time.getHours()
         const minutes = time.getMinutes()
         const timeString = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`
-        const dateStr = time.toISOString().split('T')[0]
-
+        
+        // Obtener la fecha del DatePicker en formato YYYY-MM-DD
+        const datePickerDate = selectedDate ? selectedDate.toISOString().split('T')[0] : ''
+        
+        /* console.log('Verificando slots no disponibles para:', datePickerDate, timeString) */
+        
         // Verificar si el slot está marcado como no disponible
         const isUnavailable = unavailableTimeSlots.some(slot => {
-            /* console.log('Verificando slot:', slot) */
-            const slotDate = slot.date ? new Date(slot.date).toISOString().split('T')[0] : dateStr
-            if (slotDate !== dateStr) return false
+            // Asegurarnos de que el slot tenga una fecha válida
+            if (!slot.date) {
+                console.error('Slot sin fecha definida:', slot)
+                return false
+            }
+            
+            // Convertir la fecha del slot a formato YYYY-MM-DD
+            const slotDate = new Date(slot.date).toISOString().split('T')[0]
+            
+            // Solo considerar slots de la fecha seleccionada en el DatePicker
+            if (slotDate !== datePickerDate) {
+                /* console.log(`Ignorando slot de fecha ${slotDate} (buscando ${datePickerDate})`) */
+                return false
+            }
+
+            // Verificar que tenga tiempos de inicio y fin
+            if (!slot.startTime || !slot.endTime) {
+                console.error('Slot sin tiempos definidos:', slot)
+                return false
+            }
 
             const [startHour, startMinute] = slot.startTime.split(':').map(Number)
             const [endHour, endMinute] = slot.endTime.split(':').map(Number)
@@ -212,10 +233,16 @@ const BookingForm = () => {
             const startInMinutes = startHour * 60 + startMinute
             const endInMinutes = endHour * 60 + endMinute
 
+            /* console.log(`Evaluando: ${timeString} contra lección ${slot.startTime}-${slot.endTime}`, {
+                timeInMinutes,
+                startInMinutes,
+                endInMinutes,
+                resultado: timeInMinutes >= startInMinutes && timeInMinutes <= endInMinutes
+            }) */
+
             // Bloquear completamente el slot, incluyendo el tiempo de finalización
             return timeInMinutes >= startInMinutes && timeInMinutes <= endInMinutes
         })
-
         return !isUnavailable
     }
 
