@@ -162,17 +162,31 @@ const BookingForm = () => {
                 const minutes = selectedDateTime.getMinutes()
                 const timeString = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`
 
+                // Preparar los datos para la validación
+                const validationData: {
+                    instructorId: string,
+                    lessonDate: string,
+                    lessonTime: string,
+                    planId: string,
+                    locationId?: string  // Hacemos locationId opcional con '?'
+                } = {
+                    instructorId: selectedInstructor,
+                    lessonDate: selectedDateTime.toISOString(),
+                    lessonTime: timeString,
+                    planId: selectedPlan
+                }
+
+                // Si hay una ubicación seleccionada, incluirla para la validación de tiempo de tránsito
+                if (selectedLocation) {
+                    validationData.locationId = selectedLocation
+                }
+
                 const response = await fetch('/api/lessons/validate', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({
-                        instructorId: selectedInstructor,
-                        lessonDate: selectedDateTime.toISOString(),
-                        lessonTime: timeString,
-                        planId: selectedPlan
-                    }),
+                    body: JSON.stringify(validationData),
                 })
 
                 const data = await response.json()
@@ -190,7 +204,7 @@ const BookingForm = () => {
         }
 
         validateTimeSlot()
-    }, [selectedDateTime, selectedInstructor, selectedPlan, setValue])
+    }, [selectedDateTime, selectedInstructor, selectedPlan, setValue, selectedLocation])
 
     // Función de filtrado para el DatePicker
     const filterTime = (time: Date) => {

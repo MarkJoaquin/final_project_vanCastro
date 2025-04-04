@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
-import { validateInstructorAvailability } from '@/lib/lessonValidations';
+import { validateInstructorAvailability, validateTransitTime } from '@/lib/lessonValidations';
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { instructorId, lessonDate, lessonTime, planId } = body;
+    const { instructorId, lessonDate, lessonTime, planId, locationId } = body;
 
     // Validate required fields
     if (!instructorId || !lessonDate || !lessonTime || !planId) {
@@ -47,6 +47,26 @@ export async function POST(request: NextRequest) {
         },
         { status: 200 }
       );
+    }
+
+    // If location is provided, validate transit time
+    if (locationId) {
+      const transitResult = await validateTransitTime(
+        instructorId,
+        date,
+        lessonTime,
+        locationId
+      );
+
+      if (!transitResult.isValid) {
+        return NextResponse.json(
+          { 
+            isAvailable: false,
+            message: transitResult.message || 'El instructor no puede llegar a tiempo debido a restricciones de tránsito'
+          },
+          { status: 200 }
+        );
+      }
     }
 
     return NextResponse.json({ isAvailable: true }, { status: 200 });
