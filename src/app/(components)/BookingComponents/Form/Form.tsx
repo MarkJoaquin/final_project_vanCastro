@@ -1,19 +1,40 @@
 "use client"
 
-import { useForm } from 'react-hook-form'
+import { useForm, Controller } from 'react-hook-form'
 import { DevTool } from '@hookform/devtools'
 import { AlertDialogBooking } from '../AlertDialog/AlertDialog'
 import { useState, useEffect } from 'react'
 import { useLocalStorageWithExpiration } from '@/hooks/useLocalStorageWithExpiration'
 import { Button } from "@/components/ui/button"
-import type { PlanClass, Plan, FormData } from '@/types/FormTypes'
+import type { PlanClass, Plan, FormData, Location } from '@/types/FormTypes'
 import Image from 'next/image'
 import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css"
+import { countries } from '@/data/countries'
+import { icbcLocations } from '@/data/icbcLocations'
 
 const BookingForm = () => {
     const form = useForm<FormData>({
         defaultValues: {
+            // Datos personales
+            firstName: '',
+            lastName: '',
+            birthDate: null,
+            country: '',
+            phone: '',
+            email: '',
+            
+            // Información de licencia
+            hasDriverLicense: '',
+            licenseNumber: '',
+            licenseType: '',
+            licenseExpiryDate: null,
+            
+            // Información de road test
+            hasBookedRoadTest: '',
+            roadTestLocation: '',
+            
+            // Selección de lección
             licenseClass: '',
             plan: '',
             instructor: '',
@@ -26,7 +47,7 @@ const BookingForm = () => {
 
     const [classes, setClasses] = useState<PlanClass[]>([])
     const [instructors, setInstructors] = useState<any[]>([])
-    const [locations, setLocations] = useState<any[]>([])
+    const [locations, setLocations] = useState<Location[]>([])
     const [availableTimes, setAvailableTimes] = useState<any[]>([])
     const [unavailableTimeSlots, setUnavailableTimeSlots] = useState<any[]>([])
     const [validatingTimeSlot, setValidatingTimeSlot] = useState(false)
@@ -35,11 +56,16 @@ const BookingForm = () => {
     const [error, setError] = useState<string | null>(null)
     const [selectedDate, setSelectedDate] = useState<Date | null>(null)
 
+    // Campos observados para los detalles de la lección
     const selectedClass = watch('licenseClass')
     const selectedPlan = watch('plan')
     const selectedInstructor = watch('instructor')
     const selectedLocation = watch('location')
     const selectedDateTime = watch('dateTime')
+    
+    // Campos observados para licencia y road test
+    const hasDriverLicense = watch('hasDriverLicense')
+    const hasBookedRoadTest = watch('hasBookedRoadTest')
     const [showLearningPermitDialog, setShowLearningPermitDialog] = useState(false)
     const EXPIRATION_TIME = 24 * 60 * 60 * 1000 // 24 hours in milliseconds
     const [learningPermitStatus, setLearningPermitStatus] = useLocalStorageWithExpiration('learningPermitAnswer', EXPIRATION_TIME)
@@ -263,7 +289,7 @@ const BookingForm = () => {
     }
 
     // Validar disponibilidad
-    const isTimeWithinAvailability = (time: Date) => {
+    /* const isTimeWithinAvailability = (time: Date) => {
         const hours = time.getHours()
         const minutes = time.getMinutes()
         const timeString = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`
@@ -274,7 +300,7 @@ const BookingForm = () => {
         })
 
         return isAvailable
-    }
+    } */
 
     // Helper function to get available time intervals
     const getTimeIntervals = () => {
@@ -357,7 +383,307 @@ const BookingForm = () => {
         <div className="flex flex-col items-center justify-center w-full max-w-2xl mx-auto p-4">
             <form className="w-full space-y-6">
                 <div className={`bg-white shadow-sm rounded-lg p-6 ${isFormDisabled ? 'opacity-50 pointer-events-none' : ''}`}>
-                    <div className="space-y-4">
+                    <div className="space-y-8">
+                        {/* Sección de información personal */}
+                        <div className="space-y-4">
+                            <h2 className="text-2xl font-bold text-center mb-6">Personal Information</h2>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                {/* Nombre */}
+                                <div>
+                                    <label htmlFor="firstName" className="block text-sm font-medium mb-2">
+                                        First Name
+                                    </label>
+                                    <input
+                                        type="text"
+                                        id="firstName"
+                                        {...register('firstName', { required: 'First name is required' })}
+                                        className="w-full p-2 border rounded-md"
+                                        disabled={isFormDisabled}
+                                    />
+                                    {errors.firstName && (
+                                        <p className="text-sm text-red-500 mt-1">{errors.firstName.message}</p>
+                                    )}
+                                </div>
+
+                                {/* Apellido */}
+                                <div>
+                                    <label htmlFor="lastName" className="block text-sm font-medium mb-2">
+                                        Last Name
+                                    </label>
+                                    <input
+                                        type="text"
+                                        id="lastName"
+                                        {...register('lastName', { required: 'Last name is required' })}
+                                        className="w-full p-2 border rounded-md"
+                                        disabled={isFormDisabled}
+                                    />
+                                    {errors.lastName && (
+                                        <p className="text-sm text-red-500 mt-1">{errors.lastName.message}</p>
+                                    )}
+                                </div>
+
+                                {/* Fecha de nacimiento */}
+                                <div>
+                                    <label htmlFor="birthDate" className="block text-sm font-medium mb-2">
+                                        Date of Birth
+                                    </label>
+                                    <Controller
+                                        control={control}
+                                        name="birthDate"
+                                        rules={{ required: 'Date of birth is required' }}
+                                        render={({ field }) => (
+                                            <DatePicker
+                                                id="birthDate"
+                                                selected={field.value}
+                                                onChange={(date) => field.onChange(date)}
+                                                dateFormat="MMMM d, yyyy"
+                                                showMonthDropdown
+                                                showYearDropdown
+                                                dropdownMode="select"
+                                                className="w-full p-2 border rounded-md"
+                                                placeholderText="Select your date of birth"
+                                                maxDate={new Date()}
+                                                disabled={isFormDisabled}
+                                            />
+                                        )}
+                                    />
+                                    {errors.birthDate && (
+                                        <p className="text-sm text-red-500 mt-1">{errors.birthDate.message}</p>
+                                    )}
+                                </div>
+
+                                {/* País */}
+                                <div>
+                                    <label htmlFor="country" className="block text-sm font-medium mb-2">
+                                        Where are you from?
+                                    </label>
+                                    <select
+                                        id="country"
+                                        {...register('country', { required: 'Country is required' })}
+                                        className="w-full p-2 border rounded-md"
+                                        disabled={isFormDisabled}
+                                    >
+                                        <option value="">Select your country</option>
+                                        {countries.map((country) => (
+                                            <option key={country} value={country}>
+                                                {country}
+                                            </option>
+                                        ))}
+                                    </select>
+                                    {errors.country && (
+                                        <p className="text-sm text-red-500 mt-1">{errors.country.message}</p>
+                                    )}
+                                </div>
+
+                                {/* Teléfono */}
+                                <div>
+                                    <label htmlFor="phone" className="block text-sm font-medium mb-2">
+                                        Phone Number
+                                    </label>
+                                    <input
+                                        type="tel"
+                                        id="phone"
+                                        {...register('phone', {
+                                            required: 'Phone number is required',
+                                            pattern: {
+                                                value: /^[0-9+\-\s()]*$/,
+                                                message: 'Please enter a valid phone number'
+                                            }
+                                        })}
+                                        className="w-full p-2 border rounded-md"
+                                        placeholder="+1 (123) 456-7890"
+                                        disabled={isFormDisabled}
+                                    />
+                                    {errors.phone && (
+                                        <p className="text-sm text-red-500 mt-1">{errors.phone.message}</p>
+                                    )}
+                                </div>
+
+                                {/* Email */}
+                                <div>
+                                    <label htmlFor="email" className="block text-sm font-medium mb-2">
+                                        Email Address
+                                    </label>
+                                    <input
+                                        type="email"
+                                        id="email"
+                                        {...register('email', {
+                                            required: 'Email is required',
+                                            pattern: {
+                                                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                                                message: 'Please enter a valid email address'
+                                            }
+                                        })}
+                                        className="w-full p-2 border rounded-md"
+                                        disabled={isFormDisabled}
+                                    />
+                                    {errors.email && (
+                                        <p className="text-sm text-red-500 mt-1">{errors.email.message}</p>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Sección de información de licencia */}
+                        <div className="space-y-4">
+                            <h2 className="text-2xl font-bold text-center mb-6">Driver License Information</h2>
+                            <div>
+                                <p className="block text-sm font-medium mb-3">Do you have a driver license?</p>
+                                <div className="flex space-x-6 mb-4">
+                                    <label className="flex items-center space-x-2">
+                                        <input
+                                            type="radio"
+                                            value="no"
+                                            {...register('hasDriverLicense', { required: 'Please select an option' })}
+                                            className="h-4 w-4"
+                                            disabled={isFormDisabled}
+                                        />
+                                        <span>No</span>
+                                    </label>
+                                    <label className="flex items-center space-x-2">
+                                        <input
+                                            type="radio"
+                                            value="yes"
+                                            {...register('hasDriverLicense', { required: 'Please select an option' })}
+                                            className="h-4 w-4"
+                                            disabled={isFormDisabled}
+                                        />
+                                        <span>Yes</span>
+                                    </label>
+                                </div>
+                                {errors.hasDriverLicense && (
+                                    <p className="text-sm text-red-500 mt-1">{errors.hasDriverLicense.message}</p>
+                                )}
+                            </div>
+                            
+                            {/* Campos adicionales si tiene licencia */}
+                            {hasDriverLicense === 'yes' && (
+                                <div className="grid md:grid-cols-3 gap-4">
+                                    <div>
+                                        <label htmlFor="licenseNumber" className="block text-sm font-medium mb-2">
+                                            License Number
+                                        </label>
+                                        <input
+                                            type="text"
+                                            id="licenseNumber"
+                                            {...register('licenseNumber', {
+                                                required: 'License number is required'
+                                            })}
+                                            className="w-full p-2 border rounded-md"
+                                            disabled={isFormDisabled}
+                                        />
+                                        {errors.licenseNumber && (
+                                            <p className="text-sm text-red-500 mt-1">{errors.licenseNumber.message}</p>
+                                        )}
+                                    </div>
+                                    
+                                    <div>
+                                        <label htmlFor="licenseType" className="block text-sm font-medium mb-2">
+                                            License Type
+                                        </label>
+                                        <input
+                                            type="text"
+                                            id="licenseType"
+                                            {...register('licenseType', {
+                                                required: 'License type is required'
+                                            })}
+                                            className="w-full p-2 border rounded-md"
+                                            placeholder="e.g. Class 7, Class 5"
+                                            disabled={isFormDisabled}
+                                        />
+                                        {errors.licenseType && (
+                                            <p className="text-sm text-red-500 mt-1">{errors.licenseType.message}</p>
+                                        )}
+                                    </div>
+                                    
+                                    <div>
+                                        <label htmlFor="licenseExpiryDate" className="block text-sm font-medium mb-2">
+                                            Expiry Date
+                                        </label>
+                                        <Controller
+                                            control={control}
+                                            name="licenseExpiryDate"
+                                            rules={{ required: 'Expiry date is required' }}
+                                            render={({ field }) => (
+                                                <DatePicker
+                                                    id="licenseExpiryDate"
+                                                    selected={field.value}
+                                                    onChange={(date) => field.onChange(date)}
+                                                    dateFormat="MMMM d, yyyy"
+                                                    className="w-full p-2 border rounded-md"
+                                                    placeholderText="Select expiry date"
+                                                    minDate={new Date()}
+                                                    disabled={isFormDisabled}
+                                                />
+                                            )}
+                                        />
+                                        {errors.licenseExpiryDate && (
+                                            <p className="text-sm text-red-500 mt-1">{errors.licenseExpiryDate.message}</p>
+                                        )}
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Sección de información de road test */}
+                        <div className="space-y-4">
+                            <h2 className="text-2xl font-bold text-center mb-6">Road Test Information</h2>
+                            <div>
+                                <p className="block text-sm font-medium mb-3">Have you booked your road test already?</p>
+                                <div className="flex space-x-6 mb-4">
+                                    <label className="flex items-center space-x-2">
+                                        <input
+                                            type="radio"
+                                            value="no"
+                                            {...register('hasBookedRoadTest', { required: 'Please select an option' })}
+                                            className="h-4 w-4"
+                                            disabled={isFormDisabled}
+                                        />
+                                        <span>No</span>
+                                    </label>
+                                    <label className="flex items-center space-x-2">
+                                        <input
+                                            type="radio"
+                                            value="yes"
+                                            {...register('hasBookedRoadTest', { required: 'Please select an option' })}
+                                            className="h-4 w-4"
+                                            disabled={isFormDisabled}
+                                        />
+                                        <span>Yes</span>
+                                    </label>
+                                </div>
+                                {errors.hasBookedRoadTest && (
+                                    <p className="text-sm text-red-500 mt-1">{errors.hasBookedRoadTest.message}</p>
+                                )}
+                            </div>
+                            
+                            {/* Campo adicional si ha reservado road test */}
+                            {hasBookedRoadTest === 'yes' && (
+                                <div>
+                                    <label htmlFor="roadTestLocation" className="block text-sm font-medium mb-2">
+                                        ICBC Location
+                                    </label>
+                                    <select
+                                        id="roadTestLocation"
+                                        {...register('roadTestLocation', { required: 'ICBC location is required' })}
+                                        className="w-full p-2 border rounded-md"
+                                        disabled={isFormDisabled}
+                                    >
+                                        <option value="">Select ICBC location</option>
+                                        {icbcLocations.map((location) => (
+                                            <option key={location} value={location}>
+                                                {location}
+                                            </option>
+                                        ))}
+                                    </select>
+                                    {errors.roadTestLocation && (
+                                        <p className="text-sm text-red-500 mt-1">{errors.roadTestLocation.message}</p>
+                                    )}
+                                </div>
+                            )}
+                        </div>
+                        
+                        {/* Sección de selección de clase de licencia */}
                         <h2 className="text-2xl font-bold text-center mb-6">Select Your License Class</h2>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                             {classes.map((classOption) => (
@@ -466,12 +792,12 @@ const BookingForm = () => {
                                 </div>
 
                                 <div className="mt-6">
-                                    <h3 className="text-xl font-semibold mb-4">Select Location</h3>
-                                    <div className="grid grid-cols-1 gap-3">
+                                    <h3 className="text-xl font-semibold mb-4">Choose Your Location</h3>
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                                         {locations.map((location) => (
                                             <div key={location.id} 
-                                                className={`border rounded-lg p-4 cursor-pointer transition-all duration-200 ${
-                                                    watch('location') === location.id 
+                                                className={`relative border rounded-xl p-4 cursor-pointer transition-all duration-200 ${
+                                                    selectedLocation === location.id 
                                                     ? 'border-blue-500 bg-blue-50' 
                                                     : 'hover:border-gray-300'
                                                 }`}
