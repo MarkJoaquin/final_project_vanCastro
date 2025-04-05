@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
-import { validateInstructorAvailability, validateTransitTime } from '@/lib/lessonValidations';
+import { validateInstructorAvailability } from '@/lib/lessonValidations';
+import {validateTransitTime} from '@/lib/validateTransitTime';
+import {validateFutureLessons} from '@/lib/validateFutureLessons'
 
 export async function POST(request: NextRequest) {
   try {
@@ -49,7 +51,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // If location is provided, validate transit time
+    // If location is provided, validate transit time from previous lessons
     if (locationId) {
       const transitResult = await validateTransitTime(
         instructorId,
@@ -63,6 +65,25 @@ export async function POST(request: NextRequest) {
           { 
             isAvailable: false,
             message: transitResult.message || 'El instructor no puede llegar a tiempo debido a restricciones de tránsito'
+          },
+          { status: 200 }
+        );
+      }
+      
+      // Also validate transit time to future lessons
+      const futureResult = await validateFutureLessons(
+        instructorId,
+        date,
+        lessonTime,
+        plan.time,
+        locationId
+      );
+      
+      if (!futureResult.isValid) {
+        return NextResponse.json(
+          {
+            isAvailable: false,
+            message: futureResult.message || 'El instructor no tendrá tiempo suficiente para llegar a su siguiente lección'
           },
           { status: 200 }
         );

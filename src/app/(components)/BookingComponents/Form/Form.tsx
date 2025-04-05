@@ -95,10 +95,12 @@ const BookingForm = () => {
                 const data = await response.json()
                 setAvailableTimes(data)
                 
-                // Inicializar la fecha seleccionada con la fecha actual o la fecha de inicio
-                const startDate = getStartDate()
-                // console.log('Selected date:', startDate)
-                setSelectedDate(startDate)
+                // Solo inicializar la fecha si no hay una fecha seleccionada previamente
+                if (!selectedDate && !selectedDateTime) {
+                    const startDate = getStartDate()
+                    // console.log('Selected date:', startDate)
+                    setSelectedDate(startDate)
+                }
             } catch (err) {
                 console.error('Error loading availability:', err)
                 setError('Failed to load instructor availability')
