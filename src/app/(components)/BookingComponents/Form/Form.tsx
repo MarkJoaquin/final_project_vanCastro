@@ -1,7 +1,8 @@
 "use client"
 
 import { useForm, Controller } from 'react-hook-form'
-import { DevTool } from '@hookform/devtools'
+// Comentamos DevTool para evitar errores
+// import { DevTool } from '@hookform/devtools'
 import { AlertDialogBooking } from '../AlertDialog/AlertDialog'
 import { useState, useEffect } from 'react'
 import { useLocalStorageWithExpiration } from '@/hooks/useLocalStorageWithExpiration'
@@ -148,6 +149,7 @@ const BookingForm = () => {
         fetchData()
     }, [])
 
+    /* 
     // Establecer fecha por defecto al cargar el componente
     useEffect(() => {
         // Establecer la fecha por defecto solo una vez al iniciar
@@ -156,9 +158,10 @@ const BookingForm = () => {
         
         // Opcional: pre-seleccionar una hora por defecto (por ejemplo, 10:00 AM)
         const defaultDateTime = new Date(startDate)
-        /* defaultDateTime.setHours(0, 0, 0, 0) // 10:00 AM */
+        // defaultDateTime.setHours(0, 0, 0, 0) // 10:00 AM 
         setValue('dateTime', defaultDateTime)
     }, []) // Ejecutar solo al montar el componente
+    */
 
     // Fetch instructor availability when instructor is selected
     useEffect(() => {
@@ -1078,7 +1081,8 @@ const BookingForm = () => {
                     <p className="mt-2 text-sm">Please try again or contact support if the problem persists.</p>
                 </div>
             )}
-            <DevTool control={control} />
+            {/* Comentamos DevTool para evitar errores */}
+            {/* <DevTool control={control} /> */}
         </div>
     )
 }

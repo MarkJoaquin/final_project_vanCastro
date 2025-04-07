@@ -69,13 +69,17 @@
 }
 
 /* Estilos para el contenedor del calendario */
-/* .calendar-container {
-  background-color: white;
+.calendar-container {
+  /* background-color: white;
   border-radius: 0.5rem;
   padding: 0.75rem;
   border: 1px solid #e5e7eb;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-} */
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 
 /* Estilos para los días de la semana */
 .react-datepicker__day-name {
