@@ -54,6 +54,48 @@
     font-weight: 700;
 }
 
+/* Button Animation */
+
+.button {
+  border: 4px solid black;
+  overflow: hidden;
+  position: relative;
+  text-decoration: none;
+  transition: .2s transform ease-in-out;
+  will-change: transform;
+  z-index: 0;
+}
+
+.button::after {
+    background-color: var(--primary-color);
+    border-radius: 5px;
+    content: '';
+    display: block;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    transform: translate(-100%, 0) rotate(10deg);
+    transform-origin: top left;
+    transition: .2s transform ease-out;
+    will-change: transform;
+    z-index: -1;
+}
+
+.button:hover::after {
+    transform: translate(0, 0);
+}
+
+.button:hover {
+    border: 4px solid transparent;
+    color: black;
+    transform: scale(1.05);
+    will-change: transform;
+}
+
+/* Button Animation */
+
 .buttonMobile {
     display: none;
     background-color: var(--foreground);

@@ -18,7 +18,7 @@ export default function Steps({ data }: { data: StepCardProps['data'] }) {
                 <p className={styles.questionTitle}>Follow 3 Simple Steps</p>
             </div>
             <ul className={styles.stepsList}>
-               {data.map((cardStep: Props) => (
+               {data.map((cardStep: StepsSection) => (
                 <StepCard key={cardStep.id} cardStep={cardStep} /> 
                ))} 
             </ul>

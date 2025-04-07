@@ -1,5 +1,6 @@
 import Link from "next/link";
 import styles from "./Hero.module.css";
+
 type Props = {
   title: string;
   subtext: string;
@@ -39,7 +40,7 @@ export default function Hero({ data }: SectionProps) {
             <h1 className={`${styles.heroTitle} ${className === 'plansHero' ? styles.plansHeroTitle : ''}`}>{title}</h1>
             <p className={`${styles.heroText} ${className === 'plansHero' ? styles.plansHeroText : ''}`}>{subtext}</p>
           </div>
-          <div className = {styles.buttonContainer}>
+          <div className={styles.buttonContainer}>
             <Link href={`/${linkTo}`} className={styles.heroLink}>{buttonText}</Link>
           </div>
         </div>

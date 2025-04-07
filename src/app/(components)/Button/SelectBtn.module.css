@@ -1,5 +1,6 @@
-.isActive{
-  background-color: rgb(255, 206, 71);border-radius: 21.46px;
+/* .isActive{
+  background-color: var(--primary-color);
+  border-radius: 21.46px;
   font-weight: 600;
 }
 .nonActive{
@@ -8,11 +9,62 @@
 
 @media screen and (max-width: 480px) {
   .isActive{
-    background-color: rgb(255, 206, 71);border-radius: 21.46px;
+    background-color: var(--primary-color);
+    border-radius: 21.46px;
     font-weight: 600;
   }
   .nonActive{
     color: rgb(255,255,255);
   }
   
+} */
+
+
+
+/* New code for animation --> */
+
+.container {
+  display: flex;
+  position: relative;
+  background-color: rgb(47, 47, 47);
+  border-radius: 2rem;
+  padding: 0.4rem 0.4rem; 
+  margin: 0rem auto;
+  overflow: hidden;
+  width: 80%; 
+  max-width: 35rem;
+  min-width: 100px; 
+  justify-content: center;
+  align-items: center;
+}
+
+.slider {
+  position: absolute;
+  top: 10%;
+  transform: translateY(-50%); 
+  left: 0.5rem; 
+  height: 80%; 
+  width: calc((100% - 1rem) / var(--btn-count)); 
+  background-color: var(--primary-color);
+  border-radius: 5rem;
+  transition: transform 0.3s ease;
+  z-index: 0;
+}
+
+.button {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  text-align: center;
+  color: rgb(255, 255, 255);
+  cursor: pointer;
+  font-weight: 600;
+  padding: 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center; 
+}
+
+.button.isActive {
+  color: black
 }

@@ -4,7 +4,8 @@ footer {
 }
 
 .footer-container{
-    padding: 2rem;
+    padding: 2rem 0rem;
+    margin: 0 2rem;
 }
 
 .footer-copyright{
