@@ -10,6 +10,7 @@ import type { PlanClass, Plan, FormData, Location } from '@/types/FormTypes'
 import Image from 'next/image'
 import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css"
+import "./calendar-styles.css" // Importar estilos personalizados del calendario
 import { countries } from '@/data/countries'
 import { icbcLocations } from '@/data/icbcLocations'
 
@@ -900,36 +901,38 @@ const BookingForm = () => {
                                             {/* Columna del calendario */}
                                             <div className="md:w-7/12">
                                                 <h4 className="text-lg font-medium mb-3">Pick a Date</h4>
-                                                <DatePicker
-                                                    selected={selectedDateTime || selectedDate}
-                                                    onChange={(date) => {
-                                                        if (date) {
-                                                            // Establecer solo la fecha, manteniendo la hora en 00:00
-                                                            const dateOnly = new Date(date.getFullYear(), date.getMonth(), date.getDate())
+                                                <div className="calendar-container">
+                                                    <DatePicker
+                                                        selected={selectedDateTime || selectedDate}
+                                                        onChange={(date) => {
+                                                            if (date) {
+                                                                // Establecer solo la fecha, manteniendo la hora en 00:00
+                                                                const dateOnly = new Date(date.getFullYear(), date.getMonth(), date.getDate())
+                                                                setSelectedDate(dateOnly)
+                                                            }
+                                                        }}
+                                                        onMonthChange={(date) => {
+                                                            // When month changes, update selected date
+                                                            const dateOnly = new Date(date)
+                                                            dateOnly.setHours(0, 0, 0, 0)
                                                             setSelectedDate(dateOnly)
-                                                        }
-                                                    }}
-                                                    onMonthChange={(date) => {
-                                                        // When month changes, update selected date
-                                                        const dateOnly = new Date(date)
-                                                        dateOnly.setHours(0, 0, 0, 0)
-                                                        setSelectedDate(dateOnly)
-                                                    }}
-                                                    inline
-                                                    minDate={getStartDate()}
-                                                    maxDate={new Date(Date.now() + 120 * 24 * 60 * 60 * 1000)} // 120 days ahead
-                                                    filterDate={(date) => !isWeekend(date)}
-                                                    dateFormat="MMMM d, yyyy"
-                                                    className="w-full"
-                                                    dayClassName={(date) => {
-                                                        // Resaltar la fecha seleccionada
-                                                        return date.toDateString() === (selectedDate?.toDateString() || '')
-                                                            ? "bg-blue-500 text-white rounded-full"
-                                                            : ""
-                                                    }}
-                                                    // Deshabilitar selector de hora en este componente
-                                                    showTimeSelect={false}
-                                                />
+                                                        }}
+                                                        inline
+                                                        minDate={getStartDate()}
+                                                        maxDate={new Date(Date.now() + 120 * 24 * 60 * 60 * 1000)} // 120 days ahead
+                                                        filterDate={(date) => !isWeekend(date)}
+                                                        dateFormat="MMMM d, yyyy"
+                                                        className="w-full"
+                                                        calendarClassName="custom-calendar"
+                                                        // Deshabilitar selector de hora en este componente
+                                                        showTimeSelect={false}
+                                                        // Personalizar la navegación del calendario
+                                                        previousMonthButtonLabel="‹"
+                                                        nextMonthButtonLabel="›"
+                                                        // Usar el formato de mes y año predeterminado
+                                                        monthsShown={1}
+                                                    />
+                                                </div>
                                             </div>
                                             
                                             {/* Columna de horas con scroll */}
@@ -937,7 +940,7 @@ const BookingForm = () => {
                                                 {selectedDate ? (
                                                     <div>
                                                         <h4 className="text-lg font-medium mb-3">Available Times</h4>
-                                                        <div className="h-64 overflow-y-auto pr-2 border rounded-md p-3">
+                                                        <div className="h-64 overflow-y-auto pr-2 border rounded-md p-3 bg-white shadow-sm">
                                                             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                                                                 {getTimeIntervals().map((time, index) => {
                                                                     const isAvailable = filterTime(time);
@@ -954,7 +957,7 @@ const BookingForm = () => {
                                                                             className={`py-2 px-3 rounded-md text-sm ${isSelected 
                                                                                 ? 'bg-blue-500 text-white' 
                                                                                 : isAvailable 
-                                                                                    ? 'bg-white border hover:bg-gray-50' 
+                                                                                    ? 'bg-white border hover:bg-gray-50 cursor-pointer' 
                                                                                     : 'bg-gray-100 text-gray-400 line-through cursor-not-allowed'}`}
                                                                             onClick={() => {
                                                                                 if (isAvailable && selectedDate) {
@@ -1025,7 +1028,7 @@ const BookingForm = () => {
                     <Button
                         type="button"
                         onClick={form.handleSubmit(onSubmit)}
-                        className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg"
+                        className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg cursor-pointer"
                         disabled={isSubmitting || isFormDisabled || validatingTimeSlot || !selectedDateTime || !selectedPlan || !selectedLocation || !hasValidTime(selectedDateTime)}
                     >
                         {isSubmitting ? 'Submitting...' : 'Submit Booking'}
