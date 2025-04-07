@@ -7,13 +7,13 @@ const prisma = new PrismaClient();
 export async function POST(request: NextRequest) {
   try {
     const data = await request.json();
-    
+
     // Validar que todos los campos requeridos estén presentes
     const requiredFields = [
-      'firstName', 'lastName', 'email', 'phone', 
+      'firstName', 'lastName', 'email', 'phone',
       'instructor', 'dateTime', 'location', 'plan'
     ];
-    
+
     for (const field of requiredFields) {
       if (!data[field]) {
         return NextResponse.json(
@@ -28,14 +28,37 @@ export async function POST(request: NextRequest) {
       where: { email: data.email }
     });
 
+    // Preparar los datos para crear o actualizar el estudiante
+    const studentData = {
+      email: data.email,
+      name: `${data.firstName} ${data.lastName}`,
+      phone: data.phone,
+      language: null,
+      // Nuevos campos añadidos al esquema
+      birthDate: data.birthDate ? new Date(data.birthDate) : new Date(),
+      country: data.country || '',
+      hasLicense: data.hasDriverLicense === 'yes',
+      hasRoadTest: data.hasBookedRoadTest === 'yes'
+    };
+
     // Si no existe, crear un nuevo estudiante
     if (!student) {
-      student = await prisma.student.create({
+        student = await prisma.student.create({
+            data: studentData
+        })
+    } else {
+      // Actualizar información del estudiante si ya existe
+      student = await prisma.student.update({
+        where: { id: student.id },
         data: {
-          email: data.email,
+          // Mantener el nombre y teléfono actualizados
           name: `${data.firstName} ${data.lastName}`,
           phone: data.phone,
-          language: data.country || null
+          // Actualizar los campos nuevos
+          birthDate: studentData.birthDate,
+          country: studentData.country,
+          hasLicense: studentData.hasLicense,
+          hasRoadTest: studentData.hasRoadTest
         }
       });
     }
@@ -54,19 +77,19 @@ export async function POST(request: NextRequest) {
 
     // Extraer la fecha y hora del dateTime
     const dateTime = new Date(data.dateTime);
-    
+
     // Crear una fecha con solo la parte de la fecha (hora 00:00:00)
     // Usamos UTC para evitar problemas con zonas horarias
     const lessonDate = new Date(Date.UTC(
-      dateTime.getFullYear(), 
-      dateTime.getMonth(), 
-      dateTime.getDate(), 
+      dateTime.getFullYear(),
+      dateTime.getMonth(),
+      dateTime.getDate(),
       0, 0, 0, 0
     ));
-    
+
     // Extraer la hora y minutos para startTime
     const startTime = `${dateTime.getHours().toString().padStart(2, '0')}:${dateTime.getMinutes().toString().padStart(2, '0')}`;
-    
+
     // Calcular la hora de finalización sumando la duración del plan en minutos
     const endDateTime = new Date(dateTime.getTime() + plan.time * 60000);
     const endTime = `${endDateTime.getHours().toString().padStart(2, '0')}:${endDateTime.getMinutes().toString().padStart(2, '0')}`;
@@ -114,7 +137,7 @@ export async function POST(request: NextRequest) {
     if (data.hasBookedRoadTest === 'yes' && data.roadTestLocation) {
       // Extraer ciudad y dirección del roadTestLocation
       const [city, address] = data.roadTestLocation.split(' - ');
-      
+
       await prisma.roadTest.create({
         data: {
           studentId: student.id,
@@ -131,7 +154,7 @@ export async function POST(request: NextRequest) {
       trackingNumber,
       lessonRequest
     });
-    
+
   } catch (error) {
     console.error('Error al crear la solicitud de lección:', error);
     return NextResponse.json(
