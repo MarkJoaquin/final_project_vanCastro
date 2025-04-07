@@ -14,6 +14,48 @@ import { countries } from '@/data/countries'
 import { icbcLocations } from '@/data/icbcLocations'
 
 const BookingForm = () => {
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [submitSuccess, setSubmitSuccess] = useState(false);
+    const [submitError, setSubmitError] = useState<string | null>(null);
+    const [trackingNumber, setTrackingNumber] = useState<string | null>(null);
+
+    const onSubmit = async (data: FormData) => {
+        setIsSubmitting(true);
+        setSubmitError(null);
+
+        try {
+            console.log('Form submitted with data:', data);
+
+            const response = await fetch('/api/lessons/request', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                throw new Error(result.error || 'Error al enviar la solicitud');
+            }
+
+            setSubmitSuccess(true);
+            setTrackingNumber(result.trackingNumber);
+            console.log('Solicitud creada exitosamente:', result);
+
+            // Opcional: resetear el formulario después de un envío exitoso
+            // reset();
+
+        } catch (error) {
+            console.error('Error al enviar el formulario:', error);
+            setSubmitError(error instanceof Error ? error.message : 'Error desconocido');
+        } finally {
+            setIsSubmitting(false);
+            reset();
+        }
+    };
+
     const form = useForm<FormData>({
         defaultValues: {
             // Datos personales
@@ -23,17 +65,17 @@ const BookingForm = () => {
             country: '',
             phone: '',
             email: '',
-            
+
             // Información de licencia
             hasDriverLicense: '',
             licenseNumber: '',
             licenseType: '',
             licenseExpiryDate: null,
-            
+
             // Información de road test
             hasBookedRoadTest: '',
             roadTestLocation: '',
-            
+
             // Selección de lección
             licenseClass: '',
             plan: '',
@@ -62,7 +104,7 @@ const BookingForm = () => {
     const selectedInstructor = watch('instructor')
     const selectedLocation = watch('location')
     const selectedDateTime = watch('dateTime')
-    
+
     // Campos observados para licencia y road test
     const hasDriverLicense = watch('hasDriverLicense')
     const hasBookedRoadTest = watch('hasBookedRoadTest')
@@ -105,6 +147,18 @@ const BookingForm = () => {
         fetchData()
     }, [])
 
+    // Establecer fecha por defecto al cargar el componente
+    useEffect(() => {
+        // Establecer la fecha por defecto solo una vez al iniciar
+        const startDate = getStartDate()
+        setSelectedDate(startDate)
+        
+        // Opcional: pre-seleccionar una hora por defecto (por ejemplo, 10:00 AM)
+        const defaultDateTime = new Date(startDate)
+        /* defaultDateTime.setHours(0, 0, 0, 0) // 10:00 AM */
+        setValue('dateTime', defaultDateTime)
+    }, []) // Ejecutar solo al montar el componente
+
     // Fetch instructor availability when instructor is selected
     useEffect(() => {
         const fetchAvailability = async () => {
@@ -120,7 +174,7 @@ const BookingForm = () => {
                 }
                 const data = await response.json()
                 setAvailableTimes(data)
-                
+
                 // Solo inicializar la fecha si no hay una fecha seleccionada previamente
                 if (!selectedDate && !selectedDateTime) {
                     const startDate = getStartDate()
@@ -134,7 +188,7 @@ const BookingForm = () => {
         }
 
         fetchAvailability()
-    }, [selectedInstructor]) 
+    }, [selectedInstructor])
 
     // Fetch unavailable time slots when date or instructor changes
     useEffect(() => {
@@ -145,18 +199,18 @@ const BookingForm = () => {
 
             try {
                 const formattedDate = selectedDate.toISOString().split('T')[0]
-                
+
                 /* console.log('Consultando slots no disponibles para:', {
                     instructorId: selectedInstructor,
                     date: formattedDate
                 }) */
-                
+
                 const response = await fetch(`/api/lessons/unavailable?instructorId=${selectedInstructor}&date=${formattedDate}`)
-                
+
                 if (!response.ok) {
                     throw new Error('Failed to fetch unavailable time slots')
                 }
-                
+
                 const data = await response.json()
                 console.log('Slots no disponibles recibidos desde frontend:', data)
                 setUnavailableTimeSlots(data)
@@ -239,12 +293,12 @@ const BookingForm = () => {
         const hours = time.getHours()
         const minutes = time.getMinutes()
         const timeString = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`
-        
+
         // Obtener la fecha del DatePicker en formato YYYY-MM-DD
         const datePickerDate = selectedDate ? selectedDate.toISOString().split('T')[0] : ''
-        
+
         /* console.log('Verificando slots no disponibles para:', datePickerDate, timeString) */
-        
+
         // Verificar si el slot está marcado como no disponible
         const isUnavailable = unavailableTimeSlots.some(slot => {
             // Asegurarnos de que el slot tenga una fecha válida
@@ -252,10 +306,10 @@ const BookingForm = () => {
                 console.error('Slot sin fecha definida:', slot)
                 return false
             }
-            
+
             // Convertir la fecha del slot a formato YYYY-MM-DD
             const slotDate = new Date(slot.date).toISOString().split('T')[0]
-            
+
             // Solo considerar slots de la fecha seleccionada en el DatePicker
             if (slotDate !== datePickerDate) {
                 /* console.log(`Ignorando slot de fecha ${slotDate} (buscando ${datePickerDate})`) */
@@ -332,23 +386,31 @@ const BookingForm = () => {
         return day === 0 || day === 6 // 0 is Sunday, 6 is Saturday
     }
 
+    // Helper function to check if a datetime has valid time (not 00:00:00)
+    const hasValidTime = (date: Date | null) => {
+        if (!date) return false
+        const hours = date.getHours()
+        const minutes = date.getMinutes()
+        return hours !== 0 || minutes !== 0
+    }
+
     // Get the date 2 weeks from now
     const getStartDate = () => {
         const date = new Date()
         date.setDate(date.getDate() + 14) // Add 14 days
-        
+
         // If it lands on a weekend, move to next Monday
         while (isWeekend(date)) {
             date.setDate(date.getDate() + 1)
         }
-        
+
         return date
     }
 
     // Handle Class 7 validation
     useEffect(() => {
         if (!selectedClass || !classes.length) return;
-        
+
         const selectedClassData = classes.find(c => c.id === selectedClass);
         if (selectedClassData?.name === 'Class 7') {
             if (learningPermitStatus === false) {
@@ -555,7 +617,7 @@ const BookingForm = () => {
                                     <p className="text-sm text-red-500 mt-1">{errors.hasDriverLicense.message}</p>
                                 )}
                             </div>
-                            
+
                             {/* Campos adicionales si tiene licencia */}
                             {hasDriverLicense === 'yes' && (
                                 <div className="grid md:grid-cols-3 gap-4">
@@ -576,7 +638,7 @@ const BookingForm = () => {
                                             <p className="text-sm text-red-500 mt-1">{errors.licenseNumber.message}</p>
                                         )}
                                     </div>
-                                    
+
                                     <div>
                                         <label htmlFor="licenseType" className="block text-sm font-medium mb-2">
                                             License Type
@@ -595,7 +657,7 @@ const BookingForm = () => {
                                             <p className="text-sm text-red-500 mt-1">{errors.licenseType.message}</p>
                                         )}
                                     </div>
-                                    
+
                                     <div>
                                         <label htmlFor="licenseExpiryDate" className="block text-sm font-medium mb-2">
                                             Expiry Date
@@ -656,7 +718,7 @@ const BookingForm = () => {
                                     <p className="text-sm text-red-500 mt-1">{errors.hasBookedRoadTest.message}</p>
                                 )}
                             </div>
-                            
+
                             {/* Campo adicional si ha reservado road test */}
                             {hasBookedRoadTest === 'yes' && (
                                 <div>
@@ -682,7 +744,7 @@ const BookingForm = () => {
                                 </div>
                             )}
                         </div>
-                        
+
                         {/* Sección de selección de clase de licencia */}
                         <h2 className="text-2xl font-bold text-center mb-6">Select Your License Class</h2>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -711,10 +773,10 @@ const BookingForm = () => {
                                     <p className="text-sm text-gray-500 mb-4">* Taxes are not included in the price.</p>
                                     <div className="grid grid-cols-1 gap-4">
                                         {classes.find(c => c.id === selectedClass)?.plans.map((plan) => (
-                                            <div key={plan.id} className="border p-4 rounded-lg hover:bg-gray-50">
+                                            <div key={plan.id} className={`border p-4 rounded-lg hover:bg-gray-50 ${selectedPlan === plan.id ? 'border-blue-500 bg-blue-50' : ''}`}>
                                                 <input
                                                     type="radio"
-                                                    {...register('plan')}
+                                                    {...register('plan', { required: 'Please select a plan' })}
                                                     value={plan.id}
                                                     id={plan.id}
                                                     className="hidden"
@@ -735,17 +797,16 @@ const BookingForm = () => {
                                 <div className="mt-6">
                                     <h3 className="text-xl font-semibold mb-4">Choose Your Instructor</h3>
                                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                                        {instructors.map((instructor) => (
-                                            <div key={instructor.id} 
-                                                className={`relative border rounded-xl p-4 cursor-pointer transition-all duration-200 ${
-                                                    selectedInstructor === instructor.id 
-                                                    ? 'border-blue-500 bg-blue-50' 
+                                        {instructors.map((instructor, index) => (
+                                            <div key={instructor.id}
+                                                className={`relative border rounded-xl p-4 cursor-pointer transition-all duration-200 ${selectedInstructor === instructor.id
+                                                    ? 'border-blue-500 bg-blue-50'
                                                     : 'hover:border-gray-300'
-                                                }`}
+                                                    }`}
                                             >
                                                 <input
                                                     type="radio"
-                                                    {...register('instructor', { 
+                                                    {...register('instructor', {
                                                         required: 'Please select an instructor'
                                                     })}
                                                     value={instructor.id}
@@ -757,13 +818,13 @@ const BookingForm = () => {
                                                         {errors.instructor.message}
                                                     </p>
                                                 )}
-                                                <label 
+                                                <label
                                                     htmlFor={`instructor-${instructor.id}`}
                                                     className="block cursor-pointer"
                                                 >
                                                     <div className="relative w-full aspect-square mb-3">
                                                         <Image
-                                                            src="/placeholder-instructor.jpg"
+                                                            src={`/instructor${index}.png`}
                                                             alt={instructor.name}
                                                             fill
                                                             className="object-cover rounded-lg"
@@ -771,19 +832,19 @@ const BookingForm = () => {
                                                     </div>
                                                     <div className="text-center">
                                                         <h4 className="font-medium text-lg">{instructor.name}</h4>
-                                                        <p className="text-sm text-gray-500">
+                                                        {/*  <p className="text-sm text-gray-500">
                                                             {instructor.experienceYears} years experience
                                                         </p>
                                                         <div className="mt-2 flex flex-wrap gap-1 justify-center">
                                                             {instructor.languages.map((lang: string) => (
-                                                                <span 
+                                                                <span
                                                                     key={lang}
                                                                     className="px-2 py-1 text-xs bg-gray-100 rounded-full"
                                                                 >
                                                                     {lang}
                                                                 </span>
                                                             ))}
-                                                        </div>
+                                                        </div> */}
                                                     </div>
                                                 </label>
                                             </div>
@@ -795,16 +856,15 @@ const BookingForm = () => {
                                     <h3 className="text-xl font-semibold mb-4">Choose Your Location</h3>
                                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                                         {locations.map((location) => (
-                                            <div key={location.id} 
-                                                className={`relative border rounded-xl p-4 cursor-pointer transition-all duration-200 ${
-                                                    selectedLocation === location.id 
-                                                    ? 'border-blue-500 bg-blue-50' 
+                                            <div key={location.id}
+                                                className={`relative border rounded-xl p-4 cursor-pointer transition-all duration-200 ${selectedLocation === location.id
+                                                    ? 'border-blue-500 bg-blue-50'
                                                     : 'hover:border-gray-300'
-                                                }`}
+                                                    }`}
                                             >
                                                 <input
                                                     type="radio"
-                                                    {...register('location', { 
+                                                    {...register('location', {
                                                         required: 'Please select a location'
                                                     })}
                                                     value={location.id}
@@ -816,69 +876,111 @@ const BookingForm = () => {
                                                         {errors.location.message}
                                                     </p>
                                                 )}
-                                                <label 
+                                                <label
                                                     htmlFor={`location-${location.id}`}
                                                     className="block cursor-pointer"
                                                 >
                                                     <div className="font-medium">{location.name}</div>
-                                                    <p className="text-sm text-gray-500">{location.address}</p>
+                                                    {/* <p className="text-sm text-gray-500">{location.address}</p>
                                                     <div className="text-sm text-gray-500">
                                                         {location.city}, {location.zip}
-                                                    </div>
+                                                    </div> */}
                                                 </label>
                                             </div>
                                         ))}
                                     </div>
                                 </div>
 
-                                {selectedLocation && selectedInstructor && (
+                                {selectedLocation && selectedInstructor && selectedPlan && (
                                     <div className="mt-6">
-                                        <h3 className="text-xl font-semibold mb-4">Select Date and Time</h3>
-                                        <div className="space-y-4">
-                                            <DatePicker
-                                                selected={selectedDateTime}
-                                                onChange={(date) => {
-                                                    setValue('dateTime', date)
-                                                    // Update selected date for fetching unavailable slots
-                                                    if (date) {
-                                                        const dateOnly = new Date(date)
-                                                        dateOnly.setHours(0, 0, 0, 0)
-                                                        if (!selectedDate || selectedDate.getTime() !== dateOnly.getTime()) {
+                                       {/*  <h3 className="text-xl font-semibold mb-4">Select Date</h3> */}
+                                        
+                                        {/* Contenedor flexible para calendario y horas */}
+                                        <div className="flex flex-col md:flex-row gap-6">
+                                            {/* Columna del calendario */}
+                                            <div className="md:w-7/12">
+                                                <h4 className="text-lg font-medium mb-3">Pick a Date</h4>
+                                                <DatePicker
+                                                    selected={selectedDateTime || selectedDate}
+                                                    onChange={(date) => {
+                                                        if (date) {
+                                                            // Establecer solo la fecha, manteniendo la hora en 00:00
+                                                            const dateOnly = new Date(date.getFullYear(), date.getMonth(), date.getDate())
                                                             setSelectedDate(dateOnly)
                                                         }
-                                                    }
-                                                }}
-                                                onMonthChange={(date) => {
-                                                    // When month changes, update selected date
-                                                    const dateOnly = new Date(date)
-                                                    dateOnly.setHours(0, 0, 0, 0)
-                                                    setSelectedDate(dateOnly)
-                                                }}
-                                                showTimeSelect
-                                                inline
-                                                minDate={getStartDate()}
-                                                maxDate={new Date(Date.now() + 120 * 24 * 60 * 60 * 1000)} // 120 days ahead
-                                                timeIntervals={15}
-                                                includeTimes={getTimeIntervals()}
-                                                filterTime={filterTime}
-                                                filterDate={(date) => !isWeekend(date)}
-                                                timeFormat="HH:mm"
-                                                dateFormat="MMMM d, yyyy h:mm aa"
-                                                className="w-full"
-                                                dayClassName={(date) => {
-                                                    // Resaltar la fecha seleccionada
-                                                    return date.toDateString() === (selectedDateTime?.toDateString() || '') 
-                                                        ? "bg-blue-500 text-white rounded-full" 
-                                                        : ""  
-                                                }}
-                                                timeClassName={(time) => {
-                                                    // Usar filterTime para determinar la disponibilidad
-                                                    if (!filterTime(time)) {
-                                                        return "text-red-300 line-through cursor-not-allowed"
-                                                    }
-                                                    return "text-blue-600"
-                                                }}
-                                            />
+                                                    }}
+                                                    onMonthChange={(date) => {
+                                                        // When month changes, update selected date
+                                                        const dateOnly = new Date(date)
+                                                        dateOnly.setHours(0, 0, 0, 0)
+                                                        setSelectedDate(dateOnly)
+                                                    }}
+                                                    inline
+                                                    minDate={getStartDate()}
+                                                    maxDate={new Date(Date.now() + 120 * 24 * 60 * 60 * 1000)} // 120 days ahead
+                                                    filterDate={(date) => !isWeekend(date)}
+                                                    dateFormat="MMMM d, yyyy"
+                                                    className="w-full"
+                                                    dayClassName={(date) => {
+                                                        // Resaltar la fecha seleccionada
+                                                        return date.toDateString() === (selectedDate?.toDateString() || '')
+                                                            ? "bg-blue-500 text-white rounded-full"
+                                                            : ""
+                                                    }}
+                                                    // Deshabilitar selector de hora en este componente
+                                                    showTimeSelect={false}
+                                                />
+                                            </div>
+                                            
+                                            {/* Columna de horas con scroll */}
+                                            <div className="md:w-5/12">
+                                                {selectedDate ? (
+                                                    <div>
+                                                        <h4 className="text-lg font-medium mb-3">Available Times</h4>
+                                                        <div className="h-64 overflow-y-auto pr-2 border rounded-md p-3">
+                                                            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                                                                {getTimeIntervals().map((time, index) => {
+                                                                    const isAvailable = filterTime(time);
+                                                                    const timeString = `${time.getHours().toString().padStart(2, '0')}:${time.getMinutes().toString().padStart(2, '0')}`;
+                                                                    const isSelected = selectedDateTime && 
+                                                                        selectedDateTime.getHours() === time.getHours() && 
+                                                                        selectedDateTime.getMinutes() === time.getMinutes();
+                                                                    
+                                                                    return (
+                                                                        <button
+                                                                            key={index}
+                                                                            type="button"
+                                                                            disabled={!isAvailable}
+                                                                            className={`py-2 px-3 rounded-md text-sm ${isSelected 
+                                                                                ? 'bg-blue-500 text-white' 
+                                                                                : isAvailable 
+                                                                                    ? 'bg-white border hover:bg-gray-50' 
+                                                                                    : 'bg-gray-100 text-gray-400 line-through cursor-not-allowed'}`}
+                                                                            onClick={() => {
+                                                                                if (isAvailable && selectedDate) {
+                                                                                    const newDateTime = new Date(selectedDate);
+                                                                                    newDateTime.setHours(time.getHours(), time.getMinutes(), 0, 0);
+                                                                                    setValue('dateTime', newDateTime);
+                                                                                }
+                                                                            }}
+                                                                        >
+                                                                            {timeString}
+                                                                        </button>
+                                                                    );
+                                                                })}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                ) : (
+                                                    <div className="flex items-center justify-center h-64 border rounded-md">
+                                                        <p className="text-gray-500">Please select a date first</p>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                        
+                                        {/* Mensajes de estado debajo del calendario y las horas */}
+                                        <div className="mt-4">
                                             {errors.dateTime && (
                                                 <p className="text-sm text-red-500 text-center">
                                                     {errors.dateTime.message}
@@ -894,9 +996,21 @@ const BookingForm = () => {
                                                     Validating time slot availability...
                                                 </p>
                                             )}
-                                            {availableTimes.length === 0 && (
+                                            {selectedDate && availableTimes.length === 0 && (
                                                 <p className="text-sm text-gray-500 text-center">
-                                                    No available time slots for the selected instructor
+                                                    No available time slots for the selected instructor on this date
+                                                </p>
+                                            )}
+                                            {selectedDateTime && (
+                                                <p className="text-sm text-green-500 text-center mt-2">
+                                                    You selected: {selectedDateTime.toLocaleString('en-US', {
+                                                        weekday: 'long',
+                                                        year: 'numeric',
+                                                        month: 'long',
+                                                        day: 'numeric',
+                                                        hour: '2-digit',
+                                                        minute: '2-digit'
+                                                    })}
                                                 </p>
                                             )}
                                         </div>
@@ -905,6 +1019,22 @@ const BookingForm = () => {
                             </>
                         )}
                     </div>
+                </div>
+                {/* Submit Button */}
+                <div className="mt-8 flex justify-center relative">
+                    <Button
+                        type="button"
+                        onClick={form.handleSubmit(onSubmit)}
+                        className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg"
+                        disabled={isSubmitting || isFormDisabled || validatingTimeSlot || !selectedDateTime || !selectedPlan || !selectedLocation || !hasValidTime(selectedDateTime)}
+                    >
+                        {isSubmitting ? 'Submitting...' : 'Submit Booking'}
+                    </Button>
+                    {/* {selectedDateTime && !hasValidTime(selectedDateTime) && (
+                        <p className="text-sm text-red-500 mt-2 absolute -bottom-6 whitespace-nowrap">
+                            Por favor selecciona una hora específica, no solo la fecha
+                        </p>
+                    )} */}
                 </div>
             </form>
             {showLearningPermitDialog && (
@@ -921,6 +1051,28 @@ const BookingForm = () => {
                     >
                         I now have my Learning Permit
                     </Button>
+                </div>
+            )}
+
+            {submitSuccess && trackingNumber && (
+                <div className="mt-6 p-6 bg-green-50 border border-green-200 rounded-lg text-center">
+                    <h3 className="text-xl font-bold text-green-700 mb-2">Booking Successful!</h3>
+                    <p className="mb-4">Your request has been sent and is being processed.</p>
+                    <div className="bg-white p-4 rounded-md inline-block mb-4">
+                        <p className="text-sm text-gray-600">Tracking Number:</p>
+                        <p className="text-2xl font-mono font-bold tracking-wider">{trackingNumber}</p>
+                    </div>
+                    <p className="text-sm text-gray-600">
+                        Save this number to check the status of your reservation. We will send you an email with the details.
+                    </p>
+                </div>
+            )}
+
+            {submitError && (
+                <div className="mt-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+                    <h3 className="text-lg font-semibold text-red-700 mb-2">Error processing request</h3>
+                    <p>{submitError}</p>
+                    <p className="mt-2 text-sm">Please try again or contact support if the problem persists.</p>
                 </div>
             )}
             <DevTool control={control} />

@@ -92,7 +92,7 @@ export async function validateFutureLessons(
       if (hasOverlap) {
         return {
           isValid: false,
-          message: `No se puede agendar la lección porque se solapa con otra lección existente a las ${lesson.startTime}`
+          message: `Cannot schedule the lesson because it overlaps with an existing lesson at ${lesson.startTime}`
         };
       }
     }
@@ -138,7 +138,7 @@ export async function validateFutureLessons(
       if (hasOverlap) {
         return {
           isValid: false,
-          message: `No se puede agendar la lección porque se solapa con una solicitud pendiente a las ${request.startTime}`
+          message: `Cannot schedule the lesson because it overlaps with a pending request at ${request.startTime}`
         };
       }
     }
@@ -228,11 +228,11 @@ export async function validateFutureLessons(
     } else {
       return {
         isValid: false,
-        message: `El instructor no tendrá tiempo suficiente para llegar a su siguiente lección. La lección siguiente empieza a las ${nextLesson.startTime}, y el tiempo de tránsito a ${nextLocation.city} es de ${transitMinutes} minutos.`
+        message: `The instructor will not have enough time to reach their next lesson. The next lesson starts at ${nextLesson.startTime}, and the transit time to ${nextLocation.city} is ${transitMinutes} minutes.`
       };
     }
   } catch (error) {
     console.error('Error validating future lessons:', error);
-    return { isValid: false, message: 'Error al validar tiempo de tránsito para lecciones futuras' };
+    return { isValid: false, message: 'Error validating transit time for future lessons' };
   }
 }

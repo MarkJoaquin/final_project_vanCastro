@@ -310,11 +310,11 @@ export async function validateTransitTime(
       const earliestTimeStr = `${earliestPossibleStart.getHours().toString().padStart(2, '0')}:${earliestPossibleStart.getMinutes().toString().padStart(2, '0')}`;
       return {
         isValid: false,
-        message: `El instructor no puede llegar a tiempo. La lección anterior termina a las ${prevEndTime}, y el tiempo de tránsito a ${newLocation.city} es de ${transitMinutes} minutos. El horario más temprano posible es ${earliestTimeStr}.`
+        message: `The instructor cannot reach on time. The previous lesson ends at ${prevEndTime}, and the transit time to ${newLocation.city} is ${transitMinutes} minutes. The earliest possible time is ${earliestTimeStr}.`
       };
     }
   } catch (error) {
     console.error('Error validating transit time:', error);
-    return { isValid: false, message: 'Error al validar el tiempo de tránsito' };
+    return { isValid: false, message: 'Error validating transit time' };
   }
 }

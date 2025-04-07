@@ -64,7 +64,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json(
           { 
             isAvailable: false,
-            message: transitResult.message || 'El instructor no puede llegar a tiempo debido a restricciones de tránsito'
+            message: transitResult.message || 'The instructor cannot reach on time due to traffic restrictions'
           },
           { status: 200 }
         );
@@ -83,7 +83,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json(
           {
             isAvailable: false,
-            message: futureResult.message || 'El instructor no tendrá tiempo suficiente para llegar a su siguiente lección'
+            message: futureResult.message || 'The instructor will not have enough time to reach their next lesson'
           },
           { status: 200 }
         );
