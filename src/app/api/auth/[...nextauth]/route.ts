@@ -1,12 +1,15 @@
 import { hashCompare, hashPassword } from '@/lib/hashPass';
+import prisma from '@/lib/prisma';
 import NextAuth, { type NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 
-const admin = [
-  { id: 1, name: "admin1", languages:["English"], phone:"12345", email:"email1@123", password:"$2b$10$kYS3MFkjoY2j8RabUxTsoeqMdRqStJbzt14Pm1JoKoUoi0vdmQ2y6" }, //initial Password "email1@123"
-  { id: 2, name: "admin2", languages:["English"], phone:"12345", email:"email2@234", password:"$2b$10$5IlHpfAT8rNmoF/EqyMCKuh81OO9i0Pa6TbSpyUpLPM7Yk02FM29O" }, //initial Password "email2@234"
+/* const admin = [
+  { id: 1, name: "Anderson", languages:["English"], phone:"+1 604-600-9173", email:"Anderson@test.com", password:"$2b$10$MlxmvLIWEV.OqQnDt0yK7uAMmZG9D/34XytFsVKPWbhsAzbEuyv.i" }, //initial Password "email1@123"
+  { id: 2, name: "Andressa", languages:["English"], phone:"+1 778-680-5613", email:"Andressa@test.com", password:"$2b$10$fUWS0UM3zneRpbOxgG3ek.1xS.l1wT.7czsox4yR0qrmPA0L04p2i" }, //initial Password "email2@234"
+  { id: 3, name: "admin1", languages:["English"], phone:"12345", email:"email1@123", password:"$2b$10$kYS3MFkjoY2j8RabUxTsoeqMdRqStJbzt14Pm1JoKoUoi0vdmQ2y6" }, //initial Password "email1@123"
+  { id: 4, name: "admin2", languages:["English"], phone:"12345", email:"email2@234", password:"$2b$10$5IlHpfAT8rNmoF/EqyMCKuh81OO9i0Pa6TbSpyUpLPM7Yk02FM29O" }, //initial Password "email2@234"
 ];
-
+ */
 export const authOptions: NextAuthOptions = {
   session:{
     strategy: "jwt",
@@ -32,8 +35,16 @@ export const authOptions: NextAuthOptions = {
         }
 
         //from database
+/* 
         const user = admin.find((data)=>{
           return data.email === credentials.email
+        })
+ */
+        
+        const user = await prisma.instructor.findUnique({
+          where: {
+            email: credentials.email
+          }
         })
 
         console.log("CREDE",user)
@@ -42,7 +53,9 @@ export const authOptions: NextAuthOptions = {
           return null
         }
 
-//        const hashedPassword = await hashPassword("email2@234")
+        const hashedPassword = await hashPassword("Andressa@test.com")
+        console.log("Andressa@test.com",hashedPassword)
+
         const isPasswordValid =  await hashCompare(credentials.password,user.password)
         console.log("Password",isPasswordValid)
 

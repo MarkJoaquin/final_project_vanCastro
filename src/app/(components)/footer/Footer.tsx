@@ -1,7 +1,6 @@
 import Image from "next/image";
 import "./Footer.css";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 import PhoneImg from "@/../public/footer/footer-phone.svg"
 import VanCastroLogo from "@/../public/footer/vancastro-logo.svg"
 import FacebookLogo from "@/../public/footer/footer-facebook.svg"
