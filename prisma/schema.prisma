@@ -37,6 +37,10 @@ model Student {
   name           String
   language       String?
   phone          String
+  birthDate      DateTime?
+  country        String?
+  hasLicense     Boolean?
+  hasRoadTest    Boolean?
   createdAt      DateTime         @default(now())
   updatedAt      DateTime         @updatedAt
 
@@ -86,8 +90,11 @@ model Location {
   address   String
   city      String
   zip       String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+
+  lessons        Lesson[]
+  lessonRequests LessonsRequest[]
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 
   @@map("locations")
 }
@@ -152,9 +159,10 @@ model LessonsRequest {
   studentId     String        @db.ObjectId
   instructorId  String        @db.ObjectId
   lessonDate    DateTime
-  lessonTime    String
+  startTime     String
+  endTime       String
   lessonDuration String
-  lessonLocation String
+  lessonLocation String        @db.ObjectId
   lessonPlan    String
   lessonPrice   String
   lessonStatus  RequestStatus
@@ -164,8 +172,9 @@ model LessonsRequest {
 
   student    Student    @relation(fields: [studentId], references: [id])
   instructor Instructor @relation(fields: [instructorId], references: [id])
+  location   Location   @relation(fields: [lessonLocation], references: [id])
 
-  @@map("lessons_request")
+  @@map("lessonsRequest")
 }
 
 model RoadTest {
@@ -212,7 +221,7 @@ model Lesson {
   startTime      String
   endTime        String
   duration       String
-  location       String
+  locationId     String        @db.ObjectId
   plan           String
   price          String
   status         LessonStatus
@@ -223,6 +232,7 @@ model Lesson {
 
   student    Student    @relation(fields: [studentId], references: [id])
   instructor Instructor @relation(fields: [instructorId], references: [id])
+  location   Location   @relation(fields: [locationId], references: [id])
 
   @@map("lessons")
 }

@@ -4,6 +4,18 @@ const prisma = new PrismaClient()
 
 async function main() {
 
+  console.log('❌Removing current data❌')
+
+  await prisma.availability.deleteMany()
+  await prisma.instructor.deleteMany()
+  await prisma.planToClass.deleteMany()
+  await prisma.planClass.deleteMany()
+  await prisma.plan.deleteMany()
+  await prisma.location.deleteMany()
+  await prisma.transitTime.deleteMany()
+
+  console.log('✅Current data removed✅')
+
   console.log('🌱Iniciando seed...')
 
   // Crear instructores y guardar sus IDs
@@ -40,9 +52,19 @@ async function main() {
         endTime: '17:00',
       },
       {
+        instructorId: instructor1.id,
+        startTime: '10:00',
+        endTime: '18:00',
+      },
+      {
         instructorId: instructor2.id,
-        startTime: '09:00',
-        endTime: '17:00',
+        startTime: '08:00',
+        endTime: '16:00',
+      },
+      {
+        instructorId: instructor2.id,
+        startTime: '11:00',
+        endTime: '19:00',
       },
     ],
   })
@@ -98,7 +120,7 @@ async function main() {
     data: {
       name: 'Road lesson',
       description: 'Standard passenger vehicle license - Basic package',
-      lessons: 10,
+      lessons: 1,
       price: 100,
       time: 90,
       planClasses: {
@@ -354,6 +376,16 @@ async function main() {
 
   const transitTime6 = await prisma.transitTime.create({
     data: { fromCity: 'Burnaby', toCity: 'Vancouver', time: 30 }
+  })
+
+  /* Localities */
+
+  await prisma.location.createMany({
+    data: [
+      { name: 'North Vancouver', address: '2555 25th St', city: 'North Vancouver', zip: 'V5A 1A1' },
+      { name: 'Vancouver', address: '2555 25th St', city: 'Vancouver', zip: 'V5A 1A1' },
+      { name: 'Burnaby', address: '2555 25th St', city: 'Burnaby', zip: 'V5A 1A1' }
+    ]
   })
 
   console.log('Seed completado!')
