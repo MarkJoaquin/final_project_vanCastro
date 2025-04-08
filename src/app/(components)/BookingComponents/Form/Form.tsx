@@ -1,7 +1,7 @@
 "use client"
 
 import { useForm } from 'react-hook-form'
-import { DevTool } from '@hookform/devtools'
+// import { DevTool } from '@hookform/devtools'
 import { AlertDialogBooking } from '../AlertDialog/AlertDialog'
 import { useState, useEffect } from 'react'
 import { useLocalStorageWithExpiration } from '@/hooks/useLocalStorageWithExpiration'
@@ -108,7 +108,7 @@ const BookingForm = () => {
                     </Button>
                 </div>
             )}
-            <DevTool control={control} />
+            {/* <DevTool control={control} /> */}
         </div>
     )
 }
