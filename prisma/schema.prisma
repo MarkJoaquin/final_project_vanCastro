@@ -37,10 +37,10 @@ model Student {
   name           String
   language       String?
   phone          String
-  birthDate      DateTime
-  country        String
-  hasLicense     Boolean
-  hasRoadTest    Boolean
+  birthDate      DateTime?
+  country        String?
+  hasLicense     Boolean?
+  hasRoadTest    Boolean?
   createdAt      DateTime         @default(now())
   updatedAt      DateTime         @updatedAt
 

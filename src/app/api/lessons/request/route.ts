@@ -23,31 +23,50 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    // Validar que el email tenga un formato válido
+    if (!data.email || !data.email.includes('@')) {
+      return NextResponse.json(
+        { error: 'El email proporcionado no es válido' },
+        { status: 400 }
+      );
+    }
+    
+    // Normalizar el email (convertir a minúsculas)
+    const normalizedEmail = data.email.toLowerCase().trim();
+    
     // Verificar si el estudiante ya existe por email
     let student = await prisma.student.findUnique({
-      where: { email: data.email }
+      where: { email: normalizedEmail }
     });
 
     // Preparar los datos para crear o actualizar el estudiante
     const studentData = {
-      email: data.email,
+      email: normalizedEmail, // Usar el email normalizado
       name: `${data.firstName} ${data.lastName}`,
       phone: data.phone,
       language: null,
       // Nuevos campos añadidos al esquema
-      birthDate: data.birthDate ? new Date(data.birthDate) : new Date(),
-      country: data.country || '',
-      hasLicense: data.hasDriverLicense === 'yes',
-      hasRoadTest: data.hasBookedRoadTest === 'yes'
+      birthDate: data.birthDate && data.birthDate !== '' ? new Date(data.birthDate) : null, // Ahora es opcional
+      country: data.country || null, // Ahora es opcional
+      hasLicense: data.hasDriverLicense ? data.hasDriverLicense === 'yes' : null, // Ahora es opcional
+      hasRoadTest: data.hasBookedRoadTest ? data.hasBookedRoadTest === 'yes' : null // Ahora es opcional
+    };
+
+    // Asegurarnos de que los campos booleanos tengan valores predeterminados para la creación
+    const createData = {
+      ...studentData,
+      // Para la creación, los campos booleanos no pueden ser null
+      hasLicense: studentData.hasLicense ?? false,
+      hasRoadTest: studentData.hasRoadTest ?? false
     };
 
     // Si no existe, crear un nuevo estudiante
     if (!student) {
         student = await prisma.student.create({
-            data: studentData
+            data: createData
         })
     } else {
-      // Actualizar información del estudiante si ya existe
+      // Para la actualización, podemos usar valores opcionales
       student = await prisma.student.update({
         where: { id: student.id },
         data: {
@@ -57,8 +76,9 @@ export async function POST(request: NextRequest) {
           // Actualizar los campos nuevos
           birthDate: studentData.birthDate,
           country: studentData.country,
-          hasLicense: studentData.hasLicense,
-          hasRoadTest: studentData.hasRoadTest
+          // Solo actualizar si hay un valor definido
+          ...(studentData.hasLicense !== null && { hasLicense: studentData.hasLicense }),
+          ...(studentData.hasRoadTest !== null && { hasRoadTest: studentData.hasRoadTest })
         }
       });
     }
@@ -157,8 +177,25 @@ export async function POST(request: NextRequest) {
 
   } catch (error) {
     console.error('Error al crear la solicitud de lección:', error);
+    
+    // Manejar errores específicos de Prisma
+    if (error && typeof error === 'object' && 'code' in error) {
+      // Es un error de Prisma
+      const prismaError = error as { code: string; meta?: { target?: string[] } };
+      if (prismaError.code === 'P2002' && prismaError.meta?.target?.includes('email')) {
+        return NextResponse.json(
+          { error: 'Ya existe un estudiante con este email' },
+          { status: 400 }
+        );
+      }
+    }
+    
+    const errorMessage = error && typeof error === 'object' && 'message' in error 
+      ? error.message 
+      : 'Error al procesar la solicitud';
+    
     return NextResponse.json(
-      { error: 'Error al procesar la solicitud' },
+      { error: errorMessage },
       { status: 500 }
     );
   }
