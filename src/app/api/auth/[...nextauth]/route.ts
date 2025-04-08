@@ -33,13 +33,6 @@ export const authOptions: NextAuthOptions = {
         if(!credentials?.email || !credentials.password){
           return null;
         }
-
-        //from database
-/* 
-        const user = admin.find((data)=>{
-          return data.email === credentials.email
-        })
- */
         
         const user = await prisma.instructor.findUnique({
           where: {

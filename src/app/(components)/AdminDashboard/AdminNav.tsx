@@ -17,7 +17,7 @@ export default function AdminNav(){
         <p className="underline">Dashboard</p>
       </Link>
       <div className="flex gap-[1rem] items-center">
-        <Link href={`/admin/${loginedInstructorData?.email}`}>
+        <Link href={`/admin/${loginedInstructorData?.id}`}>
           <Image
             src={Setting}
             alt="setting"
