@@ -1,7 +1,8 @@
 "use client"
 
-import { useForm } from 'react-hook-form'
-import { DevTool } from '@hookform/devtools'
+import { useForm, Controller } from 'react-hook-form'
+// Comentamos DevTool para evitar errores
+// import { DevTool } from '@hookform/devtools'
 import { AlertDialogBooking } from '../AlertDialog/AlertDialog'
 import { useState, useEffect } from 'react'
 import { useLocalStorageWithExpiration } from '@/hooks/useLocalStorageWithExpiration'
@@ -1058,7 +1059,30 @@ const BookingForm = () => {
                     </Button>
                 </div>
             )}
-            <DevTool control={control} />
+
+            {submitSuccess && trackingNumber && (
+                <div className="mt-6 p-6 bg-green-50 border border-green-200 rounded-lg text-center">
+                    <h3 className="text-xl font-bold text-green-700 mb-2">Booking Successful!</h3>
+                    <p className="mb-4">Your request has been sent and is being processed.</p>
+                    <div className="bg-white p-4 rounded-md inline-block mb-4">
+                        <p className="text-sm text-gray-600">Tracking Number:</p>
+                        <p className="text-2xl font-mono font-bold tracking-wider">{trackingNumber}</p>
+                    </div>
+                    <p className="text-sm text-gray-600">
+                        Save this number to check the status of your reservation. We will send you an email with the details.
+                    </p>
+                </div>
+            )}
+
+            {submitError && (
+                <div className="mt-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+                    <h3 className="text-lg font-semibold text-red-700 mb-2">Error processing request</h3>
+                    <p>{submitError}</p>
+                    <p className="mt-2 text-sm">Please try again or contact support if the problem persists.</p>
+                </div>
+            )}
+            {/* Comentamos DevTool para evitar errores */}
+            {/* <DevTool control={control} /> */}
         </div>
     )
 }
