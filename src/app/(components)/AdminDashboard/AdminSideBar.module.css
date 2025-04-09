@@ -6,6 +6,7 @@
 .sideSection {
     color: black;
     margin-top: 3rem;
+    margin-left: 1rem;
 }
 
 .link {
@@ -33,6 +34,12 @@
 }
 
 .activeLink:hover {
+    background-color: #EDEFEC; 
+    color: black; 
+    font-weight: 700;
+}
+
+.active {
     background-color: #EDEFEC; 
     color: black; 
     font-weight: 700;
