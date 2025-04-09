@@ -1,7 +1,15 @@
+import Image from "next/image";
 import "./Footer.css";
 import Link from "next/link";
+import PhoneImg from "@/../public/footer/footer-phone.svg"
+import VanCastroLogo from "@/../public/footer/vancastro-logo.svg"
+import FacebookLogo from "@/../public/footer/footer-facebook.svg"
+import InstagramLogo from "@/../public/footer/footer-instagram.svg"
+import YotubeLogo from "@/../public/footer/footer-youtube.svg"
+import WhatsappLogo from "@/../public/footer/footer-whatsapp.svg"
 
 export default function Footer() {
+
     return (
         <footer className="w-[100%]">
             <div className="footer-container flex justify-between border-b pb-6">
@@ -9,12 +17,24 @@ export default function Footer() {
                     <h3>Contact</h3>
                     <p  className="footer-element"><span>Phone</span></p>
                     <div className=" footer-element contact-driver">
-                        <img className="phone-icon" src="./footer/footer-phone.svg"/>
+                        <Image
+                            src={PhoneImg}
+                            alt="phoneImg"
+                            height={20}
+                            width={20}
+                            style={{marginRight:"1rem"}}
+                        />
                         <p className="pr-3">Anderson</p>
                         <p className="flex hover-element">+1 604-600-9173</p>
                     </div>
                     <div className="footer-element contact-driver">
-                        <img className="phone-icon" src="./footer/footer-phone.svg"/>
+                        <Image
+                            src={PhoneImg}
+                            alt="phoneImg"
+                            height={20}
+                            width={20}
+                            style={{marginRight:"1rem"}}
+                        />
                         <p className="pr-3">Andresa</p>
                         <p className="flex hover-element">+1 778-680-5613</p>
                     </div>
@@ -39,19 +59,49 @@ export default function Footer() {
                     <p className="footer-element hover-element">Contact</p>
                 </div>
                 <div className="footer-logo mobile-first order-tablet-4">
-                    <img className="mb-5" src="./footer/vancastro-logo.svg" alt="Logo" />
+                    <Image
+                        className="mb-5"
+                        src={VanCastroLogo}
+                        alt="MainLogo"
+                        width={200}
+                        height={100}
+                    />
                     <div className="social-media flex justify-between">
                         <div className="div-social-logo flex justify-center">
-                            <img className="social-logo" src="./footer/footer-facebook.svg" alt="Facebook" />
+                            <Image
+                                className="social-logo"
+                                src={FacebookLogo}
+                                alt="Facebook"
+                                width={20}
+                                height={20}
+                            />
                         </div>
                         <div className="div-social-logo flex justify-center">
-                            <img className="social-logo" src="./footer/footer-instagram.svg" alt="Instagram" />    
+                            <Image
+                                className="social-logo"
+                                src={InstagramLogo}
+                                alt="instagram"
+                                width={20}
+                                height={20}
+                            />
                         </div>
                         <div className="div-social-logo flex justify-center">
-                            <img className="social-logo" src="./footer/footer-youtube.svg" alt="Youtube" />
+                            <Image
+                                className="social-logo"
+                                src={YotubeLogo}
+                                alt="youtube"
+                                width={20}
+                                height={20}
+                            />
                         </div>
                         <div className="div-social-logo flex justify-center">
-                            <img className="social-logo" src="./footer/footer-whatsapp.svg" alt="Whatsapp" />
+                            <Image
+                                className="social-logo"
+                                src={WhatsappLogo}
+                                alt="whatsapp"
+                                width={20}
+                                height={20}
+                            />
                         </div>
                     </div>
                 </div>
