@@ -1,0 +1,27 @@
+.sidebar {
+    font-weight: 500;
+    padding: 0.5rem;
+}
+
+.sideSection {
+    color: black;
+}
+
+.link {
+    margin: 1rem;
+}
+
+.activeLink {
+    display: block;
+    padding: 0.5rem 1rem; 
+    border-radius: 9999px; 
+    color: #777777; 
+    text-decoration: none; 
+    transition: background-color 0.3s, color 0.3s; 
+}
+
+.activeLink:hover {
+    background-color: #EDEFEC; 
+    color: black; 
+    font-weight: 700;
+}
