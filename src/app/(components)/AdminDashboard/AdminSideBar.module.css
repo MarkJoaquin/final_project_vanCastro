@@ -5,14 +5,26 @@
 
 .sideSection {
     color: black;
+    margin-top: 3rem;
 }
 
 .link {
     margin: 1rem;
 }
 
+.icon {
+    width: 1rem;
+    margin-right: 1rem;
+}
+
+.iconPayment {
+    width: 0.7rem;
+    margin-left: 0.3rem;
+    margin-right: 1rem;
+}
+
 .activeLink {
-    display: block;
+    display: flex;
     padding: 0.5rem 1rem; 
     border-radius: 9999px; 
     color: #777777; 

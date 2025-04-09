@@ -10,7 +10,7 @@ export default function RootLayout({
   return (<>
     <AdminDataContextProvider>
       <AdminSidebar/>
-      <div className="ml-64 flex-1 pl-4">
+      <div className="ml-70 flex-1 pl-4">
         <AdminNav/>
         {children}
       </div>
