@@ -1,6 +1,7 @@
 "use client"
 
 import AdminMainComponent from "./MainComponent/AdminMainComponent";
+import AdminTemplate from "./Template/AdminTemplate";
 
 const Main = ["One","Two","Three","Four","Five"];
 const Sub = ["one","two","three","four","five"];
@@ -14,6 +15,17 @@ export default function Dashboard() {
   return (
     <div className="min-h-[70vh]">
       This is Dashboard
+
+      <AdminTemplate PageTitle={"Booking Requests"} SearchBar={true} Component={{Maincontents:Main, SubItems:Sub,AcceptBtn:true
+      }}/>
+
+      
+      <AdminTemplate PageTitle={"Student List"} SearchBar={true} Component={{Maincontents:Main, SubItems:Sub, Date:Date}}/>
+      <AdminTemplate PageTitle={"Pending Action"} SearchBar={false} Component={{Maincontents:Main, SubItems:Sub, WhenStartLesson:WhenStartLesson}}/>
+      <AdminTemplate PageTitle={"Lesson List"} SearchBar={true} Component={{Maincontents:Main, SubItems:Sub}}/>
+      <AdminTemplate PageTitle={"Payment List"} SearchBar={true} Component={{Maincontents:Main, SubItems:Sub, Payment:Payment}}/>
+      <AdminTemplate PageTitle={"Invoice List"} SearchBar={true} Component={{Maincontents:Main, SubItems:Sub, Date:Date}}/>
+      <AdminTemplate PageTitle={"Contact List"} SearchBar={true} Component={{Maincontents:Main, SubItems:Sub, Date:Date}}/>
 
       {/*// This is How to Pass data into this Component
 

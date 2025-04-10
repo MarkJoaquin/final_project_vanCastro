@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import Style from "./AdminMainComponent.module.css"
 
-interface MainComponent {
+export interface MainComponent {
 //Left items
   Maincontents:string[];
   SubItems:string[];
@@ -12,10 +12,15 @@ interface MainComponent {
   Payment?:number[];
 }
 
-export default function AdminMainComponent({Maincontents,SubItems,AcceptBtn,Date,WhenStartLesson,Payment}:MainComponent) {
+export interface MainComponentProps {
+  data:MainComponent
+}
+
+export default function AdminMainComponent({data}:MainComponentProps) {
+  const {Maincontents, SubItems, AcceptBtn, Date, WhenStartLesson, Payment} = data
 
   return (
-    <div className="w-[80%] m-auto">
+    <div className="w-[100%] m-auto">
       {Maincontents.map((item,index)=><div key={index} className={`flex justify-between items-center border-b-1 border-gray-400 ${Style.leftItems} py-[1rem]`}>
         <div className="min-w-[50%]">
           <h2 className="text-xl font-bold leading-none">{item}</h2>
