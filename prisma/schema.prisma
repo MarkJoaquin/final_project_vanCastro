@@ -166,6 +166,8 @@ model LessonsRequest {
   lessonPlan    String
   lessonPrice   String
   lessonStatus  RequestStatus
+  licenseClass  String        // Tipo de clase (Clase 4, Clase 7, etc.)
+  paymentMethod String?       // Método de pago (opcional)
   trackingNumber String
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
@@ -226,6 +228,8 @@ model Lesson {
   price          String
   status         LessonStatus
   paymentStatus  PaymentStatus
+  licenseClass   String        // Tipo de clase (Clase 4, Clase 7, etc.)
+  paymentMethod  String?       // Método de pago (opcional)
   trackingNumber String
   createdAt      DateTime      @default(now())
   updatedAt      DateTime      @updatedAt

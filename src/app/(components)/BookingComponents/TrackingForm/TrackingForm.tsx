@@ -25,8 +25,10 @@ type BookingData = {
   location: string
   plan: string
   price: string
+  licenseClass: string
   status: BookingStatus
   paymentStatus?: PaymentStatus
+  paymentMethod?: string
   trackingNumber: string
   createdAt: string
 }
@@ -189,11 +191,21 @@ const TrackingForm = () => {
                     <span className="text-gray-600">Location:</span>
                     <span>{trackingResult.data?.location}</span>
                     
+                    <span className="text-gray-600">License Class:</span>
+                    <span>{trackingResult.data?.licenseClass}</span>
+                    
                     <span className="text-gray-600">Plan:</span>
                     <span>{trackingResult.data?.plan}</span>
                     
                     <span className="text-gray-600">Price:</span>
                     <span>${trackingResult.data?.price}</span>
+                    
+                    {trackingResult.data?.paymentMethod && (
+                      <>
+                        <span className="text-gray-600">Payment Method:</span>
+                        <span>{trackingResult.data.paymentMethod}</span>
+                      </>
+                    )}
                   </div>
                 </div>
                 <div className="text-sm text-gray-500 pt-4 border-t">

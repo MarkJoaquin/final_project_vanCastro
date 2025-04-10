@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
     // Validar que todos los campos requeridos estén presentes
     const requiredFields = [
       'firstName', 'lastName', 'email', 'phone',
-      'instructor', 'dateTime', 'location', 'plan'
+      'instructor', 'dateTime', 'location', 'plan', 'licenseClass'
     ];
 
     for (const field of requiredFields) {
@@ -94,6 +94,18 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
+    
+    // Obtener información de la clase seleccionada
+    const licenseClass = await prisma.planClass.findUnique({
+      where: { id: data.licenseClass }
+    });
+
+    if (!licenseClass) {
+      return NextResponse.json(
+        { error: 'La clase de licencia seleccionada no existe' },
+        { status: 400 }
+      );
+    }
 
     // Extraer la fecha y hora del dateTime
     const dateTime = new Date(data.dateTime);
@@ -117,6 +129,11 @@ export async function POST(request: NextRequest) {
     // Generar un número de seguimiento único
     const trackingNumber = uuidv4().substring(0, 8).toUpperCase();
 
+    // Calcular el precio con GST (5%)
+    const subtotal = plan.price;
+    const gst = subtotal * 0.05;
+    const totalPrice = subtotal + gst;
+    
     // Crear la solicitud de lección
     const lessonRequest = await prisma.lessonsRequest.create({
       data: {
@@ -128,7 +145,9 @@ export async function POST(request: NextRequest) {
         lessonDuration: plan.time.toString(),
         lessonLocation: data.location, // Ahora es una referencia a la tabla Location como ObjectId
         lessonPlan: plan.name,
-        lessonPrice: plan.price.toString(),
+        lessonPrice: totalPrice.toFixed(2).toString(), // Precio con GST incluido
+        licenseClass: licenseClass.name, // Guardamos el nombre de la clase en lugar del ID
+        paymentMethod: data.paymentMethod || 'Not specified', // Guardamos el método de pago
         lessonStatus: 'REQUESTED',
         trackingNumber
       }

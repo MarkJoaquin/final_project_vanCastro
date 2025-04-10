@@ -83,7 +83,10 @@ const BookingForm = () => {
             plan: '',
             instructor: '',
             location: '',
-            dateTime: null
+            dateTime: null,
+            
+            // Método de pago
+            paymentMethod: ''
         }
     })
 
@@ -106,6 +109,7 @@ const BookingForm = () => {
     const selectedInstructor = watch('instructor')
     const selectedLocation = watch('location')
     const selectedDateTime = watch('dateTime')
+    const selectedPaymentMethod = watch('paymentMethod')
 
     // Campos observados para licencia y road test
     const hasDriverLicense = watch('hasDriverLicense')
@@ -1019,20 +1023,100 @@ const BookingForm = () => {
                                                     })}
                                                 </p>
                                             )}
+                                            {timeSlotError && (
+                                                <p className="text-red-500 text-sm mt-2">{timeSlotError}</p>
+                                            )}
                                         </div>
                                     </div>
                                 )}
-                            </>
-                        )}
+                                    {/* Sección de Método de Pago - Mostrar solo si hay fecha/hora seleccionada */}
+                                    {selectedDateTime && hasValidTime(selectedDateTime) && !timeSlotError && !validatingTimeSlot && (
+                                        <div className="mb-8 mt-6 border p-6 rounded-md bg-white">
+                                            <h3 className="text-xl font-semibold mb-6">Payment Methods</h3>
+                                            
+                                            <div className="space-y-4">
+                                                <div className="flex items-center space-x-3">
+                                                    <input
+                                                        type="radio"
+                                                        id="e-transfer"
+                                                        value="e-Transfer"
+                                                        {...register('paymentMethod')}
+                                                        className="h-5 w-5"
+                                                    />
+                                                    <label htmlFor="e-transfer" className="text-lg">e-Transfer</label>
+                                                </div>
+                                                
+                                                <div className="flex items-center space-x-3">
+                                                    <input
+                                                        type="radio"
+                                                        id="cash"
+                                                        value="Pay in Cash"
+                                                        {...register('paymentMethod')}
+                                                        className="h-5 w-5"
+                                                    />
+                                                    <label htmlFor="cash" className="text-lg">Pay in Cash</label>
+                                                </div>
+                                            </div>
+
+                                            {/* Desglose de precio y mensaje para planes con múltiples lecciones */}
+                                            {selectedPlan && classes.length > 0 && (() => {
+                                                // Buscar el plan seleccionado
+                                                const planClass = classes.find(c => c.id === selectedClass);
+                                                if (!planClass) return null;
+                                                
+                                                const plan = planClass.plans.find(p => p.id === selectedPlan);
+                                                if (!plan) return null;
+                                                
+                                                // Calcular precios con GST
+                                                const subtotal = plan.price;
+                                                const gst = subtotal * 0.05;
+                                                const total = subtotal + gst;
+                                                const hasMultipleLessons = plan.lessons > 1;
+                                                const singleLessonPrice = hasMultipleLessons ? (plan.price / plan.lessons).toFixed(2) : null;
+                                                
+                                                return (
+                                                    <div className="mt-6">
+                                                        {/* Desglose de precio */}
+                                                        <div className="border-t border-b py-4 my-4">
+                                                            <div className="flex justify-between items-center mb-2">
+                                                                <span>Subtotal</span>
+                                                                <span>${subtotal.toFixed(2)}</span>
+                                                            </div>
+                                                            <div className="flex justify-between items-center mb-2">
+                                                                <span>GST(5%)</span>
+                                                                <span>${gst.toFixed(2)}</span>
+                                                            </div>
+                                                            <div className="flex justify-between items-center font-bold">
+                                                                <span>Total</span>
+                                                                <span>${total.toFixed(2)}</span>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        {/* Mensaje adicional para planes con múltiples lecciones */}
+                                                        {hasMultipleLessons && (
+                                                            <div className="p-4 border border-blue-200 bg-blue-50 rounded-md">
+                                                                <p className="text-blue-800">
+                                                                    Please pay for at least one lesson (${singleLessonPrice}) 24 hours before the lesson starts
+                                                                </p>
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                );
+                                            })()} 
+                                        </div>
+                                    )}
+                                </>
+                            )}
+                        </div>
                     </div>
-                </div>
+                
                 {/* Submit Button */}
                 <div className="mt-8 flex justify-center relative">
                     <Button
                         type="button"
                         onClick={form.handleSubmit(onSubmit)}
                         className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg cursor-pointer"
-                        disabled={isSubmitting || isFormDisabled || validatingTimeSlot || !selectedDateTime || !selectedPlan || !selectedLocation || !hasValidTime(selectedDateTime)}
+                        disabled={isSubmitting || isFormDisabled || validatingTimeSlot || !selectedDateTime || !selectedPlan || !selectedLocation || !hasValidTime(selectedDateTime) || !selectedPaymentMethod}
                     >
                         {isSubmitting ? 'Submitting...' : 'Submit Booking'}
                     </Button>
