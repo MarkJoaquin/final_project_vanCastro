@@ -1143,7 +1143,7 @@ const BookingForm = () => {
                                 }
                             }
                         }}
-                        className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg cursor-pointer"
+                        className="px-8 py-3 bg-[var(--primary-color)] hover:bg-[var(--primary-color)] text-black font-bold rounded-lg cursor-pointer"
                         disabled={isSubmitting || isFormDisabled || validatingTimeSlot || !selectedDateTime || !selectedPlan || !selectedLocation || !hasValidTime(selectedDateTime) || !selectedPaymentMethod}
                     >
                         Review Booking
