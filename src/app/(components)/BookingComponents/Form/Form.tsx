@@ -14,12 +14,17 @@ import "react-datepicker/dist/react-datepicker.css"
 import "./calendar-styles.css" // Importar estilos personalizados del calendario
 import { countries } from '@/data/countries'
 import { icbcLocations } from '@/data/icbcLocations'
+import ConfirmationModal from '../ConfirmationModal/ConfirmationModal'
 
 const BookingForm = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitSuccess, setSubmitSuccess] = useState(false);
     const [submitError, setSubmitError] = useState<string | null>(null);
     const [trackingNumber, setTrackingNumber] = useState<string | null>(null);
+    const [showConfirmation, setShowConfirmation] = useState(false);
+    const [currentPrices, setCurrentPrices] = useState<{ subtotal: number, gst: number, total: number, singleLessonPrice: string | null }>(
+        { subtotal: 0, gst: 0, total: 0, singleLessonPrice: null }
+    );
 
     const onSubmit = async (data: FormData) => {
         setIsSubmitting(true);
@@ -804,7 +809,7 @@ const BookingForm = () => {
 
                                 <div className="mt-6">
                                     <h3 className="text-xl font-semibold mb-4">Choose Your Instructor</h3>
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4 items-center">
                                         {instructors.map((instructor, index) => (
                                             <div key={instructor.id}
                                                 className={`relative border rounded-xl p-4 cursor-pointer transition-all duration-200 ${selectedInstructor === instructor.id
@@ -1023,9 +1028,6 @@ const BookingForm = () => {
                                                     })}
                                                 </p>
                                             )}
-                                            {timeSlotError && (
-                                                <p className="text-red-500 text-sm mt-2">{timeSlotError}</p>
-                                            )}
                                         </div>
                                     </div>
                                 )}
@@ -1072,7 +1074,12 @@ const BookingForm = () => {
                                                 const gst = subtotal * 0.05;
                                                 const total = subtotal + gst;
                                                 const hasMultipleLessons = plan.lessons > 1;
-                                                const singleLessonPrice = hasMultipleLessons ? (plan.price / plan.lessons).toFixed(2) : null;
+                                                
+                                                // Calcular precio de una lección individual con GST incluido
+                                                const singleLessonSubtotal = hasMultipleLessons ? (plan.price / plan.lessons) : null;
+                                                const singleLessonGst = singleLessonSubtotal ? singleLessonSubtotal * 0.05 : null;
+                                                const singleLessonTotal = singleLessonSubtotal && singleLessonGst ? singleLessonSubtotal + singleLessonGst : null;
+                                                const singleLessonPrice = singleLessonTotal ? singleLessonTotal.toFixed(2) : null;
                                                 
                                                 return (
                                                     <div className="mt-6">
@@ -1096,7 +1103,7 @@ const BookingForm = () => {
                                                         {hasMultipleLessons && (
                                                             <div className="p-4 border border-blue-200 bg-blue-50 rounded-md">
                                                                 <p className="text-blue-800">
-                                                                    Please pay for at least one lesson (${singleLessonPrice}) 24 hours before the lesson starts
+                                                                    Please pay for at least one lesson (${singleLessonPrice} with GST included) 24 hours before the lesson starts
                                                                 </p>
                                                             </div>
                                                         )}
@@ -1110,15 +1117,40 @@ const BookingForm = () => {
                         </div>
                     </div>
                 
-                {/* Submit Button */}
+                {/* Confirm Button - Shows confirmation modal instead of submitting */}
                 <div className="mt-8 flex justify-center relative">
                     <Button
                         type="button"
-                        onClick={form.handleSubmit(onSubmit)}
+                        onClick={() => {
+                            // Calcular precios aquí
+                            if (selectedPlan && classes.length > 0) {
+                                const planClass = classes.find(c => c.id === selectedClass);
+                                if (planClass) {
+                                    const plan = planClass.plans.find(p => p.id === selectedPlan);
+                                    if (plan) {
+                                        const subtotal = plan.price;
+                                        const gst = subtotal * 0.05;
+                                        const total = subtotal + gst;
+                                        const hasMultipleLessons = plan.lessons > 1;
+                                        const singleLessonPrice = hasMultipleLessons 
+                                            ? (plan.price / plan.lessons).toFixed(2) 
+                                            : null;
+                                        
+                                        setCurrentPrices({
+                                            subtotal,
+                                            gst,
+                                            total,
+                                            singleLessonPrice
+                                        });
+                                        setShowConfirmation(true);
+                                    }
+                                }
+                            }
+                        }}
                         className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg cursor-pointer"
                         disabled={isSubmitting || isFormDisabled || validatingTimeSlot || !selectedDateTime || !selectedPlan || !selectedLocation || !hasValidTime(selectedDateTime) || !selectedPaymentMethod}
                     >
-                        {isSubmitting ? 'Submitting...' : 'Submit Booking'}
+                        Review Booking
                     </Button>
                     {/* {selectedDateTime && !hasValidTime(selectedDateTime) && (
                         <p className="text-sm text-red-500 mt-2 absolute -bottom-6 whitespace-nowrap">
@@ -1127,6 +1159,31 @@ const BookingForm = () => {
                     )} */}
                 </div>
             </form>
+            {/* Confirmation Modal */}
+            {showConfirmation && (
+                <ConfirmationModal
+                    formData={form.getValues()}
+                    selectedPlan={(() => {
+                        const planClass = classes.find(c => c.id === selectedClass);
+                        if (!planClass) return null;
+                        return planClass.plans.find(p => p.id === selectedPlan) || null;
+                    })()}
+                    selectedClass={classes.find(c => c.id === selectedClass) || null}
+                    instructor={instructors.find(i => i.id === selectedInstructor) || null}
+                    location={locations.find(l => l.id === selectedLocation) || null}
+                    subtotal={currentPrices.subtotal}
+                    gst={currentPrices.gst}
+                    total={currentPrices.total}
+                    singleLessonPrice={currentPrices.singleLessonPrice}
+                    onConfirm={() => {
+                        setShowConfirmation(false);
+                        form.handleSubmit(onSubmit)();
+                    }}
+                    onCancel={() => setShowConfirmation(false)}
+                    isSubmitting={isSubmitting}
+                />
+            )}
+
             {showLearningPermitDialog && (
                 <AlertDialogBooking onPermitResponse={handlePermitResponse} />
             )}
