@@ -5,10 +5,12 @@ import AdminMainComponent, { MainComponent } from "../MainComponent/AdminMainCom
 interface TemplateProps {
   PageTitle:string;
   SearchBar?:boolean;
+  AddNewBtn?:boolean;
+  PeriodBtn?:boolean;
   Component: MainComponent
 }
 
-export default function AdminTemplate({PageTitle, SearchBar=false, Component}:TemplateProps) {
+export default function AdminTemplate({PageTitle, SearchBar=false, AddNewBtn=false,PeriodBtn=false , Component}:TemplateProps) {
 
   return (
     <div className="w-[80%] m-auto mt-[2rem]">
@@ -30,11 +32,29 @@ export default function AdminTemplate({PageTitle, SearchBar=false, Component}:Te
           </div>
         }
       </div>
-{/*       <div>
-        <Button className={`w-[fit] text-white bg-black rounded-[50%]`}>
-          + Add New Lesson
-        </Button>
-      </div> */}
+
+      <div className="flex gap-[0.5rem] mt-[0.5rem]">
+        {PeriodBtn && 
+        <div className="flex gap-[0.5rem]">
+          <Button className={`w-[fit] text-black bg-white border-1 border-black rounded-[20px]`}>
+            Daily
+          </Button>
+          <Button className={`w-[fit] text-black bg-white border-1 border-black rounded-[20px]`}>
+            Monthly
+          </Button>
+        </div>
+      
+        }
+
+        {AddNewBtn &&
+          <div>
+            <Button className={`w-[fit] text-white bg-black rounded-[20px]`}>
+              + Add New Lesson
+            </Button>
+          </div>
+        }
+      </div>
+
       <div>
         <AdminMainComponent data={Component}/>
       </div>

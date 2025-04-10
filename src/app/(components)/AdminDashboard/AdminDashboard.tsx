@@ -16,26 +16,16 @@ export default function Dashboard() {
     <div className="min-h-[70vh]">
       This is Dashboard
 
+      {/*// This is How to Pass data into this Component*/}
+
       <AdminTemplate PageTitle={"Booking Requests"} SearchBar={true} Component={{Maincontents:Main, SubItems:Sub,AcceptBtn:true
       }}/>
-
-      
       <AdminTemplate PageTitle={"Student List"} SearchBar={true} Component={{Maincontents:Main, SubItems:Sub, Date:Date}}/>
       <AdminTemplate PageTitle={"Pending Action"} SearchBar={false} Component={{Maincontents:Main, SubItems:Sub, WhenStartLesson:WhenStartLesson}}/>
-      <AdminTemplate PageTitle={"Lesson List"} SearchBar={true} Component={{Maincontents:Main, SubItems:Sub}}/>
-      <AdminTemplate PageTitle={"Payment List"} SearchBar={true} Component={{Maincontents:Main, SubItems:Sub, Payment:Payment}}/>
-      <AdminTemplate PageTitle={"Invoice List"} SearchBar={true} Component={{Maincontents:Main, SubItems:Sub, Date:Date}}/>
-      <AdminTemplate PageTitle={"Contact List"} SearchBar={true} Component={{Maincontents:Main, SubItems:Sub, Date:Date}}/>
-
-      {/*// This is How to Pass data into this Component
-
-      <AdminMainComponent Maincontents={Main} SubItems={Sub}/>
-      <AdminMainComponent Maincontents={Main} SubItems={Sub} AcceptBtn={true}/>
-      <AdminMainComponent Maincontents={Main} SubItems={Sub} Date={Date}/>
-      <AdminMainComponent Maincontents={Main} SubItems={Sub} WhenStartLesson={WhenStartLesson}/>
-      <AdminMainComponent Maincontents={Main} SubItems={Sub} Payment={Payment}/>
-
-      */}
+      <AdminTemplate PageTitle={"Lesson List"} SearchBar={true} AddNewBtn={true} PeriodBtn={true} Component={{Maincontents:Main, SubItems:Sub}}/>
+      <AdminTemplate PageTitle={"Payment List"} SearchBar={true} AddNewBtn={true} Component={{Maincontents:Main, SubItems:Sub, Payment:Payment}}/>
+      <AdminTemplate PageTitle={"Invoice List"} SearchBar={true} AddNewBtn={true} Component={{Maincontents:Main, SubItems:Sub, Date:Date}}/>
+      <AdminTemplate PageTitle={"Contact List"} SearchBar={true} AddNewBtn={true} Component={{Maincontents:Main, SubItems:Sub, Date:Date}}/>
 
     </div>
   );
