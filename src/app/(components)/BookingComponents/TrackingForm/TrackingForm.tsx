@@ -183,7 +183,7 @@ const TrackingForm = () => {
                     <span>{trackingResult.data?.startTime} - {trackingResult.data?.endTime}</span>
                     
                     <span className="text-gray-600">Duration:</span>
-                    <span>{trackingResult.data?.duration}</span>
+                    <span>{trackingResult.data?.duration} min</span>
                     
                     <span className="text-gray-600">Instructor:</span>
                     <span>{trackingResult.data?.instructorName}</span>

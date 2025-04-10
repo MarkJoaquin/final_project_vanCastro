@@ -245,7 +245,7 @@ const BookingForm = () => {
     // Validate time slot against existing lessons when date/time is selected
     useEffect(() => {
         const validateTimeSlot = async () => {
-            if (!selectedDateTime || !selectedInstructor || !selectedPlan) {
+            if (!selectedDateTime || !selectedInstructor || !selectedPlan || !selectedLocation) {
                 return
             }
 
@@ -263,17 +263,13 @@ const BookingForm = () => {
                     lessonDate: string,
                     lessonTime: string,
                     planId: string,
-                    locationId?: string  // Hacemos locationId opcional con '?'
+                    locationId: string  // Ahora locationId es obligatorio
                 } = {
                     instructorId: selectedInstructor,
                     lessonDate: selectedDateTime.toISOString(),
                     lessonTime: timeString,
-                    planId: selectedPlan
-                }
-
-                // Si hay una ubicación seleccionada, incluirla para la validación de tiempo de tránsito
-                if (selectedLocation) {
-                    validationData.locationId = selectedLocation
+                    planId: selectedPlan,
+                    locationId: selectedLocation // Siempre incluimos la ubicación
                 }
 
                 const response = await fetch('/api/lessons/validate', {
