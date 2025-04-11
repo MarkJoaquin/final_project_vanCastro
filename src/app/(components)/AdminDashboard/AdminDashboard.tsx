@@ -3,17 +3,16 @@
 import InstructorCard from "./InstructorCard/InstructorCard";
 import AdminTemplate from "./Template/AdminTemplate";
 import LessonRequests from "./LessonRequest/LessonRequest";
+import LessonList from "./LessonList/LessonList";
 
 export default function Dashboard() {
   return (
     <div className="min-h-[70vh]">
-      {/* Componente para mostrar la información del instructor */}
+      
       <InstructorCard />
-
-      {/* Componente para mostrar las solicitudes de lección */}
       <LessonRequests />
-
-      {/* Mantén los templates existentes */}
+      <LessonList />
+      
       <AdminTemplate
         PageTitle={"Student List"}
         SearchBar={true}
@@ -32,16 +31,7 @@ export default function Dashboard() {
           WhenStartLesson: ["In 24 hours", "In 24 hours", "In 24 hours", "In 48 hours", "In 48 hours"],
         }}
       />
-      <AdminTemplate
-        PageTitle={"Lesson List"}
-        SearchBar={true}
-        AddNewBtn={true}
-        PeriodBtn={true}
-        Component={{
-          Maincontents: ["One", "Two", "Three", "Four", "Five"],
-          SubItems: ["one", "two", "three", "four", "five"],
-        }}
-      />
+      
     </div>
   );
 }
