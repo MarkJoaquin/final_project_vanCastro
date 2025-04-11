@@ -21,9 +21,9 @@ export default function Dashboard() {
       <AdminTemplate PageTitle={"Student List"} SearchBar={true} Component={{Maincontents:Main, SubItems:Sub, Date:Date}}/>
       <AdminTemplate PageTitle={"Pending Action"} SearchBar={false} Component={{Maincontents:Main, SubItems:Sub, WhenStartLesson:WhenStartLesson}}/>
       <AdminTemplate PageTitle={"Lesson List"} SearchBar={true} AddNewBtn={true} PeriodBtn={true} Component={{Maincontents:Main, SubItems:Sub}}/>
-      <AdminTemplate PageTitle={"Payment List"} SearchBar={true} AddNewBtn={true} Component={{Maincontents:Main, SubItems:Sub, Payment:Payment}}/>
+{/*       <AdminTemplate PageTitle={"Payment List"} SearchBar={true} AddNewBtn={true} Component={{Maincontents:Main, SubItems:Sub, Payment:Payment}}/>
       <AdminTemplate PageTitle={"Invoice List"} SearchBar={true} AddNewBtn={true} Component={{Maincontents:Main, SubItems:Sub, Date:Date}}/>
-      <AdminTemplate PageTitle={"Contact List"} SearchBar={true} AddNewBtn={true} Component={{Maincontents:Main, SubItems:Sub, Date:Date}}/>
+      <AdminTemplate PageTitle={"Contract List"} SearchBar={true} AddNewBtn={true} Component={{Maincontents:Main, SubItems:Sub, Date:Date}}/> */}
 
     </div>
   );
