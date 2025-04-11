@@ -47,4 +47,7 @@ export type FormData = {
     instructor: string;
     location: string;
     dateTime: Date | null;
+    
+    // Información de pago
+    paymentMethod?: 'e-Transfer' | 'Pay in Cash' | '';
 }

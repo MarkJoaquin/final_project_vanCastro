@@ -10,9 +10,12 @@ export async function POST(request: NextRequest) {
     const { instructorId, lessonDate, lessonTime, planId, locationId } = body;
 
     // Validate required fields
-    if (!instructorId || !lessonDate || !lessonTime || !planId) {
+    if (!instructorId || !lessonDate || !lessonTime || !planId || !locationId) {
       return NextResponse.json(
-        { error: 'Missing required fields' },
+        { 
+          isAvailable: false,
+          message: 'Missing required fields. Location is required for transit time validation.' 
+        },
         { status: 400 }
       );
     }
@@ -51,43 +54,41 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // If location is provided, validate transit time from previous lessons
-    if (locationId) {
-      const transitResult = await validateTransitTime(
-        instructorId,
-        date,
-        lessonTime,
-        locationId
-      );
+    // Validate transit time from previous lessons
+    const transitResult = await validateTransitTime(
+      instructorId,
+      date,
+      lessonTime,
+      locationId
+    );
 
-      if (!transitResult.isValid) {
-        return NextResponse.json(
-          { 
-            isAvailable: false,
-            message: transitResult.message || 'The instructor cannot reach on time due to traffic restrictions'
-          },
-          { status: 200 }
-        );
-      }
-      
-      // Also validate transit time to future lessons
-      const futureResult = await validateFutureLessons(
-        instructorId,
-        date,
-        lessonTime,
-        plan.time,
-        locationId
+    if (!transitResult.isValid) {
+      return NextResponse.json(
+        { 
+          isAvailable: false,
+          message: transitResult.message || 'The instructor cannot reach this location on time due to traffic restrictions'
+        },
+        { status: 200 }
       );
-      
-      if (!futureResult.isValid) {
-        return NextResponse.json(
-          {
-            isAvailable: false,
-            message: futureResult.message || 'The instructor will not have enough time to reach their next lesson'
-          },
-          { status: 200 }
-        );
-      }
+    }
+    
+    // Also validate transit time to future lessons
+    const futureResult = await validateFutureLessons(
+      instructorId,
+      date,
+      lessonTime,
+      plan.time,
+      locationId
+    );
+    
+    if (!futureResult.isValid) {
+      return NextResponse.json(
+        {
+          isAvailable: false,
+          message: futureResult.message || 'The instructor will not have enough time to reach their next lesson after this booking'
+        },
+        { status: 200 }
+      );
     }
 
     return NextResponse.json({ isAvailable: true }, { status: 200 });

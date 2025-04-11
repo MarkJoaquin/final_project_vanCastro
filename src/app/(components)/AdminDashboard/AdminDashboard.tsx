@@ -1,6 +1,4 @@
 "use client"
-
-import AdminMainComponent from "./MainComponent/AdminMainComponent";
 import AdminTemplate from "./Template/AdminTemplate";
 
 const Main = ["One","Two","Three","Four","Five"];
