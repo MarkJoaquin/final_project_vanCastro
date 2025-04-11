@@ -1,30 +1,47 @@
-"use client"
+"use client";
+
+import InstructorCard from "./InstructorCard/InstructorCard";
 import AdminTemplate from "./Template/AdminTemplate";
-
-const Main = ["One","Two","Three","Four","Five"];
-const Sub = ["one","two","three","four","five"];
-const Date = ["Mar 1","Mar 2", "Mar 3", "Mar 4", "Mar 5"]
-const WhenStartLesson = ["In 24 hours","In 24 hours", "In 24 hours", "In 48 hours", "In 48 hours"]
-const Payment = [100,200,300,400,500]
-
+import LessonRequests from "./LessonRequest/LessonRequest";
 
 export default function Dashboard() {
-
   return (
     <div className="min-h-[70vh]">
-      This is Dashboard
+      {/* Componente para mostrar la información del instructor */}
+      <InstructorCard />
 
-      {/*// This is How to Pass data into this Component*/}
+      {/* Componente para mostrar las solicitudes de lección */}
+      <LessonRequests />
 
-      <AdminTemplate PageTitle={"Booking Requests"} SearchBar={true} Component={{Maincontents:Main, SubItems:Sub,AcceptBtn:true
-      }}/>
-      <AdminTemplate PageTitle={"Student List"} SearchBar={true} Component={{Maincontents:Main, SubItems:Sub, Date:Date}}/>
-      <AdminTemplate PageTitle={"Pending Action"} SearchBar={false} Component={{Maincontents:Main, SubItems:Sub, WhenStartLesson:WhenStartLesson}}/>
-      <AdminTemplate PageTitle={"Lesson List"} SearchBar={true} AddNewBtn={true} PeriodBtn={true} Component={{Maincontents:Main, SubItems:Sub}}/>
-{/*       <AdminTemplate PageTitle={"Payment List"} SearchBar={true} AddNewBtn={true} Component={{Maincontents:Main, SubItems:Sub, Payment:Payment}}/>
-      <AdminTemplate PageTitle={"Invoice List"} SearchBar={true} AddNewBtn={true} Component={{Maincontents:Main, SubItems:Sub, Date:Date}}/>
-      <AdminTemplate PageTitle={"Contract List"} SearchBar={true} AddNewBtn={true} Component={{Maincontents:Main, SubItems:Sub, Date:Date}}/> */}
-
+      {/* Mantén los templates existentes */}
+      <AdminTemplate
+        PageTitle={"Student List"}
+        SearchBar={true}
+        Component={{
+          Maincontents: ["One", "Two", "Three", "Four", "Five"],
+          SubItems: ["one", "two", "three", "four", "five"],
+          Date: ["Mar 1", "Mar 2", "Mar 3", "Mar 4", "Mar 5"],
+        }}
+      />
+      <AdminTemplate
+        PageTitle={"Pending Action"}
+        SearchBar={false}
+        Component={{
+          Maincontents: ["One", "Two", "Three", "Four", "Five"],
+          SubItems: ["one", "two", "three", "four", "five"],
+          WhenStartLesson: ["In 24 hours", "In 24 hours", "In 24 hours", "In 48 hours", "In 48 hours"],
+        }}
+      />
+      <AdminTemplate
+        PageTitle={"Lesson List"}
+        SearchBar={true}
+        AddNewBtn={true}
+        PeriodBtn={true}
+        Component={{
+          Maincontents: ["One", "Two", "Three", "Four", "Five"],
+          SubItems: ["one", "two", "three", "four", "five"],
+        }}
+      />
     </div>
   );
 }
