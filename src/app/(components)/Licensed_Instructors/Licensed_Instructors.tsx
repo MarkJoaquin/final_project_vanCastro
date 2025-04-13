@@ -1,7 +1,8 @@
-import { fetchInstructors } from "@/app/api/contentful/fetchInstructors";
+import { fetchInstructors } from "../../api/contentful/fetchInstructors";
 import Image from "next/image";
 import "./Licensed_Instructors.css";
 import type { DrivingInstructor } from "@/types/contentful";
+
 
 
 const LicensedInstructors = async () => {
@@ -12,12 +13,12 @@ const LicensedInstructors = async () => {
       <div className="container">
         <div className="flex-container">
           <div className="content-left">
-            <h2 className="instructor-title">
+            <h2 className="instructor-title" data-aos="fade-up">
               Licensed
               <br />
               Instructors
             </h2>
-            <p className="instructor-description">
+            <p className="instructor-description" data-aos="fade-up">
               Our Instructors are skilled and experienced professionals
               dedicated to providing patient and supportive training, ensuring
               that all students leave our driving school with the skills and
@@ -31,7 +32,6 @@ const LicensedInstructors = async () => {
                   instructorsData.length > 0 &&
                   instructorsData.map((instructor, index) => {
                     const { name, avatar } = instructor.fields;
-                    // console.log(name, avatar, avatar2);
 
                     return (
                       <div
@@ -49,7 +49,6 @@ const LicensedInstructors = async () => {
                           height={0} 
                           style={{ height: 'auto' }} 
                           className="instructor-image"
-                          data-aos="fade-up"
                           priority
                         />
                       </div>

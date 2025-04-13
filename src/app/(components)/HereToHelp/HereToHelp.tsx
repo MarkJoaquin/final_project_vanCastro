@@ -40,7 +40,7 @@ export default function HereToHelp({ data }: HereToHelpProps) {
                 <Image className={styles.quote1} src="./images/HereToHelp/com-2.svg" alt="Here to Help" width={200} height={200} />
                 <p>{subtitle}</p>
                 <Image className={styles.quote2} src="./images/HereToHelp/com-1.svg" alt="Here to Help" width={200} height={200} />
-                <Link href={`/${linkTo}`} className={styles.button}>
+                <Link href={`/${linkTo}`} className={`${styles.button} raise`}>
                 {buttonText}
                 </Link>
             </div>

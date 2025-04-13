@@ -21,10 +21,13 @@ const InstructorsProfile = () => {
 
   useEffect(() => {
     const getInstructors = async () => {
+      
       try {
         const data = await fetchInstructors();
+        
         if (data && Array.isArray(data)) {
           setInstructorData(data);
+          
         } else {
           setError('No instructor data available');
         }

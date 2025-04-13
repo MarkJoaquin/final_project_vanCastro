@@ -1,0 +1,139 @@
+ .cardContainer{
+    background-color: #F4F2EB;
+    border-radius: 150px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+ }
+
+ .imageContainer img{
+    border-radius: 150px;
+    height: 100%;
+ }
+
+ .content{
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    padding-right: 4rem;
+    gap: 2rem;
+ }
+
+.name {
+    font-size: 30px;
+    line-height: 33px;
+    font-weight: 700;
+}
+
+.phoneContainer{
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.phone{
+    font-size: 24px;
+    line-height: 29px;
+    font-weight: 400;
+}
+
+.description{
+    font-size: 20px;
+    line-height: 33px;
+    font-weight: 400;
+}
+
+@media only screen and (max-width: 480px) {
+    .cardContainer{
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 1rem;
+    }
+
+    .content{
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+        padding-right: 0;
+        text-align: center;
+        gap: 0rem;
+        padding: 1rem;
+    }
+    .name {
+        font-size: 20px;
+        line-height: 23px;
+    }
+    
+    .phoneContainer{
+        gap: 0;
+    }
+
+    .phone{
+        font-size: 12px;
+        line-height: 19px;
+    }
+    
+    .description{
+        font-size: 10px;
+        line-height: 23px;
+    }
+}
+
+@media only screen and (min-width: 481px) and (max-width: 768px) {
+    .cardContainer{
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 1rem;
+    }
+
+    .content{
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+        padding-right: 0;
+        text-align: center;
+        gap: 0rem;
+        padding: 2rem;
+    }
+    .name {
+        font-size: 25px;
+        line-height: 28px;
+    }
+    
+    .phone{
+        font-size: 19px;
+        line-height: 24px;
+    }
+    
+    .description{
+        font-size: 15px;
+        line-height: 28px;
+    }
+}
+
+@media only screen and (min-width: 769px) and (max-width: 1279px) {
+    .content{
+        padding-right: 1rem;
+        width: 80%;
+        gap: 1rem;
+    }
+    .name {
+        font-size: 25px;
+        line-height: 28px;
+    }
+    
+    .phone{
+        font-size: 19px;
+        line-height: 24px;
+    }
+    
+    .description{
+        font-size: 15px;
+        line-height: 28px;
+    }
+}
+
+@media only screen and (min-width: 1280px) {}

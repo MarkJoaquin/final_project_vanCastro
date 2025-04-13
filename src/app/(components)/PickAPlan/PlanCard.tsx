@@ -25,7 +25,7 @@ export default function PlanCard({data}: CardProps) {
         <div className={`${styles.cardItem} ${title === 'Package' ? styles.package : ''}`}>
             {title === 'Package' && (
                 <div className={styles.mostPopularContainer}>
-                <StarIcon/><p className={styles.mostPopularLabel}>Most Popular</p><StarIcon/>
+                <StarIcon className={styles.spinStar}/><p className={styles.mostPopularLabel}>Most Popular</p><StarIcon className={styles.spinStar}/>
                 </div>
             )}
             <p className={styles.title}>{title}</p>

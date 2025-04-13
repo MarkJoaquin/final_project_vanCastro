@@ -1,0 +1,13 @@
+
+
+.affirmative_answer {
+    background-color: var(--primary-color);
+    color: black;  
+    font-weight: 600;
+    
+}
+
+.negative_answer {
+    background-color: var(--secondary-color);
+    color: black;  
+}

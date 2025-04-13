@@ -196,3 +196,37 @@
 
     } */
 }
+
+
+/* Animation star  */
+
+.spinStar {
+  display: inline-block;
+  animation: spin 3s linear infinite; 
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes moveUpDown {
+  0% {
+    transform: translate(-50%, -50%); /* Posición inicial */
+  }
+  50% {
+    transform: translate(-50%, -58%); /* Mueve hacia arriba */
+  }
+  100% {
+    transform: translate(-50%, -50%); /* Regresa a la posición inicial */
+  }
+}
+
+.mostPopularContainer {
+  animation: moveUpDown 2s ease-in-out infinite;
+}
+

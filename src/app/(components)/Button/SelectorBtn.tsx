@@ -1,29 +1,42 @@
-"use client"
+"use client";
 import { useState } from "react";
-import Style from "./SelectBtn.module.css"
+import Style from "./SelectBtn.module.css";
 
 interface selectBtnProps {
-  btnName:string[];
-  onSelect: (btn:string) => void;
+  btnName: string[];
+  onSelect: (btn: string) => void;
 }
 
-export default function SelectorBtn({btnName, onSelect}:selectBtnProps) {
-  const [activeBtn,setActiveBtn] = useState<string>(btnName[0])
+export default function SelectorBtn({ btnName, onSelect }: selectBtnProps) {
+  const [activeIndex, setActiveIndex] = useState<number>(0);
 
-  const selectBtnHandler = (btn:string) => {
-    setActiveBtn(btn);
+  const selectBtnHandler = (index: number, btn: string) => {
+    setActiveIndex(index);
     onSelect(btn);
-  }
+  };
 
   return (
-    <>
-      <div className="p-1 flex w-fit m-auto text-center" style={{backgroundColor:"rgb(47, 47, 47)",borderRadius: "21.46px", padding:"0.4rem", margin:"0 auto"}}>
-        {btnName.map((item,index)=>
-          <div key={index} className={activeBtn===item?Style.isActive:Style.nonActive}>
-            <p className="pr-3 pl-3" style={{ cursor:"pointer"}} onClick={()=>{selectBtnHandler(item)}}>{item}</p>
-          </div>
-        )}
-      </div>
-    </>
+    <div
+      className={Style.container}
+      style={{ "--btn-count": btnName.length } as React.CSSProperties}
+    >
+      <div
+        className={Style.slider}
+        style={{
+          transform: `translateX(${activeIndex * 100}%)`,
+        }}
+      ></div>
+      {btnName.map((item, index) => (
+        <div
+          key={index}
+          className={`${Style.button} ${
+            activeIndex === index ? Style.isActive : ""
+          }`}
+          onClick={() => selectBtnHandler(index, item)}
+        >
+          {item}
+        </div>
+      ))}
+    </div>
   );
 }
