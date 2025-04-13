@@ -1,0 +1,5 @@
+{
+  "buildCommand": "npm install --include=optional sharp && prisma generate && next build",
+  "installCommand": "npm install",
+  "framework": "nextjs"
+}
