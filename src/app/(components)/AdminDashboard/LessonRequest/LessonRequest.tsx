@@ -299,7 +299,7 @@ export default function LessonRequests() {
                     <h2 className="text-2xl font-bold">Booking Requests</h2>
                     <div className="flex gap-[1rem]">
                         <Input
-                            placeholder="Search by Student name"
+                            placeholder="Student name"
                             type="text"
                             value={searchQuery}
                             onChange={handleSearchChange}

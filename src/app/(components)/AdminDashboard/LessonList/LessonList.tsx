@@ -175,7 +175,7 @@ export default function LessonList() {
           <h2 className="text-2xl font-bold">Confirmed Lessons</h2>
           <div className="flex gap-[1rem]">
             <Input
-              placeholder="Search by Student name"
+              placeholder="Student name"
               type="text"
               value={searchQuery}
               onChange={handleSearchChange}

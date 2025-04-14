@@ -19,7 +19,7 @@ export default function AdminTemplate({PageTitle, SearchBar=false, AddNewBtn=fal
         {SearchBar && 
           <div className="flex gap-[1rem]">
             <Input
-              placeholder="Search by Student name"
+              placeholder="Student name"
               type="text"
     /*           value={formData.phone} */
     /*           onChange={(e) => setFormData({ ...formData, phone: e.target.value })} */
