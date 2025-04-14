@@ -66,8 +66,8 @@ export default function LessonList() {
   }, []);
 
   // Filtra las lecciones asignadas al instructor logeado y por nombre de estudiante si hay búsqueda
-  const assignedLessons = confirmedLessons.filter(
-    (lesson) => {
+  const assignedLessons = confirmedLessons
+    .filter((lesson) => {
       // Filtro por instructor
       const matchesInstructor = lesson.instructorId === instructorId;
       
@@ -76,8 +76,26 @@ export default function LessonList() {
         lesson.student.name.toLowerCase().includes(searchQuery.toLowerCase());
       
       return matchesInstructor && matchesSearch;
-    }
-  );
+    })
+    // Ordenar por fecha y hora, mostrando primero las lecciones más próximas
+    .sort((a, b) => {
+      // Primero comparamos por fecha
+      const dateA = new Date(a.date);
+      const dateB = new Date(b.date);
+      
+      if (dateA.getTime() !== dateB.getTime()) {
+        return dateA.getTime() - dateB.getTime(); // Orden ascendente por fecha
+      }
+      
+      // Si las fechas son iguales, comparamos por hora de inicio
+      const [hoursA, minutesA] = a.startTime.split(':').map(Number);
+      const [hoursB, minutesB] = b.startTime.split(':').map(Number);
+      
+      const timeA = hoursA * 60 + minutesA;
+      const timeB = hoursB * 60 + minutesB;
+      
+      return timeA - timeB; // Orden ascendente por hora
+    });
 
   // Función para formatear la fecha
   const formatLessonDate = (dateString: string | Date) => {
@@ -106,6 +124,48 @@ export default function LessonList() {
     }
   };
 
+  // Función para determinar a qué sección pertenece una lección basándose en su fecha
+  const getLessonSection = (dateStr: Date): string => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Normalizar a inicio del día
+    
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    
+    const nextWeek = new Date(today);
+    nextWeek.setDate(nextWeek.getDate() + 7);
+    
+    const lessonDate = new Date(dateStr);
+    lessonDate.setHours(0, 0, 0, 0); // Normalizar a inicio del día
+    
+    if (lessonDate.getTime() === today.getTime()) {
+      return "Today";
+    } else if (lessonDate.getTime() === tomorrow.getTime()) {
+      return "Tomorrow";
+    } else if (lessonDate > today && lessonDate < nextWeek) {
+      return "This Week";
+    } else {
+      return "Upcoming";
+    }
+  };
+  
+  // Agrupar las lecciones por sección
+  const groupLessonsBySection = () => {
+    const grouped: Record<string, ConfirmedLesson[]> = {
+      "Today": [],
+      "Tomorrow": [],
+      "This Week": [],
+      "Upcoming": []
+    };
+    
+    assignedLessons.forEach(lesson => {
+      const section = getLessonSection(lesson.date);
+      grouped[section].push(lesson);
+    });
+    
+    return grouped;
+  };
+  
   // Creamos un componente personalizado para el AdminMainComponent que usa el acordeón
   const CustomMainComponent = () => {
     if (isLoading) {
@@ -116,9 +176,23 @@ export default function LessonList() {
       return <p className="text-center py-4">No confirmed lessons to display</p>;
     }
     
+    const groupedLessons = groupLessonsBySection();
+    const sections = ["Today", "Tomorrow", "This Week", "Upcoming"];
+    
     return (
-      <Accordion type="single" collapsible className="w-full">
-        {assignedLessons.map((lesson) => (
+      <div className="w-full space-y-6">
+        {sections.map(section => {
+          const lessons = groupedLessons[section];
+          
+          if (lessons.length === 0) {
+            return null; // No mostrar secciones vacías
+          }
+          
+          return (
+            <div key={section} className="mb-4">
+              <h3 className="text-lg font-semibold mb-3 px-2 py-1 bg-gray-100 rounded">{section}</h3>
+              <Accordion type="single" collapsible className="w-full">
+                {lessons.map((lesson) => (
           <AccordionItem key={lesson.id} value={lesson.id} className="mb-4 border-b border-gray-200">
             <AccordionTrigger className="flex justify-between px-4 py-3 bg-white rounded-md shadow-sm hover:shadow-md transition-all cursor-pointer">
               <div className="flex flex-col items-start text-left">
@@ -157,8 +231,12 @@ export default function LessonList() {
               </div>
             </AccordionContent>
           </AccordionItem>
-        ))}
-      </Accordion>
+                ))}
+              </Accordion>
+            </div>
+          );
+        })}
+      </div>
     );
   };
 

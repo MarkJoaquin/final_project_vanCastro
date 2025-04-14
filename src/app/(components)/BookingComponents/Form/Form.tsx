@@ -546,7 +546,7 @@ const BookingForm = () => {
                                                 dropdownMode="select"
                                                 className="w-full p-2 border rounded-md"
                                                 placeholderText="Select your date of birth"
-                                                maxDate={new Date()}
+                                                maxDate={new Date(new Date().setFullYear(new Date().getFullYear() - 14))}
                                                 disabled={isFormDisabled}
                                             />
                                         )}

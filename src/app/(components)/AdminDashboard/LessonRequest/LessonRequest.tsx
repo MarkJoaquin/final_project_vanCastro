@@ -83,8 +83,8 @@ export default function LessonRequests() {
 
     // Filter lesson requests with lessonStatus = "REQUESTED" and instructorId matching the logged-in instructor
     // Apply name search filter if search query exists
-    const filteredRequests = lessonRequests.filter(
-        (request) => {
+    const filteredRequests = lessonRequests
+        .filter((request) => {
             const matchesStatus = request.lessonStatus === "REQUESTED";
             const matchesInstructor = request.instructorId === instructorId;
             
@@ -93,8 +93,26 @@ export default function LessonRequests() {
                 request.student.name.toLowerCase().includes(searchQuery.toLowerCase());
             
             return matchesStatus && matchesInstructor && matchesSearch;
-        }
-    );
+        })
+        // Ordenar por fecha y hora, mostrando primero las lecciones más próximas
+        .sort((a, b) => {
+            // Primero comparamos por fecha
+            const dateA = new Date(a.lessonDate);
+            const dateB = new Date(b.lessonDate);
+            
+            if (dateA.getTime() !== dateB.getTime()) {
+                return dateA.getTime() - dateB.getTime(); // Orden ascendente por fecha
+            }
+            
+            // Si las fechas son iguales, comparamos por hora de inicio
+            const [hoursA, minutesA] = a.startTime.split(':').map(Number);
+            const [hoursB, minutesB] = b.startTime.split(':').map(Number);
+            
+            const timeA = hoursA * 60 + minutesA;
+            const timeB = hoursB * 60 + minutesB;
+            
+            return timeA - timeB; // Orden ascendente por hora
+        });
 
     // Function to format the date and time in a more complete format
     const formatLessonDate = (dateString: string) => {
@@ -215,6 +233,48 @@ export default function LessonRequests() {
         }
     };
     
+    // Función para determinar a qué sección pertenece una solicitud basándose en su fecha
+    const getRequestSection = (dateStr: string): string => {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); // Normalizar a inicio del día
+        
+        const tomorrow = new Date(today);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        
+        const nextWeek = new Date(today);
+        nextWeek.setDate(nextWeek.getDate() + 7);
+        
+        const requestDate = new Date(dateStr);
+        requestDate.setHours(0, 0, 0, 0); // Normalizar a inicio del día
+        
+        if (requestDate.getTime() === today.getTime()) {
+            return "Today";
+        } else if (requestDate.getTime() === tomorrow.getTime()) {
+            return "Tomorrow";
+        } else if (requestDate > today && requestDate < nextWeek) {
+            return "This Week";
+        } else {
+            return "Upcoming";
+        }
+    };
+    
+    // Agrupar las solicitudes por sección
+    const groupRequestsBySection = () => {
+        const grouped: Record<string, LessonRequest[]> = {
+            "Today": [],
+            "Tomorrow": [],
+            "This Week": [],
+            "Upcoming": []
+        };
+        
+        filteredRequests.forEach(request => {
+            const section = getRequestSection(request.lessonDate);
+            grouped[section].push(request);
+        });
+        
+        return grouped;
+    };
+    
     // Crear un componente personalizado para el AdminMainComponent que use el acordeón
     const CustomMainComponent = () => {
         if (isLoading) {
@@ -225,9 +285,23 @@ export default function LessonRequests() {
             return <p className="text-center py-4">No booking requests to display</p>;
         }
         
+        const groupedRequests = groupRequestsBySection();
+        const sections = ["Today", "Tomorrow", "This Week", "Upcoming"];
+        
         return (
-            <Accordion type="single" collapsible className="w-full">
-                {filteredRequests.map((request) => (
+            <div className="w-full space-y-6">
+                {sections.map(section => {
+                    const requests = groupedRequests[section];
+                    
+                    if (requests.length === 0) {
+                        return null; // No mostrar secciones vacías
+                    }
+                    
+                    return (
+                        <div key={section} className="mb-4">
+                            <h3 className="text-lg font-semibold mb-3 px-2 py-1 bg-gray-100 rounded">{section}</h3>
+                            <Accordion type="single" collapsible className="w-full">
+                                {requests.map((request) => (
                     <AccordionItem key={request.id} value={request.id} className="mb-4 border-b border-gray-200">
                         <AccordionTrigger className="flex justify-between px-4 py-3 bg-white rounded-md shadow-sm hover:shadow-md transition-all cursor-pointer">
                             <div className="flex flex-col items-start text-left">
@@ -282,8 +356,12 @@ export default function LessonRequests() {
                             </div>
                         </AccordionContent>
                     </AccordionItem>
-                ))}
-            </Accordion>
+                                ))}
+                            </Accordion>
+                        </div>
+                    );
+                })}
+            </div>
         );
     };
 

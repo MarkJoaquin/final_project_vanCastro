@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, useCallback } from "react";
+import { createContext, useContext, useState, useCallback, useEffect } from "react";
 
 export interface Instructor {
   id: string;
@@ -15,32 +15,73 @@ export interface Instructor {
   updatedAt: string;
 }
 
+interface InstructorData {
+  id: string;
+  name: string;
+}
+
 type State = {
-  allInstructorData: Instructor[] | null;
-  loginedInstructorData: Instructor | null;
-  updateAllInstructorData: (data: Instructor[]) => void;
-  updateLoginedInstructorData: (email: string | null) => void;
+  allInstructorData: InstructorData[];
+  loginedInstructorData: InstructorData | null;
+  updateAllInstructorData: (data: InstructorData[]) => void;
+  updateLoginedInstructorData: (data: InstructorData | null) => void;
+  logout: () => void;
 };
 
-const AdminDataContext = createContext<State | undefined>(undefined);
+const AdminDataContext = createContext<State | null>(null);
+
+// Clave para almacenar la sesión en localStorage
+const SESSION_STORAGE_KEY = "instructor_session";
 
 const AdminDataContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [allInstructorData, setAllInstructorData] = useState<Instructor[] | null>(null);
-  const [loginedInstructorData, setLoginedInstructorData] = useState<Instructor | null>(null);
+  const [allInstructorData, setAllInstructorData] = useState<InstructorData[]>([]);
+  const [loginedInstructorData, setLoginedInstructorData] = useState<InstructorData | null>(null);
 
-  const updateAllInstructorData = useCallback((value: Instructor[]) => {
-    setAllInstructorData(value);
+  // Intentar restaurar la sesión al cargar el componente
+  useEffect(() => {
+    // Solo se ejecuta en el cliente, no en el servidor
+    if (typeof window !== "undefined") {
+      const savedSession = localStorage.getItem(SESSION_STORAGE_KEY);
+      if (savedSession) {
+        try {
+          const parsedSession = JSON.parse(savedSession);
+          setLoginedInstructorData(parsedSession);
+        } catch (error) {
+          console.error("Error parsing saved session:", error);
+          localStorage.removeItem(SESSION_STORAGE_KEY);
+        }
+      }
+    }
   }, []);
 
-  const updateLoginedInstructorData = useCallback((email: string | null) => {
-    if (allInstructorData) {
-      const checkInstructor =
-        allInstructorData.find((instructor) => instructor.email === email) || null;
-      setLoginedInstructorData(checkInstructor);
+  const updateAllInstructorData = useCallback((data: InstructorData[]) => {
+    setAllInstructorData(data);
+  }, []);
+
+  const updateLoginedInstructorData = useCallback((data: InstructorData | null) => {
+    setLoginedInstructorData(data);
+    
+    // Guardar la sesión en localStorage cuando inicie sesión un instructor
+    if (data) {
+      localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(data));
+    } else {
+      localStorage.removeItem(SESSION_STORAGE_KEY);
+    }
+  }, []);
+
+  // Función para cerrar sesión
+  const logout = useCallback(() => {
+    setLoginedInstructorData(null);
+    localStorage.removeItem(SESSION_STORAGE_KEY);
+  }, []);
+
+  useEffect(() => {
+    if (allInstructorData.length > 0) {
+      console.log("I fired", allInstructorData);
     }
   }, [allInstructorData]);
 
-  const value = { allInstructorData, loginedInstructorData, updateAllInstructorData, updateLoginedInstructorData };
+  const value = { allInstructorData, loginedInstructorData, updateAllInstructorData, updateLoginedInstructorData, logout };
 
   return <AdminDataContext.Provider value={value}>{children}</AdminDataContext.Provider>;
 };
