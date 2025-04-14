@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { Input } from "@/components/ui/input";
 
 interface LessonRequest {
     id: string;
@@ -43,6 +44,7 @@ export default function LessonRequests() {
     const [lessonRequests, setLessonRequests] = useState<LessonRequest[]>([]);
     const [locations, setLocations] = useState<Location[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [searchQuery, setSearchQuery] = useState<string>("");
 
     const { loginedInstructorData } = useAdminDataContext(); 
     const instructorId = loginedInstructorData?.id;
@@ -80,9 +82,18 @@ export default function LessonRequests() {
     }, []);
 
     // Filter lesson requests with lessonStatus = "REQUESTED" and instructorId matching the logged-in instructor
+    // Apply name search filter if search query exists
     const filteredRequests = lessonRequests.filter(
-        (request) =>
-        request.lessonStatus === "REQUESTED" && request.instructorId === instructorId
+        (request) => {
+            const matchesStatus = request.lessonStatus === "REQUESTED";
+            const matchesInstructor = request.instructorId === instructorId;
+            
+            // Search filter for student name
+            const matchesSearch = searchQuery.trim() === "" || 
+                request.student.name.toLowerCase().includes(searchQuery.toLowerCase());
+            
+            return matchesStatus && matchesInstructor && matchesSearch;
+        }
     );
 
     // Function to format the date and time in a more complete format
@@ -276,17 +287,27 @@ export default function LessonRequests() {
         );
     };
 
+    // Handler para el cambio en el input de búsqueda
+    const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchQuery(e.target.value);
+    };
+
     return (
         <div className="w-full">
-            <AdminTemplate
-                PageTitle={"Booking Requests"}
-                SearchBar={true}
-                Component={{
-                    // Estos campos son requeridos por AdminTemplate, pero usaremos un div personalizado
-                    Maincontents: [""],
-                    SubItems: [""],
-                }}
-            />
+            <div className="w-[80%] m-auto mt-[2rem]">
+                <div className="flex justify-between items-center flex-wrap gap-[0.5rem]">
+                    <h2 className="text-2xl font-bold">Booking Requests</h2>
+                    <div className="flex gap-[1rem]">
+                        <Input
+                            placeholder="Search by Student name"
+                            type="text"
+                            value={searchQuery}
+                            onChange={handleSearchChange}
+                            className="bg-white py-5"
+                        />
+                    </div>
+                </div>
+            </div>
             
             <div className="w-[80%] m-auto mt-4">
                 <CustomMainComponent />

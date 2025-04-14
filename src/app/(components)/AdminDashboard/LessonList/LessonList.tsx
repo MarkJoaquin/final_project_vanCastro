@@ -9,6 +9,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { Input } from "@/components/ui/input";
 
 interface ConfirmedLesson {
   id: string;
@@ -37,6 +38,7 @@ interface ConfirmedLesson {
 export default function LessonList() {
   const [confirmedLessons, setConfirmedLessons] = useState<ConfirmedLesson[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [searchQuery, setSearchQuery] = useState<string>("");
   const { loginedInstructorData } = useAdminDataContext();
   const instructorId = loginedInstructorData?.id;
 
@@ -63,9 +65,18 @@ export default function LessonList() {
     fetchConfirmedLessons();
   }, []);
 
-  // Filtra las lecciones asignadas al instructor logeado
+  // Filtra las lecciones asignadas al instructor logeado y por nombre de estudiante si hay búsqueda
   const assignedLessons = confirmedLessons.filter(
-    (lesson) => lesson.instructorId === instructorId
+    (lesson) => {
+      // Filtro por instructor
+      const matchesInstructor = lesson.instructorId === instructorId;
+      
+      // Filtro por nombre de estudiante (si hay término de búsqueda)
+      const matchesSearch = searchQuery.trim() === "" || 
+        lesson.student.name.toLowerCase().includes(searchQuery.toLowerCase());
+      
+      return matchesInstructor && matchesSearch;
+    }
   );
 
   // Función para formatear la fecha
@@ -151,18 +162,28 @@ export default function LessonList() {
     );
   };
 
+  // Handler para el cambio en el input de búsqueda
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
+
   // Componente principal
   return (
     <div className="w-full">
-      <AdminTemplate
-        PageTitle={"Confirmed Lessons"}
-        SearchBar={true}
-        Component={{
-          // Estos campos son requeridos por AdminTemplate, pero usaremos un div personalizado
-          Maincontents: [""],
-          SubItems: [""],
-        }}
-      />
+      <div className="w-[80%] m-auto mt-[2rem]">
+        <div className="flex justify-between items-center flex-wrap gap-[0.5rem]">
+          <h2 className="text-2xl font-bold">Confirmed Lessons</h2>
+          <div className="flex gap-[1rem]">
+            <Input
+              placeholder="Search by Student name"
+              type="text"
+              value={searchQuery}
+              onChange={handleSearchChange}
+              className="bg-white py-5"
+            />
+          </div>
+        </div>
+      </div>
       
       <div className="w-[80%] m-auto mt-4">
         <CustomMainComponent />
