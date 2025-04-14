@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useCallback } from "react";
 
 export interface Instructor {
   id: string;
@@ -18,43 +18,39 @@ export interface Instructor {
 type State = {
   allInstructorData: Instructor[] | null;
   loginedInstructorData: Instructor | null;
-  updateAllInstructorData: (data:Instructor[])=>void;
-  updateLoginedInstructorData: (email:string|null)=>void;
-}
+  updateAllInstructorData: (data: Instructor[]) => void;
+  updateLoginedInstructorData: (email: string | null) => void;
+};
 
-const AdminDataContext = createContext<State | undefined>(undefined); 
+const AdminDataContext = createContext<State | undefined>(undefined);
 
-const AdminDataContextProvider: React.FC<{children: React.ReactNode}> = ({children}) => {
+const AdminDataContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [allInstructorData, setAllInstructorData] = useState<Instructor[] | null>(null);
-  const [loginedInstructorData, setLoginedInstructorData] = useState<Instructor|null>(null);
+  const [loginedInstructorData, setLoginedInstructorData] = useState<Instructor | null>(null);
 
-  const updateAllInstructorData = (value:Instructor[]) => {
+  const updateAllInstructorData = useCallback((value: Instructor[]) => {
     setAllInstructorData(value);
-  };
-  const updateLoginedInstructorData = (email:string|null) => {
-    if(allInstructorData){
-      const checkInstructor = allInstructorData.find((instructor)=>{
-        return instructor.email === email
-      }) || null
-      setLoginedInstructorData(checkInstructor)
+  }, []);
+
+  const updateLoginedInstructorData = useCallback((email: string | null) => {
+    if (allInstructorData) {
+      const checkInstructor =
+        allInstructorData.find((instructor) => instructor.email === email) || null;
+      setLoginedInstructorData(checkInstructor);
     }
-  }
+  }, [allInstructorData]);
 
-  const value = { allInstructorData,loginedInstructorData, updateAllInstructorData, updateLoginedInstructorData};
+  const value = { allInstructorData, loginedInstructorData, updateAllInstructorData, updateLoginedInstructorData };
 
-  return (
-    <AdminDataContext.Provider value={value}>
-      {children}
-    </AdminDataContext.Provider>
-  )
-}
+  return <AdminDataContext.Provider value={value}>{children}</AdminDataContext.Provider>;
+};
 
-const useAdminDataContext = ():State => {
+const useAdminDataContext = (): State => {
   const context = useContext(AdminDataContext);
-  if(!context){
-    throw new Error("useAdminDataContext must be used within a CounterContextProvider");
+  if (!context) {
+    throw new Error("useAdminDataContext must be used within a AdminDataContextProvider");
   }
   return context;
-}
+};
 
 export { AdminDataContextProvider, useAdminDataContext };

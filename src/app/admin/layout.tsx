@@ -1,4 +1,5 @@
 import AdminNav from "../(components)/AdminDashboard/AdminNav";
+import AdminSidebar from "../(components)/AdminDashboard/AdminSideBar";
 import { AdminDataContextProvider } from "../(context)/adminContext";
 
 export default function RootLayout({
@@ -8,8 +9,12 @@ export default function RootLayout({
 }>) {
   return (<>
     <AdminDataContextProvider>
-      <AdminNav/>
-      {children}
+      <AdminSidebar/>
+      <div className="ml-80 flex-1 pl-4">
+        <AdminNav/>
+        {children}
+      </div>
+      
     </AdminDataContextProvider>
   </>
   );
