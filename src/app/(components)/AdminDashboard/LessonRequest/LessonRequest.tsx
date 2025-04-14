@@ -10,6 +10,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 interface LessonRequest {
     id: string;
@@ -112,15 +113,95 @@ export default function LessonRequests() {
     };
     
     // Function to handle accepting a booking request
-    const handleAcceptRequest = (requestId: string) => {
-        console.log("Accepting request:", requestId);
-        // TODO: Implement API call to accept the request
+    const handleAcceptRequest = async (requestId: string) => {
+        try {
+            setIsLoading(true);
+            console.log("Accepting request:", requestId);
+            
+            const response = await fetch("/api/lessons/accept", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ requestId }),
+            });
+            
+            const data = await response.json();
+            
+            if (!response.ok) {
+                console.error("Error accepting request:", data.error);
+                toast.error(`Error: ${data.error}`, {
+                    description: "Please try again or contact support if the problem persists.",
+                    duration: 5000
+                });
+                return;
+            }
+            
+            console.log("Request accepted successfully:", data);
+            
+            // Refrescar la lista de solicitudes para que esta ya no aparezca
+            const updatedRequests = lessonRequests.filter(req => req.id !== requestId);
+            setLessonRequests(updatedRequests);
+            
+            toast.success("Booking request accepted!", {
+                description: "The lesson has been confirmed and added to your schedule.",
+                duration: 4000
+            });
+        } catch (error) {
+            console.error("Error accepting request:", error);
+            toast.error("Request failed", {
+                description: "An error occurred while accepting the request. Please try again.",
+                duration: 5000
+            });
+        } finally {
+            setIsLoading(false);
+        }
     };
     
     // Function to handle declining a booking request
-    const handleDeclineRequest = (requestId: string) => {
-        console.log("Declining request:", requestId);
-        // TODO: Implement API call to decline the request
+    const handleDeclineRequest = async (requestId: string) => {
+        try {
+            setIsLoading(true);
+            console.log("Declining request:", requestId);
+            
+            const response = await fetch("/api/lessons/decline", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ requestId }),
+            });
+            
+            const data = await response.json();
+            
+            if (!response.ok) {
+                console.error("Error declining request:", data.error);
+                toast.error(`Error: ${data.error}`, {
+                    description: "Please try again or contact support if the problem persists.",
+                    duration: 5000
+                });
+                return;
+            }
+            
+            console.log("Request declined successfully:", data);
+            
+            // Refrescar la lista de solicitudes para que esta ya no aparezca
+            const updatedRequests = lessonRequests.filter(req => req.id !== requestId);
+            setLessonRequests(updatedRequests);
+            
+            toast.success("Booking request declined", {
+                description: "The student will be notified that their request was declined.",
+                duration: 4000
+            });
+        } catch (error) {
+            console.error("Error declining request:", error);
+            toast.error("Request failed", {
+                description: "An error occurred while declining the request. Please try again.",
+                duration: 5000
+            });
+        } finally {
+            setIsLoading(false);
+        }
     };
     
     // Crear un componente personalizado para el AdminMainComponent que use el acordeón
@@ -171,11 +252,19 @@ export default function LessonRequests() {
                                     )}
                                     
                                     <div className="mt-4 flex space-x-3">
-                                        <Button onClick={() => handleAcceptRequest(request.id)} className="bg-[#FFCE47] text-black hover:bg-amber-400">
-                                            Accept
+                                        <Button 
+                                            onClick={() => handleAcceptRequest(request.id)} 
+                                            className="bg-[#FFCE47] text-black hover:bg-amber-400 cursor-pointer"
+                                            disabled={isLoading}
+                                        >
+                                            {isLoading ? "Processing..." : "Accept"}
                                         </Button>
-                                        <Button onClick={() => handleDeclineRequest(request.id)} className="bg-white border border-black text-black hover:bg-gray-100">
-                                            Decline
+                                        <Button 
+                                            onClick={() => handleDeclineRequest(request.id)} 
+                                            className="bg-white border border-black text-black hover:bg-gray-100 cursor-pointer"
+                                            disabled={isLoading}
+                                        >
+                                            {isLoading ? "Processing..." : "Decline"}
                                         </Button>
                                     </div>
                                 </div>
