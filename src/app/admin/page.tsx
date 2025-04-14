@@ -52,11 +52,10 @@ export default function Admin() {
     if (session?.user?.email && allInstructorData && allInstructorData.length > 0) {
       // Como allInstructorData es de tipo InstructorData[] pero necesitamos email que está en Instructor
       // Necesitamos hacer un cast o asumir que los datos tienen la estructura completa
-      const instructorsWithEmail = allInstructorData as unknown as Instructor[]      
+      const instructorsWithEmail = allInstructorData as unknown as Instructor[];
       
       // Buscar el instructor por email
       const instructor = instructorsWithEmail.find(inst => inst.email === session.user?.email);
-      console.log("Instructor found:", instructor);
       
       if (instructor) {
         // Solo necesitamos guardar id y nombre para la sesión
@@ -65,10 +64,10 @@ export default function Admin() {
           name: instructor.name
         };
         
-        console.log("Instructor found, saving session:", instructorData);
+        console.log("Instructor encontrado, guardando sesión:", instructorData);
         updateLoginedInstructorData(instructorData);
       } else if (session.user.email) {
-        console.warn("No instructor found with email:", session.user.email);
+        console.warn("No se encontró el instructor con el email:", session.user.email);
       }
     }
   }, [allInstructorData, session, updateLoginedInstructorData])

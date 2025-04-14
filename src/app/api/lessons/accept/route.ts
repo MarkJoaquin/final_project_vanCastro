@@ -54,10 +54,13 @@ export async function POST(request: NextRequest) {
 
       // 2. Crear una nueva entrada en la tabla lesson
       // Preparamos los datos para crear la lección
+      // Aseguramos que la fecha se maneje correctamente para la zona horaria de Vancouver
+      const lessonDate = new Date(lessonRequest.lessonDate);
+      
       const lessonData: any = {
         studentId: lessonRequest.studentId,
         instructorId: lessonRequest.instructorId,
-        date: lessonRequest.lessonDate,
+        date: lessonDate, // Usamos la fecha local
         startTime: lessonRequest.startTime,
         endTime: lessonRequest.endTime,
         duration: lessonRequest.lessonDuration,
