@@ -109,22 +109,26 @@ export async function POST(request: NextRequest) {
 
     // Extraer la fecha y hora del dateTime
     const dateTime = new Date(data.dateTime);
-
+    
     // Crear una fecha con solo la parte de la fecha (hora 00:00:00)
-    // Usamos UTC para evitar problemas con zonas horarias
-    const lessonDate = new Date(Date.UTC(
+    // Usamos la fecha local para evitar problemas con zonas horarias
+    const lessonDate = new Date(
       dateTime.getFullYear(),
       dateTime.getMonth(),
-      dateTime.getDate(),
-      0, 0, 0, 0
-    ));
-
-    // Extraer la hora y minutos para startTime
-    const startTime = `${dateTime.getHours().toString().padStart(2, '0')}:${dateTime.getMinutes().toString().padStart(2, '0')}`;
-
+      dateTime.getDate()
+    );
+    
+    // Ajustar para la zona horaria de Vancouver (PDT, UTC-7)
+    // Extraer la hora y minutos para startTime usando getHours() que ya está en hora local
+    const hours = dateTime.getHours();
+    const minutes = dateTime.getMinutes();
+    const startTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+    
     // Calcular la hora de finalización sumando la duración del plan en minutos
     const endDateTime = new Date(dateTime.getTime() + plan.time * 60000);
-    const endTime = `${endDateTime.getHours().toString().padStart(2, '0')}:${endDateTime.getMinutes().toString().padStart(2, '0')}`;
+    const endHours = endDateTime.getHours();
+    const endMinutes = endDateTime.getMinutes();
+    const endTime = `${endHours.toString().padStart(2, '0')}:${endMinutes.toString().padStart(2, '0')}`;
 
     // Generar un número de seguimiento único
     const trackingNumber = uuidv4().substring(0, 8).toUpperCase();
