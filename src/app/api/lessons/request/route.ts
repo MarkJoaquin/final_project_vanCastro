@@ -219,3 +219,46 @@ export async function POST(request: NextRequest) {
     );
   }
 }
+
+export async function GET(request: NextRequest) {
+  try {
+    const searchParams = request.nextUrl.searchParams;
+
+    // Filtrar por trackingNumber si se proporciona
+    const trackingNumber = searchParams.get('trackingNumber');
+    if (trackingNumber) {
+      const lessonRequest = await prisma.lessonsRequest.findFirst({
+        where: { trackingNumber },
+        include: {
+          student: true, // Incluye información del estudiante
+          instructor: true // Incluye información del instructor
+        }
+      });
+
+      if (!lessonRequest) {
+        return NextResponse.json(
+          { error: 'No se encontró una solicitud con este número de seguimiento' },
+          { status: 404 }
+        );
+      }
+
+      return NextResponse.json(lessonRequest);
+    }
+
+    // Si no se proporciona trackingNumber, devolver todas las solicitudes
+    const lessonRequests = await prisma.lessonsRequest.findMany({
+      include: {
+        student: true, // Incluye información del estudiante
+        instructor: true // Incluye información del instructor
+      }
+    });
+
+    return NextResponse.json(lessonRequests);
+  } catch (error) {
+    console.error('Error al obtener las solicitudes de lección:', error);
+    return NextResponse.json(
+      { error: 'Error al procesar la solicitud' },
+      { status: 500 }
+    );
+  }
+}

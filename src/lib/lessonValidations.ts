@@ -17,9 +17,13 @@ export async function validateInstructorAvailability(
   duration: number
 ): Promise<{ isAvailable: boolean; message?: string }> {
   try {
+    // Normalizar la fecha para evitar problemas de zona horaria
+    // Usamos solo la parte de fecha (YYYY-MM-DD) y trabajamos con eso
+    const normalizedDate = new Date(lessonDate.toISOString().split('T')[0] + 'T00:00:00.000Z');
+    
     // Calculate end time based on start time and duration
     const [hours, minutes] = lessonTime.split(':').map(Number);
-    const startDateTime = new Date(lessonDate);
+    const startDateTime = new Date(normalizedDate);
     startDateTime.setHours(hours, minutes, 0, 0);
 
     const endDateTime = new Date(startDateTime);
@@ -27,12 +31,10 @@ export async function validateInstructorAvailability(
 
     const endTime = `${endDateTime.getHours().toString().padStart(2, '0')}:${endDateTime.getMinutes().toString().padStart(2, '0')}`;
 
-    // Create start and end of day for range query
-    const year = lessonDate.getFullYear();
-    const month = lessonDate.getMonth();
-    const day = lessonDate.getDate();
-    const startOfDay = new Date(year, month, day, 0, 0, 0);
-    const endOfDay = new Date(year, month, day, 23, 59, 59);
+    // Create start and end of day for range query using normalized date
+    const dateOnly = normalizedDate.toISOString().split('T')[0]; // YYYY-MM-DD
+    const startOfDay = new Date(`${dateOnly}T00:00:00.000Z`);
+    const endOfDay = new Date(`${dateOnly}T23:59:59.999Z`);
 
     // Check for conflicting lessons (excluding cancelled lessons)
     const conflictingLessons = await prisma.lesson.findMany({
@@ -123,10 +125,14 @@ export async function validateInstructorAvailability(
     // Filter requests that end during our requested time or encompass it
     // (We need to do this manually since we need to calculate end time for each request)
     const actualConflictingRequests = conflictingRequests.filter(request => {
+      // Normalizar la fecha de la solicitud para evitar problemas de zona horaria
+      // Usamos solo la parte de fecha (YYYY-MM-DD)
+      const reqDateNormalized = new Date(request.lessonDate.toISOString().split('T')[0] + 'T00:00:00.000Z');
+      
       const [reqHours, reqMinutes] = request.startTime.split(':').map(Number);
       const reqDuration = parseInt(request.lessonDuration, 10);
 
-      const reqStartDateTime = new Date(request.lessonDate);
+      const reqStartDateTime = new Date(reqDateNormalized);
       reqStartDateTime.setHours(reqHours, reqMinutes, 0, 0);
 
       const reqEndDateTime = new Date(reqStartDateTime);
