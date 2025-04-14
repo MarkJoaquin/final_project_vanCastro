@@ -18,8 +18,9 @@ export async function validateInstructorAvailability(
 ): Promise<{ isAvailable: boolean; message?: string }> {
   try {
     // Normalizar la fecha para evitar problemas de zona horaria
-    // Usamos solo la parte de fecha (YYYY-MM-DD) y trabajamos con eso
-    const normalizedDate = new Date(lessonDate.toISOString().split('T')[0] + 'T00:00:00.000Z');
+    // Preservamos la fecha original pero reseteamos la hora a 00:00:00
+    const normalizedDate = new Date(lessonDate);
+    normalizedDate.setHours(0, 0, 0, 0);
     
     // Calculate end time based on start time and duration
     const [hours, minutes] = lessonTime.split(':').map(Number);
@@ -32,9 +33,10 @@ export async function validateInstructorAvailability(
     const endTime = `${endDateTime.getHours().toString().padStart(2, '0')}:${endDateTime.getMinutes().toString().padStart(2, '0')}`;
 
     // Create start and end of day for range query using normalized date
-    const dateOnly = normalizedDate.toISOString().split('T')[0]; // YYYY-MM-DD
-    const startOfDay = new Date(`${dateOnly}T00:00:00.000Z`);
-    const endOfDay = new Date(`${dateOnly}T23:59:59.999Z`);
+    // Usamos la fecha normalizada directamente
+    const startOfDay = new Date(normalizedDate);
+    const endOfDay = new Date(normalizedDate);
+    endOfDay.setHours(23, 59, 59, 999);
 
     // Check for conflicting lessons (excluding cancelled lessons)
     const conflictingLessons = await prisma.lesson.findMany({

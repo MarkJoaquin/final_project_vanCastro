@@ -49,36 +49,40 @@ export default function LessonRequests() {
     const { loginedInstructorData } = useAdminDataContext(); 
     const instructorId = loginedInstructorData?.id;
 
-    useEffect(() => {
+    const fetchLessonRequests = async () => {
         setIsLoading(true);
+        try {
+            const res = await fetch("/api/lessons/request");
+            if (!res.ok) throw new Error("Error fetching lesson requests");
+            const data = await res.json();
+            console.log("Lesson requests:", data);
+            setLessonRequests(data); 
+        } catch (error) {
+            console.error("Error fetching lesson requests:", error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const fetchLocations = async () => {
+        try {
+            const res = await fetch("/api/locations");
+            if (!res.ok) throw new Error("Error fetching locations");
+            const data = await res.json();
+            setLocations(data); 
+        } catch (error) {
+            console.error("Error fetching locations:", error);
+        }
+    };
+
+    useEffect(() => {
+        const fetchInitialData = async () => {
+            setIsLoading(true);
+            await Promise.all([fetchLessonRequests(), fetchLocations()]);
+            setIsLoading(false);
+        };
         
-        const fetchLessonRequests = async () => {
-            try {
-                const res = await fetch("/api/lessons/request");
-                if (!res.ok) throw new Error("Error fetching lesson requests");
-                const data = await res.json();
-                console.log("Lesson requests:", data);
-                setLessonRequests(data); 
-            } catch (error) {
-                console.error("Error fetching lesson requests:", error);
-            }
-        };
-
-        const fetchLocations = async () => {
-            try {
-                const res = await fetch("/api/locations");
-                if (!res.ok) throw new Error("Error fetching locations");
-                const data = await res.json();
-                setLocations(data); 
-            } catch (error) {
-                console.error("Error fetching locations:", error);
-            } finally {
-                setIsLoading(false);
-            }
-        };
-
-        fetchLessonRequests();
-        fetchLocations();
+        fetchInitialData();
     }, []);
 
     // Filter lesson requests with lessonStatus = "REQUESTED" and instructorId matching the logged-in instructor
@@ -390,6 +394,8 @@ export default function LessonRequests() {
             <div className="w-[80%] m-auto mt-4">
                 <CustomMainComponent />
             </div>
+
+
         </div>
     );
 }
