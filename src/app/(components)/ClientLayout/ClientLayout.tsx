@@ -12,11 +12,17 @@ export default function ClientLayout({
   const pathname = usePathname();
   const isAdminRoute = pathname?.startsWith("/admin") || false; // Verifica si es una ruta de administración
 
+  // Renderizamos diferente estructura dependiendo de si es ruta de admin o no
+  if (isAdminRoute) {
+    return <>{children}</>;
+  }
+  
+  // Para rutas normales, incluimos Navbar y Footer
   return (
-    <>
-      {!isAdminRoute && <Navbar />} {/* Renderiza Navbar solo si no es ruta de admin */}
-      <main>{children}</main>
-      {!isAdminRoute && <Footer />} {/* Renderiza Footer solo si no es ruta de admin */}
-    </>
+    <div className="flex flex-col min-h-screen">
+      <Navbar />
+      <main className="flex-grow">{children}</main>
+      <Footer />
+    </div>
   );
 }

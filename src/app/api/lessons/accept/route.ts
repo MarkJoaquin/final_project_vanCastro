@@ -55,12 +55,24 @@ export async function POST(request: NextRequest) {
       // 2. Crear una nueva entrada en la tabla lesson
       // Preparamos los datos para crear la lección
       // Aseguramos que la fecha se maneje correctamente para la zona horaria de Vancouver
-      const lessonDate = new Date(lessonRequest.lessonDate);
+      
+      // Convertimos la fecha a formato ISO y extraemos solo la parte de la fecha (YYYY-MM-DD)
+      // para evitar problemas con zonas horarias
+      let lessonDate;
+      if (lessonRequest.lessonDate instanceof Date) {
+        const dateStr = lessonRequest.lessonDate.toISOString().split('T')[0];
+        lessonDate = new Date(dateStr + 'T00:00:00.000Z');
+      } else {
+        // Si ya es un string o algún otro formato, intentamos convertirlo
+        const dateObj = new Date(lessonRequest.lessonDate);
+        const dateStr = dateObj.toISOString().split('T')[0];
+        lessonDate = new Date(dateStr + 'T00:00:00.000Z');
+      }
       
       const lessonData: any = {
         studentId: lessonRequest.studentId,
         instructorId: lessonRequest.instructorId,
-        date: lessonDate, // Usamos la fecha local
+        date: lessonDate,
         startTime: lessonRequest.startTime,
         endTime: lessonRequest.endTime,
         duration: lessonRequest.lessonDuration,
