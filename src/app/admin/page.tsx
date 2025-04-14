@@ -28,9 +28,15 @@ export default function Admin() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch("http://localhost:3000/api/instructors", {
+        // Use relative URL instead of hardcoded localhost and port
+        const res = await fetch("/api/instructors", {
           cache: "no-store",
         });
+        
+        if (!res.ok) {
+          throw new Error(`API request failed with status ${res.status}`);
+        }
+        
         const data: Instructor[] = await res.json();
         updateAllInstructorData(data);
       } catch (error) {

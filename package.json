@@ -59,6 +59,7 @@
     "@tailwindcss/postcss": "^4.0.0",
     "@types/aos": "^3.0.7",
     "@types/bcrypt": "^5.0.2",
+    "@types/estree": "^1.0.7",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
