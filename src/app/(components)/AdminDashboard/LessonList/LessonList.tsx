@@ -15,27 +15,27 @@ import { toast } from "sonner";
 import AddNewLessonModal from "../Modals/AddNewLessonModal";
 
 interface ConfirmedLesson {
-  id: string;
-  date: Date;
-  startTime: string;
-  endTime: string;
-  duration: string;
-  plan: string;
-  price: string;
-  status: string;
-  paymentStatus: string;
-  trackingNumber: string;
-  instructorId: string;
-  // Campos adicionales que vienen del API
-  licenseClass?: string;
-  paymentMethod?: string;
-  student: {
-    name: string;
-  };
-  location: {
-    name: string;
-    city: string;
-  };
+    id: string;
+    date: Date;
+    startTime: string;
+    endTime: string;
+    duration: string;
+    plan: string;
+    price: string;
+    status: string;
+    paymentStatus: string;
+    trackingNumber: string;
+    instructorId: string;
+    // Campos adicionales que vienen del API
+    licenseClass?: string;
+    paymentMethod?: string;
+    student: {
+        name: string;
+    };
+    location: {
+        name: string;
+        city: string;
+    };
 }
 
 export default function LessonList() {

@@ -49,13 +49,27 @@ export default function AdminCalendar() {
     const eventDate = moment(event.start);
     const selected = moment(selectedDate);
 
-    if (view === Views.DAY) return eventDate.isSame(selected, 'day');
-    if (view === Views.MONTH) return eventDate.isSame(selected, 'month');
+    if (view === Views.DAY) {
+      // Filtrar eventos que coincidan con el día seleccionado
+      return eventDate.isSame(selected, 'day');
+    }
+    if (view === Views.MONTH) {
+      // Filtrar eventos que coincidan con el mes seleccionado
+      return eventDate.isSame(selected, 'month');
+    }
     return true;
   });
 
-  const handleNavigate = (date: Date) => {
+  const handleNavigate = (date: Date, viewType?: View) => {
     setSelectedDate(date);
+
+    // Si se proporciona un tipo de vista, actualiza la vista
+    if (viewType === Views.DAY || viewType === Views.MONTH) {
+      setView(viewType as 'month' | 'day');
+    } else if (view === Views.DAY) {
+      // Si estás en la vista de día, ajusta la fecha seleccionada al navegar
+      setSelectedDate(date);
+    }
   };
 
   const handleViewChange = (newView: View) => {
@@ -65,22 +79,32 @@ export default function AdminCalendar() {
   };
 
   return (
-    <div className='p-4 h-[100vh]'>
+    <div className='p-4 h-[80vh]'>
       <h2 className="text-xl font-bold mb-4">Lessons Calendar</h2>
       <Calendar
         localizer={localizer}
         events={filteredLessons}
-        defaultView={Views.DAY}
+        defaultView={Views.MONTH} // Cambia la vista predeterminada a "mes"
         view={view}
+        date={selectedDate} // Controla la fecha actual con el estado
         onView={handleViewChange}
-        onNavigate={handleNavigate}
+        onNavigate={(date) => {
+          setSelectedDate(date); // Actualiza la fecha seleccionada al navegar
+        }}
         startAccessor='start'
         endAccessor='end'
         style={{ height: '100%' }}
         views={[Views.MONTH, Views.DAY]}
+        selectable
+        onDrillDown={(date) => {
+          setSelectedDate(date); // Actualiza la fecha seleccionada
+          setView(Views.DAY); // Cambia a la vista de día
+        }}
+        onSelectEvent={(event) => {
+          setSelectedDate(event.start); // Cambia a la fecha del evento seleccionado
+          setView(Views.DAY); // Cambia a la vista de día
+        }}
       />
-
-      
     </div>
   );
 }

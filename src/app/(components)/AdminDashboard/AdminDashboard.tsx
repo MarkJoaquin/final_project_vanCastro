@@ -10,13 +10,14 @@ import AdminCalendar from "../Calendar/Calendar";
 export default function Dashboard() {
   return (
     <div className="min-h-[70vh]">
-      <AdminCalendar/>
+      
       
       <InstructorCard />
+      <AdminCalendar/>
       <LessonRequests />
       <LessonList />
       
-      <AdminTemplate
+      {/* <AdminTemplate
         PageTitle={"Student List"}
         SearchBar={true}
         Component={{
@@ -33,7 +34,7 @@ export default function Dashboard() {
           SubItems: ["one", "two", "three", "four", "five"],
           WhenStartLesson: ["In 24 hours", "In 24 hours", "In 24 hours", "In 48 hours", "In 48 hours"],
         }}
-      />
+      /> */}
       
     </div>
   );
