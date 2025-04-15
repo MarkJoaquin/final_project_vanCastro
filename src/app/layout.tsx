@@ -1,19 +1,9 @@
 import type { Metadata } from "next";
 import { Aleo, Lato, Montserrat } from "next/font/google";
 import "./globals.css";
-import Footer from "./(components)/footer/Footer";
-import Navbar from "./(components)/navbar/Navbar";
 import { SessionProviders } from "./providers";
-
-// const geistSans = Geist({
-//   variable: "--font-geist-sans",
-//   subsets: ["latin"],
-// });
-
-// const geistMono = Geist_Mono({
-//   variable: "--font-geist-mono",
-//   subsets: ["latin"],
-// });
+import ClientLayout from "./(components)/ClientLayout/ClientLayout"; // Importa el nuevo componente cliente
+import { Toaster } from 'sonner';
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -55,11 +45,10 @@ export default function RootLayout({
       <body
         className={`${montserrat.variable} ${aleo.variable} ${lato.variable} antialiased`}
       >
-        <Navbar />
-          <SessionProviders>
-            {children}
-          </SessionProviders>
-        <Footer />
+        <SessionProviders>
+          <Toaster position="top-right" richColors closeButton />
+          <ClientLayout>{children}</ClientLayout> {/* Usa el componente cliente */}
+        </SessionProviders>
       </body>
     </html>
   );

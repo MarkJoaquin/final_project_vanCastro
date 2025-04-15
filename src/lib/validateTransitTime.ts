@@ -15,6 +15,9 @@ export async function validateTransitTime(
   locationId: string
 ): Promise<{ isValid: boolean; message?: string }> {
   try {
+    // Normalizar la fecha para evitar problemas de zona horaria
+    // Usamos solo la parte de fecha (YYYY-MM-DD) y trabajamos con eso
+    const normalizedDate = new Date(lessonDate.toISOString().split('T')[0] + 'T00:00:00.000Z');
     console.log('Validando tiempo de tránsito para instructorId:', instructorId, 'fecha:', lessonDate.toISOString(), 'hora:', lessonTime);
     
     // Extraemos solo la fecha sin la hora para evitar problemas de timezone
@@ -33,12 +36,12 @@ export async function validateTransitTime(
       return { isValid: false, message: 'Location not found' };
     }
 
-    // Analizar el tiempo de la lección
+    // Calculate time before the requested lesson
     const [hours, minutes] = lessonTime.split(':').map(Number);
-    const lessonStartTime = new Date(lessonDate);
-    lessonStartTime.setHours(hours, minutes, 0, 0);
+    const requestedLessonDateTime = new Date(normalizedDate);
+    requestedLessonDateTime.setHours(hours, minutes, 0, 0);
     
-    console.log('Tiempo de inicio de lección:', lessonStartTime.toISOString());
+    console.log('Tiempo de inicio de lección:', requestedLessonDateTime.toISOString());
     
     // Buscar TODAS las lecciones de este instructor (sin filtrar por fecha/hora primero)
     const allLessons = await prisma.lesson.findMany({
@@ -66,13 +69,13 @@ export async function validateTransitTime(
     
     // Filtrar manualmente las lecciones del mismo día y que terminan antes de la lección solicitada
     const sameDayLessons = allLessons.filter(lesson => {
-      // Comparamos solo el año, mes y día para evitar problemas de timezone
-      const lessonDate = new Date(lesson.date);
-      const requestDate = new Date(lessonDate);
+      // Create start and end of day for range query using normalized date
+      const dateOnly = normalizedDate.toISOString().split('T')[0]; // YYYY-MM-DD
+      const startOfDay = new Date(`${dateOnly}T00:00:00.000Z`);
+      const endOfDay = new Date(`${dateOnly}T23:59:59.999Z`);
       
-      return lessonDate.getUTCFullYear() === requestDate.getUTCFullYear() &&
-             lessonDate.getUTCMonth() === requestDate.getUTCMonth() &&
-             lessonDate.getUTCDate() === requestDate.getUTCDate();
+      const lessonDateNormalized = new Date(lesson.date.toISOString().split('T')[0] + 'T00:00:00.000Z');
+      return lessonDateNormalized >= startOfDay && lessonDateNormalized <= endOfDay;
     });
     
     console.log('Fecha solicitada (UTC):', new Date(lessonDate).getUTCFullYear(), new Date(lessonDate).getUTCMonth(), new Date(lessonDate).getUTCDate());
@@ -81,21 +84,27 @@ export async function validateTransitTime(
     
     // Buscar lecciones previas (que terminan antes de la lección solicitada)
     const previousLessons = sameDayLessons.filter(lesson => {
-      const [endHour, endMin] = lesson.endTime.split(':').map(Number);
-      const endInMinutes = endHour * 60 + endMin;
+      const lessonDateNormalized = new Date(lesson.date.toISOString().split('T')[0] + 'T00:00:00.000Z');
+      const [lessonHours, lessonMinutes] = lesson.endTime.split(':').map(Number);
+      const lessonEndDateTime = new Date(lessonDateNormalized);
+      lessonEndDateTime.setHours(lessonHours, lessonMinutes, 0, 0);
       
-      const requestInMinutes = hours * 60 + minutes;
-      
-      return endInMinutes < requestInMinutes;
+      return lessonEndDateTime < requestedLessonDateTime;
     }).sort((a, b) => {
+      // Parse the lesson end time - normalizar fecha primero
+      const aLessonDateNormalized = new Date(a.date.toISOString().split('T')[0] + 'T00:00:00.000Z');
+      const [aLessonHours, aLessonMinutes] = a.endTime.split(':').map(Number);
+      const aLessonEndDateTime = new Date(aLessonDateNormalized);
+      aLessonEndDateTime.setHours(aLessonHours, aLessonMinutes, 0, 0);
+
+      const bLessonDateNormalized = new Date(b.date.toISOString().split('T')[0] + 'T00:00:00.000Z');
+      const [bLessonHours, bLessonMinutes] = b.endTime.split(':').map(Number);
+      const bLessonEndDateTime = new Date(bLessonDateNormalized);
+      bLessonEndDateTime.setHours(bLessonHours, bLessonMinutes, 0, 0);
+
       // Ordenar por hora de finalización (descendente)
-      const [aEndHour, aEndMin] = a.endTime.split(':').map(Number);
-      const aEndInMinutes = aEndHour * 60 + aEndMin;
-      
-      const [bEndHour, bEndMin] = b.endTime.split(':').map(Number);
-      const bEndInMinutes = bEndHour * 60 + bEndMin;
-      
-      return bEndInMinutes - aEndInMinutes; // Ordenar descendente
+      // Convertir las fechas a timestamps numéricos antes de restarlos
+      return bLessonEndDateTime.getTime() - aLessonEndDateTime.getTime(); // Ordenar descendente
     });
     
     console.log('Lecciones previas (ordenadas por tiempo de fin):', JSON.stringify(previousLessons, null, 2));
@@ -118,13 +127,12 @@ export async function validateTransitTime(
     });
     
     const sameDayRequests = allRequests.filter(req => {
-      // Comparamos solo el año, mes y día para evitar problemas de timezone
-      const reqDate = new Date(req.lessonDate);
-      const requestDate = new Date(lessonDate);
+      // Normalizamos ambas fechas para compararlas de manera consistente
+      const reqDateString = new Date(req.lessonDate).toISOString().split('T')[0];
+      const lessonDateString = normalizedDate.toISOString().split('T')[0];
       
-      return reqDate.getUTCFullYear() === requestDate.getUTCFullYear() &&
-             reqDate.getUTCMonth() === requestDate.getUTCMonth() &&
-             reqDate.getUTCDate() === requestDate.getUTCDate();
+      // Ahora comparamos simplemente las cadenas de fecha YYYY-MM-DD
+      return reqDateString === lessonDateString;
     });
     
     const previousRequests = sameDayRequests.filter(req => {
@@ -174,10 +182,17 @@ export async function validateTransitTime(
 
     if (previousLesson && previousRequest) {
       // Compare end times to use the latest one
-      const lessonEndMinutes = previousLesson.endTime.split(':').map(Number).reduce((h, m) => h * 60 + m, 0);
-      const requestEndMinutes = previousRequest.endTime.split(':').map(Number).reduce((h, m) => h * 60 + m, 0);
+      const lessonDateNormalized = new Date(previousLesson.date.toISOString().split('T')[0] + 'T00:00:00.000Z');
+      const [lessonHours, lessonMinutes] = previousLesson.endTime.split(':').map(Number);
+      const lessonEndDateTime = new Date(lessonDateNormalized);
+      lessonEndDateTime.setHours(lessonHours, lessonMinutes, 0, 0);
 
-      if (lessonEndMinutes >= requestEndMinutes) {
+      const requestDateNormalized = new Date(previousRequest.lessonDate.toISOString().split('T')[0] + 'T00:00:00.000Z');
+      const [requestHours, requestMinutes] = previousRequest.endTime.split(':').map(Number);
+      const requestEndDateTime = new Date(requestDateNormalized);
+      requestEndDateTime.setHours(requestHours, requestMinutes, 0, 0);
+
+      if (lessonEndDateTime >= requestEndDateTime) {
         prevEndTime = previousLesson.endTime;
         prevLocationId = previousLesson.locationId;
         prevLocationType = 'lesson';
@@ -297,14 +312,14 @@ export async function validateTransitTime(
 
     // Calculate the earliest possible start time after the previous booking
     const [prevHours, prevMinutes] = prevEndTime.split(':').map(Number);
-    const prevEndDateTime = new Date(lessonDate);
+    const prevEndDateTime = new Date(normalizedDate);
     prevEndDateTime.setHours(prevHours, prevMinutes, 0, 0);
 
     const earliestPossibleStart = new Date(prevEndDateTime);
     earliestPossibleStart.setMinutes(earliestPossibleStart.getMinutes() + transitMinutes);
 
     // Check if the requested lesson start time is after the earliest possible start
-    if (lessonStartTime >= earliestPossibleStart) {
+    if (requestedLessonDateTime >= earliestPossibleStart) {
       return { isValid: true };
     } else {
       const earliestTimeStr = `${earliestPossibleStart.getHours().toString().padStart(2, '0')}:${earliestPossibleStart.getMinutes().toString().padStart(2, '0')}`;

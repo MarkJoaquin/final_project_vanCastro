@@ -109,22 +109,35 @@ export async function POST(request: NextRequest) {
 
     // Extraer la fecha y hora del dateTime
     const dateTime = new Date(data.dateTime);
-
-    // Crear una fecha con solo la parte de la fecha (hora 00:00:00)
-    // Usamos UTC para evitar problemas con zonas horarias
-    const lessonDate = new Date(Date.UTC(
-      dateTime.getFullYear(),
-      dateTime.getMonth(),
-      dateTime.getDate(),
-      0, 0, 0, 0
-    ));
-
-    // Extraer la hora y minutos para startTime
-    const startTime = `${dateTime.getHours().toString().padStart(2, '0')}:${dateTime.getMinutes().toString().padStart(2, '0')}`;
-
+    
+    // Obtener la fecha en formato ISO y extraer solo la parte de la fecha (YYYY-MM-DD)
+    // Esto evita problemas con zonas horarias al crear la fecha
+    const dateStr = dateTime.toISOString().split('T')[0];
+    const lessonDate = new Date(dateStr + 'T00:00:00.000Z');
+    
+    // Para las horas, necesitamos considerar la zona horaria de Vancouver (PDT, UTC-7)
+    // En producción, el servidor puede estar en UTC, así que necesitamos ajustar manualmente
+    
+    // Obtener la hora UTC
+    const utcHours = dateTime.getUTCHours();
+    const utcMinutes = dateTime.getUTCMinutes();
+    
+    // Ajustar a la zona horaria de Vancouver (PDT, UTC-7)
+    // Restamos 7 horas a la hora UTC
+    let vancouverHours = utcHours - 7;
+    if (vancouverHours < 0) vancouverHours += 24; // Ajustar si la hora es negativa
+    
+    // Formatear la hora de inicio para Vancouver
+    const startTime = `${vancouverHours.toString().padStart(2, '0')}:${utcMinutes.toString().padStart(2, '0')}`;
+    
     // Calcular la hora de finalización sumando la duración del plan en minutos
     const endDateTime = new Date(dateTime.getTime() + plan.time * 60000);
-    const endTime = `${endDateTime.getHours().toString().padStart(2, '0')}:${endDateTime.getMinutes().toString().padStart(2, '0')}`;
+    const endUtcHours = endDateTime.getUTCHours();
+    let endVancouverHours = endUtcHours - 7;
+    if (endVancouverHours < 0) endVancouverHours += 24;
+    
+    const endMinutes = endDateTime.getUTCMinutes();
+    const endTime = `${endVancouverHours.toString().padStart(2, '0')}:${endMinutes.toString().padStart(2, '0')}`;
 
     // Generar un número de seguimiento único
     const trackingNumber = uuidv4().substring(0, 8).toUpperCase();
@@ -215,6 +228,49 @@ export async function POST(request: NextRequest) {
     
     return NextResponse.json(
       { error: errorMessage },
+      { status: 500 }
+    );
+  }
+}
+
+export async function GET(request: NextRequest) {
+  try {
+    const searchParams = request.nextUrl.searchParams;
+
+    // Filtrar por trackingNumber si se proporciona
+    const trackingNumber = searchParams.get('trackingNumber');
+    if (trackingNumber) {
+      const lessonRequest = await prisma.lessonsRequest.findFirst({
+        where: { trackingNumber },
+        include: {
+          student: true, // Incluye información del estudiante
+          instructor: true // Incluye información del instructor
+        }
+      });
+
+      if (!lessonRequest) {
+        return NextResponse.json(
+          { error: 'No se encontró una solicitud con este número de seguimiento' },
+          { status: 404 }
+        );
+      }
+
+      return NextResponse.json(lessonRequest);
+    }
+
+    // Si no se proporciona trackingNumber, devolver todas las solicitudes
+    const lessonRequests = await prisma.lessonsRequest.findMany({
+      include: {
+        student: true, // Incluye información del estudiante
+        instructor: true // Incluye información del instructor
+      }
+    });
+
+    return NextResponse.json(lessonRequests);
+  } catch (error) {
+    console.error('Error al obtener las solicitudes de lección:', error);
+    return NextResponse.json(
+      { error: 'Error al procesar la solicitud' },
       { status: 500 }
     );
   }

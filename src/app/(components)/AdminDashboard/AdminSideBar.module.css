@@ -1,0 +1,46 @@
+.sidebar {
+    font-weight: 500;
+    padding: 0.5rem;
+}
+
+.sideSection {
+    color: black;
+    margin-top: 3rem;
+    margin-left: 1rem;
+}
+
+.link {
+    margin: 1rem;
+}
+
+.icon {
+    width: 1rem;
+    margin-right: 1rem;
+}
+
+.iconPayment {
+    width: 0.7rem;
+    margin-left: 0.3rem;
+    margin-right: 1rem;
+}
+
+.activeLink {
+    display: flex;
+    padding: 0.5rem 1rem; 
+    border-radius: 9999px; 
+    color: #777777; 
+    text-decoration: none; 
+    transition: background-color 0.3s, color 0.3s; 
+}
+
+.activeLink:hover {
+    background-color: #EDEFEC; 
+    color: black; 
+    font-weight: 700;
+}
+
+.active {
+    background-color: #EDEFEC; 
+    color: black; 
+    font-weight: 700;
+}

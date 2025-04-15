@@ -3,11 +3,23 @@ import { NextResponse, NextRequest } from "next/server";
 
 export async function GET(){
   try {
+    // Check if Prisma client is properly initialized
+    if (!prisma) {
+      throw new Error('Prisma client is not initialized');
+    }
+    
     const InstructorData = await prisma.instructor.findMany();
     return NextResponse.json(InstructorData);
   } catch (error) {
     console.error("Error getting Instructor Info:", error);
-    return NextResponse.json({ success: false, error: "Failed to get Instructor Info" },{status:500});
+    
+    // Provide more detailed error information
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    return NextResponse.json({ 
+      success: false, 
+      error: "Failed to get Instructor Info", 
+      details: errorMessage 
+    }, { status: 500 });
   }
 }
 
