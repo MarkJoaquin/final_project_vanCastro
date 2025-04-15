@@ -4,10 +4,13 @@ import InstructorCard from "./InstructorCard/InstructorCard";
 import AdminTemplate from "./Template/AdminTemplate";
 import LessonRequests from "./LessonRequest/LessonRequest";
 import LessonList from "./LessonList/LessonList";
+import AdminCalendar from "../Calendar/Calendar";
+
 
 export default function Dashboard() {
   return (
     <div className="min-h-[70vh]">
+      <AdminCalendar/>
       
       <InstructorCard />
       <LessonRequests />
