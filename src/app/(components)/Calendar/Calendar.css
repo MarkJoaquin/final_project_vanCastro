@@ -1,0 +1,117 @@
+.total-lesson {
+    font-size: 18px;
+}
+
+.total-number {
+    background-color: var(--primary-color);
+    padding: 0.4rem;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+/* General del calendario */
+.rbc-calendar {
+  font-size: 16px;
+  border: none;
+}
+
+/* Encabezado del calendario (días de la semana) */
+.rbc-header {
+  background-color: transparent;
+  color: #6b6b6b; /* Texto gris medio */
+  font-weight: 500;
+  text-transform: uppercase;
+  padding: 8px;
+  border: none;
+}
+
+/* Celdas del calendario */
+.rbc-day-bg {
+  
+  border: none;
+}
+
+.rbc-day-bg:hover {
+  background-color: #eaeaea; /* Fondo gris más oscuro al pasar el mouse */
+}
+
+/* Día actual */
+.rbc-today {
+  background-color: transparent; /* Gris más oscuro para el día actual */
+  border: none;
+}
+
+.rbc-today .rbc-date-cell {
+    background-color: tomato;
+}
+
+/* Eventos */
+.rbc-event {
+  background-color: var(--primary-color) !important; /* Fondo gris medio para eventos */
+  color: black; /* Texto blanco */
+  border-radius: 4px;
+  padding: 2px 4px;
+  font-weight: 600;
+  font-size: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  box-shadow: none;
+  outline: none;
+}
+
+.rbc-event:focus,
+.rbc-event-selected {
+    background-color: var(--primary-color) !important; 
+    outline: none;
+}
+
+/* Vista de día */
+
+/* Ocultar bordes innecesarios */
+.rbc-timeslot-group {
+  border: none;
+}
+
+/* Encabezado de la vista de mes */
+.rbc-toolbar {
+  background-color: transparent;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.rbc-toolbar button {
+  border: none;
+  border-radius: 4px;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.rbc-toolbar button:focus,
+.rbc-toolbar button:active,
+.rbc-toolbar button.rbc-active {
+  background-color: var(--primary-color); /* Gris más oscuro al hacer clic */
+  outline: none;
+}
+.rbc-toolbar button:hover {
+  background-color: var(--secoundary-color); /* Gris más oscuro al pasar el mouse */
+}
+
+/* Ocultar líneas de tiempo en la vista de día */
+.rbc-time-header {
+  border: none;
+}
+
+/* Ocultar bordes entre las filas */
+.rbc-row {
+  border: none;
+}
+
+/* Ocultar bordes entre las celdas */
+.rbc-row-segment {
+  border: none;
+}

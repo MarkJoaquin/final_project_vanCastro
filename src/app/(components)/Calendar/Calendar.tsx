@@ -6,6 +6,7 @@ import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { useSession } from "next-auth/react";
 import { formatLessons } from "@/lib/formatLessons";
+import "./Calendar.css"; // Importa tu CSS para el calendario
 // import { format } from "path";
 
 // import {getInstructorLessonsByEmail} from "@/app/api/lessons/confirmed/route"
@@ -50,11 +51,9 @@ export default function AdminCalendar() {
     const selected = moment(selectedDate);
 
     if (view === Views.DAY) {
-      // Filtrar eventos que coincidan con el día seleccionado
       return eventDate.isSame(selected, 'day');
     }
     if (view === Views.MONTH) {
-      // Filtrar eventos que coincidan con el mes seleccionado
       return eventDate.isSame(selected, 'month');
     }
     return true;
@@ -63,11 +62,10 @@ export default function AdminCalendar() {
   const handleNavigate = (date: Date, viewType?: View) => {
     setSelectedDate(date);
 
-    // Si se proporciona un tipo de vista, actualiza la vista
+    
     if (viewType === Views.DAY || viewType === Views.MONTH) {
       setView(viewType as 'month' | 'day');
     } else if (view === Views.DAY) {
-      // Si estás en la vista de día, ajusta la fecha seleccionada al navegar
       setSelectedDate(date);
     }
   };
@@ -79,32 +77,40 @@ export default function AdminCalendar() {
   };
 
   return (
-    <div className='p-4 h-[80vh]'>
+    <div className="p-4">
       <h2 className="text-xl font-bold mb-4">Lessons Calendar</h2>
-      <Calendar
-        localizer={localizer}
-        events={filteredLessons}
-        defaultView={Views.MONTH} // Cambia la vista predeterminada a "mes"
-        view={view}
-        date={selectedDate} // Controla la fecha actual con el estado
-        onView={handleViewChange}
-        onNavigate={(date) => {
-          setSelectedDate(date); // Actualiza la fecha seleccionada al navegar
-        }}
-        startAccessor='start'
-        endAccessor='end'
-        style={{ height: '100%' }}
-        views={[Views.MONTH, Views.DAY]}
-        selectable
-        onDrillDown={(date) => {
-          setSelectedDate(date); // Actualiza la fecha seleccionada
-          setView(Views.DAY); // Cambia a la vista de día
-        }}
-        onSelectEvent={(event) => {
-          setSelectedDate(event.start); // Cambia a la fecha del evento seleccionado
-          setView(Views.DAY); // Cambia a la vista de día
-        }}
-      />
+      <div className="h-[70vh] relative">
+        <Calendar
+          localizer={localizer}
+          events={filteredLessons}
+          defaultView={Views.MONTH} 
+          view={view}
+          date={selectedDate} 
+          onView={handleViewChange}
+          onNavigate={(date) => {
+            setSelectedDate(date); 
+          }}
+          startAccessor="start"
+          endAccessor="end"
+          style={{ height: '100%' }}
+          views={[Views.MONTH, Views.DAY]}
+          selectable
+          onDrillDown={(date) => {
+            setSelectedDate(date); 
+            setView(Views.DAY);
+          }}
+          onSelectEvent={(event) => {
+            setSelectedDate(event.start); 
+            setView(Views.DAY); 
+          }}
+        />
+      </div>
+      
+      <div className="flex justify-end mt-4">
+        <div>
+          <p className="text-sm font-semibold total-lesson">Total: <span className="total-number">{events.length} Lessons</span></p>
+        </div>
+      </div>
     </div>
   );
 }
