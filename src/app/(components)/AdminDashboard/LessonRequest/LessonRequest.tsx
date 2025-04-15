@@ -85,11 +85,11 @@ export default function LessonRequests() {
         fetchInitialData();
     }, []);
 
-    // Filter lesson requests with lessonStatus = "REQUESTED" and instructorId matching the logged-in instructor
+    // Filter lesson requests with lessonStatus = "REQUESTED" or "AWAITING_PAYMENT" and instructorId matching the logged-in instructor
     // Apply name search filter if search query exists
     const filteredRequests = lessonRequests
         .filter((request) => {
-            const matchesStatus = request.lessonStatus === "REQUESTED";
+            const matchesStatus = request.lessonStatus === "REQUESTED" || request.lessonStatus === "AWAITING_PAYMENT";
             const matchesInstructor = request.instructorId === instructorId;
             
             // Search filter for student name
