@@ -31,7 +31,7 @@ export default function Admin() {
     const fetchData = async () => {
       try {
         const res = await fetch("http://localhost:3000/api/instructors", {
-          cache: "no-store",
+          cache: "default",
         });
         const data: Instructor[] = await res.json();
         updateAllInstructorData(data);
@@ -57,6 +57,9 @@ export default function Admin() {
 
   return (
     <div>
+      {allInstructorData?.map((item,index)=> <div key={index}>
+          <p>InstructorID: {item.id}</p>
+        </div>)}
       <Dashboard/>
     </div>
   );
