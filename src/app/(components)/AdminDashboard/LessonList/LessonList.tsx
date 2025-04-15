@@ -10,6 +10,9 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
+import AddNewLessonModal from "../Modals/AddNewLessonModal";
 
 interface ConfirmedLesson {
   id: string;
@@ -39,29 +42,30 @@ export default function LessonList() {
   const [confirmedLessons, setConfirmedLessons] = useState<ConfirmedLesson[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [showAddLessonModal, setShowAddLessonModal] = useState<boolean>(false);
   const { loginedInstructorData } = useAdminDataContext();
   const instructorId = loginedInstructorData?.id;
 
-  useEffect(() => {
-    const fetchConfirmedLessons = async () => {
-      setIsLoading(true);
-      try {
-        const res = await fetch("/api/lessons/confirmed");
-        if (!res.ok) {
-          const errorData = await res.json();
-          console.error("API error:", errorData);
-          throw new Error(errorData.error || "Error fetching confirmed lessons");
-        }
-        const data = await res.json();
-        console.log("Confirmed lessons received:", data);
-        setConfirmedLessons(data);
-      } catch (error) {
-        console.error("Error fetching confirmed lessons:", error);
-      } finally {
-        setIsLoading(false);
+  const fetchConfirmedLessons = async () => {
+    setIsLoading(true);
+    try {
+      const res = await fetch("/api/lessons/confirmed");
+      if (!res.ok) {
+        const errorData = await res.json();
+        console.error("API error:", errorData);
+        throw new Error(errorData.error || "Error fetching confirmed lessons");
       }
-    };
+      const data = await res.json();
+      console.log("Confirmed lessons received:", data);
+      setConfirmedLessons(data);
+    } catch (error) {
+      console.error("Error fetching confirmed lessons:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchConfirmedLessons();
   }, []);
 
@@ -259,6 +263,12 @@ export default function LessonList() {
               onChange={handleSearchChange}
               className="bg-white py-5"
             />
+            <Button
+              onClick={() => setShowAddLessonModal(true)}
+              className="bg-[#FFCE47] text-black hover:bg-amber-400 cursor-pointer"
+            >
+              Add New Lesson
+            </Button>
           </div>
         </div>
       </div>
@@ -266,6 +276,20 @@ export default function LessonList() {
       <div className="w-[80%] m-auto mt-4">
         <CustomMainComponent />
       </div>
+
+      {/* Add New Lesson Modal */}
+      {showAddLessonModal && (
+        <AddNewLessonModal
+          isOpen={showAddLessonModal}
+          onClose={() => setShowAddLessonModal(false)}
+          instructorId={instructorId || ''}
+          onSuccess={() => {
+            setShowAddLessonModal(false);
+            fetchConfirmedLessons();
+            toast.success("Lesson added successfully");
+          }}
+        />
+      )}
     </div>
   );
 }
