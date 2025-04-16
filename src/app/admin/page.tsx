@@ -75,9 +75,9 @@ export default function Admin() {
 
   return (
     <div>
-      {allInstructorData?.map((item,index)=> <div key={index}>
+      {/* {allInstructorData?.map((item,index)=> <div key={index}>
           <p>InstructorID: {item.id}</p>
-        </div>)}
+        </div>)} */}
       <Dashboard/>
     </div>
   );

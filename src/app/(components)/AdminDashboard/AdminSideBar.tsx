@@ -133,7 +133,7 @@ export default function AdminSidebar() {
                         </Link>
                     </li>
 
-                    <h2
+                    {/* <h2
                         className={`${styles.sideSection} px-4 mt-6 text-sm text-gray-400`}
                     >
                         Finance
@@ -188,7 +188,7 @@ export default function AdminSidebar() {
                             />
                             Contract
                         </Link>
-                    </li>
+                    </li> */}
                 </ul>
             </nav>
 
