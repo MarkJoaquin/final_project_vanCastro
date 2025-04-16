@@ -42,6 +42,22 @@ export async function GET(request: NextRequest) {
 
     // Si encontramos la lección, devolvemos esa información
     if (lesson) {
+      // Ajustar las horas a la zona horaria de Vancouver (PDT, UTC-7)
+      // Primero, extraemos las horas y minutos de startTime y endTime
+      const [startHours, startMinutes] = lesson.startTime.split(':').map(Number);
+      const [endHours, endMinutes] = lesson.endTime.split(':').map(Number);
+      
+      // No necesitamos ajustar nada aquí, ya que las horas ya fueron ajustadas al guardarlas
+      // Simplemente formateamos las horas para mostrarlas
+      const adjustedStartTime = `${startHours.toString().padStart(2, '0')}:${startMinutes.toString().padStart(2, '0')}`;
+      const adjustedEndTime = `${endHours.toString().padStart(2, '0')}:${endMinutes.toString().padStart(2, '0')}`;
+      
+      // Ajustar la fecha para corregir el problema del día menos
+      // Convertimos la fecha a un objeto Date y ajustamos para la zona horaria de Vancouver
+      const lessonDate = new Date(lesson.date);
+      // Sumamos un día para corregir el problema
+      lessonDate.setDate(lessonDate.getDate() + 1);
+      
       return NextResponse.json({
         found: true,
         type: 'lesson',
@@ -49,9 +65,9 @@ export async function GET(request: NextRequest) {
           id: lesson.id,
           studentName: lesson.student.name,
           instructorName: lesson.instructor.name,
-          date: lesson.date,
-          startTime: lesson.startTime,
-          endTime: lesson.endTime,
+          date: lessonDate,
+          startTime: adjustedStartTime,
+          endTime: adjustedEndTime,
           duration: lesson.duration,
           location: `${lesson.location.name}, ${lesson.location.address}, ${lesson.location.city}`,
           plan: lesson.plan,
@@ -94,6 +110,22 @@ export async function GET(request: NextRequest) {
     });
 
     if (lessonRequest) {
+      // Ajustar las horas a la zona horaria de Vancouver (PDT, UTC-7)
+      // Primero, extraemos las horas y minutos de startTime y endTime
+      const [startHours, startMinutes] = lessonRequest.startTime.split(':').map(Number);
+      const [endHours, endMinutes] = lessonRequest.endTime.split(':').map(Number);
+      
+      // No necesitamos ajustar nada aquí, ya que las horas ya fueron ajustadas al guardarlas
+      // Simplemente formateamos las horas para mostrarlas
+      const adjustedStartTime = `${startHours.toString().padStart(2, '0')}:${startMinutes.toString().padStart(2, '0')}`;
+      const adjustedEndTime = `${endHours.toString().padStart(2, '0')}:${endMinutes.toString().padStart(2, '0')}`;
+      
+      // Ajustar la fecha para corregir el problema del día menos
+      // Convertimos la fecha a un objeto Date y ajustamos para la zona horaria de Vancouver
+      const requestDate = new Date(lessonRequest.lessonDate);
+      // Sumamos un día para corregir el problema
+      requestDate.setDate(requestDate.getDate() + 1);
+      
       return NextResponse.json({
         found: true,
         type: 'request',
@@ -101,9 +133,9 @@ export async function GET(request: NextRequest) {
           id: lessonRequest.id,
           studentName: lessonRequest.student.name,
           instructorName: lessonRequest.instructor.name,
-          date: lessonRequest.lessonDate,
-          startTime: lessonRequest.startTime,
-          endTime: lessonRequest.endTime,
+          date: requestDate,
+          startTime: adjustedStartTime,
+          endTime: adjustedEndTime,
           duration: lessonRequest.lessonDuration,
           location: `${lessonRequest.location.name}, ${lessonRequest.location.address}, ${lessonRequest.location.city}`,
           plan: lessonRequest.lessonPlan,

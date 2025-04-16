@@ -28,14 +28,6 @@ export default function InstructorCard() {
         {loginedInstructorData ? (
             <div className="p-4 bg-gray-100 rounded-md shadow-md">
             <h2 className="text-xl font-bold pb-5">Welcome, {loginedInstructorData.name}</h2>
-            <p><strong>Email:</strong> {loginedInstructorData.email}</p>
-            <p><strong>Teléfono:</strong> {loginedInstructorData.phone}</p>
-            {loginedInstructorData.licenseNumber && (
-                <p><strong>Número de Licencia:</strong> {loginedInstructorData.licenseNumber}</p>
-            )}
-            {loginedInstructorData.experienceYears && (
-                <p><strong>Años de Experiencia:</strong> {loginedInstructorData.experienceYears}</p>
-            )}
             </div>
         ) : (
             <p className="text-red-500">Loading...</p>

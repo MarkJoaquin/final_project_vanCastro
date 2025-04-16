@@ -1,0 +1,112 @@
+import { NextResponse } from "next/server";
+import prisma from "@/lib/prisma";
+import { Prisma } from "@prisma/client";
+
+export async function GET() {
+  try {
+    console.log("Iniciando búsqueda de lecciones confirmadas en tabla lesson");
+    
+    // Utilizamos la tabla lesson directamente como se requiere
+    console.log("Consultando tabla lessons...");
+    
+    // Hacemos la consulta a la tabla lesson, filtrando por estado CONFIRMED
+    let confirmedLessons: string | any[] = [];
+    try {
+      confirmedLessons = await prisma.lesson.findMany({ 
+        where: {
+          status: "CONFIRMED", // Solo lecciones confirmadas
+        },
+        select: {
+          // Campos directos de la tabla Lesson
+          id: true,
+          studentId: true,
+          instructorId: true,
+          date: true,
+          startTime: true,
+          endTime: true,
+          duration: true,
+          locationId: true,
+          plan: true,
+          price: true,
+          status: true,
+          paymentStatus: true,
+          licenseClass: true,
+          paymentMethod: true,
+          trackingNumber: true,
+          createdAt: true,
+          updatedAt: true,
+          // Relaciones
+          student: {
+            select: {
+              name: true,
+            },
+          },
+          location: {
+            select: {
+              name: true,
+              city: true,
+            },
+          },
+        },
+      });
+      
+      console.log(`Encontradas ${confirmedLessons.length} lecciones confirmadas en tabla lesson`);
+      
+    } catch (prismaError) {
+      // Manejo específico de errores de Prisma
+      if (prismaError instanceof Prisma.PrismaClientKnownRequestError) {
+        const errorCode = prismaError.code;
+        console.error(`Error de Prisma ${errorCode}:`, prismaError.message);
+        
+        if (errorCode === 'P2032') {
+          console.log("La tabla lessons existe en el esquema pero aún no tiene datos o no existe en la BD");
+        } else if (prismaError.message.includes("locationId") && prismaError.message.includes("non-nullable")) {
+          console.log("Hay un problema con campos nulos en la tabla lessons");
+        }
+      } else {
+        console.error("Error no identificado al consultar lecciones:", prismaError);
+      }
+      
+      // Ante cualquier error, devolvemos array vacío para que la UI funcione
+      confirmedLessons = [];
+    }
+    
+    // Siempre devolvemos el resultado, sea un array con datos o vacío si hubo error
+    return NextResponse.json(confirmedLessons);
+    
+  } catch (error) {
+    // Error general (no debería ocurrir, pero por seguridad)
+    console.error("Error completo al obtener lecciones confirmadas:", error);
+    return NextResponse.json([]);
+  } finally {
+    // Siempre desconectamos Prisma al final
+    try {
+      await prisma.$disconnect();
+    } catch (e) {
+      console.error("Error al desconectar Prisma:", e);
+    }
+  }
+}
+
+export async function POST (req: Request){
+    const {email} = await req.json();
+
+    if(!email){
+        return NextResponse.json({message:"Email is required"},{status:400});
+    }
+
+    const instructor = await prisma.instructor.findUnique({
+        where: {email},
+        include: {
+            lessons: {
+                include: {
+                    student:true
+                }
+            }
+        }
+    })
+
+    return NextResponse.json(instructor?.lessons ?? []);
+}
+
+
