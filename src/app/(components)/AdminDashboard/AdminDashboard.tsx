@@ -4,6 +4,7 @@ import InstructorCard from "./InstructorCard/InstructorCard";
 import AdminTemplate from "./Template/AdminTemplate";
 import LessonRequests from "./LessonRequest/LessonRequest";
 import LessonList from "./LessonList/LessonList";
+import StudentList from "./StudentList/StudentList";
 
 export default function Dashboard() {
   return (
@@ -12,6 +13,7 @@ export default function Dashboard() {
       <InstructorCard />
       <LessonRequests />
       <LessonList />
+      <StudentList />
       
       <AdminTemplate
         PageTitle={"Student List"}
