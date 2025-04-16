@@ -17,7 +17,8 @@ interface CalendarEvent {
   id: string;
   title: string;
   start: Date;
-  end:Date;
+  end: Date;
+  instructorId: string; // Added instructorId property
 }
 
 export default function AdminCalendar() {
@@ -26,35 +27,33 @@ export default function AdminCalendar() {
   const [view, setView] = useState<'month' | 'day'>(Views.MONTH);
   const [selectedDate, setSelectedDate] = useState(new Date());
 
-  useEffect(()=>{
-    async function fetchLessons(){
-      if(session?.user?.email){
-        const res = await fetch("/api/lessons/confirmed",{
-          method:"POST",
-          headers:{"Content-Type":"application/json"},
-          body: JSON.stringify({email:session.user.email}),
-        });
+  useEffect(() => {
+    async function fetchLessons() {
+      const res = await fetch("/api/lessons/confirmed", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({}), // No enviamos email para obtener todas las lecciones
+      });
 
-        const lessons = await res.json();
-        const formatted = formatLessons(lessons)
-        setEvents(formatted);
-      }
+      const lessons = await res.json();
+      const formatted = formatLessons(lessons);
+      setEvents(formatted);
     }
 
     fetchLessons();
-  },[session?.user?.email])
+  }, []);
 
-  console.log("LESSONS ====> ", events)
+  console.log("LESSONS ====> ", events);
 
   const filteredLessons = events.filter((event) => {
     const eventDate = moment(event.start);
     const selected = moment(selectedDate);
 
     if (view === Views.DAY) {
-      return eventDate.isSame(selected, 'day');
+      return eventDate.isSame(selected, "day");
     }
     if (view === Views.MONTH) {
-      return eventDate.isSame(selected, 'month');
+      return eventDate.isSame(selected, "month");
     }
     return true;
   });
@@ -62,9 +61,8 @@ export default function AdminCalendar() {
   const handleNavigate = (date: Date, viewType?: View) => {
     setSelectedDate(date);
 
-    
     if (viewType === Views.DAY || viewType === Views.MONTH) {
-      setView(viewType as 'month' | 'day');
+      setView(viewType as "month" | "day");
     } else if (view === Views.DAY) {
       setSelectedDate(date);
     }
@@ -72,8 +70,35 @@ export default function AdminCalendar() {
 
   const handleViewChange = (newView: View) => {
     if (newView === Views.MONTH || newView === Views.DAY) {
-      setView(newView as 'month' | 'day');
+      setView(newView as "month" | "day");
     }
+  };
+
+  // Componente personalizado para los eventos
+  const CustomEvent = ({ event }: { event: CalendarEvent }) => {
+    // Renderizar un punto para la vista de mes
+    if (view === Views.MONTH) {
+      return (
+        <div
+          className={`event-instructor-${event.instructorId}`}
+          style={{
+            width: "10px",
+            height: "10px",
+            borderRadius: "50%",
+            backgroundColor: "currentColor", // El color se define en CSS
+            margin: "0 auto",
+          }}
+        ></div>
+      );
+    }
+
+    // Renderizar información completa para otras vistas (como la vista de día)
+    return (
+      <div className={`event-instructor-${event.instructorId}`}>
+        <strong>{event.title}</strong>
+        <p>{event.instructorId}</p>
+      </div>
+    );
   };
 
   return (
@@ -83,32 +108,39 @@ export default function AdminCalendar() {
         <Calendar
           localizer={localizer}
           events={filteredLessons}
-          defaultView={Views.MONTH} 
+          defaultView={Views.MONTH}
           view={view}
-          date={selectedDate} 
+          date={selectedDate}
           onView={handleViewChange}
-          onNavigate={(date) => {
-            setSelectedDate(date); 
-          }}
+          onNavigate={(date) => setSelectedDate(date)}
           startAccessor="start"
           endAccessor="end"
-          style={{ height: '100%' }}
+          style={{ height: "100%" }}
           views={[Views.MONTH, Views.DAY]}
           selectable
+          eventPropGetter={(event) => {
+            const className = `event-instructor-${event.instructorId}`;
+            return { className };
+          }}
+          components={{
+            event: CustomEvent, // Usa el componente personalizado aquí
+          }}
           onDrillDown={(date) => {
-            setSelectedDate(date); 
+            setSelectedDate(date);
             setView(Views.DAY);
           }}
           onSelectEvent={(event) => {
-            setSelectedDate(event.start); 
-            setView(Views.DAY); 
+            setSelectedDate(event.start);
+            setView(Views.DAY);
           }}
         />
       </div>
-      
+
       <div className="flex justify-end mt-4">
         <div>
-          <p className="text-sm font-semibold total-lesson">Total: <span className="total-number">{events.length} Lessons</span></p>
+          <p className="text-sm font-semibold total-lesson">
+            Total: <span className="total-number">{events.length} Lessons</span>
+          </p>
         </div>
       </div>
     </div>

@@ -88,23 +88,37 @@ export async function GET() {
   }
 }
 
-export async function POST (req: Request){
-    const {email} = await req.json();
+export async function POST(req: Request) {
+    const { email } = await req.json();
 
-    if(!email){
-        return NextResponse.json({message:"Email is required"},{status:400});
+    // Si no se proporciona un email, devolver todas las lecciones confirmadas
+    if (!email) {
+        const allLessons = await prisma.lesson.findMany({
+            where: {
+                status: "CONFIRMED", // Solo lecciones confirmadas
+            },
+            include: {
+                student: true,
+                instructor: true,
+                location: true,
+            },
+        });
+        return NextResponse.json(allLessons);
     }
 
+    // Si se proporciona un email, filtrar por el instructor correspondiente
     const instructor = await prisma.instructor.findUnique({
-        where: {email},
+        where: { email },
         include: {
             lessons: {
+                where: { status: "CONFIRMED" },
                 include: {
-                    student:true
-                }
-            }
-        }
-    })
+                    student: true,
+                    location: true,
+                },
+            },
+        },
+    });
 
     return NextResponse.json(instructor?.lessons ?? []);
 }
