@@ -5,7 +5,7 @@ import { Calendar, Views, View, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { formatLessons } from "@/lib/formatLessons";
-import "./Calendar.css"; // Importa tu CSS para el calendario
+import "./Calendar.css"; 
 
 const localizer = momentLocalizer(moment);
 
@@ -14,7 +14,7 @@ interface CalendarEvent {
   title: string;
   start: Date;
   end: Date;
-  instructorId: string; // Added instructorId property
+  instructorId: string; 
 }
 
 export default function AdminCalendar() {
@@ -61,13 +61,13 @@ export default function AdminCalendar() {
     const currentMonth = moment(selectedDate).month();
     const currentYear = moment(selectedDate).year();
 
-    // Filtrar por mes y año visible
+    
     const isInCurrentMonth = eventDate.month() === currentMonth && eventDate.year() === currentYear;
 
-    // Filtrar por instructor seleccionado
+    
     const isBySelectedInstructor = selectedInstructorId ? event.instructorId === selectedInstructorId : true;
 
-    // Combinar ambos filtros
+    
     return isInCurrentMonth && isBySelectedInstructor;
   });
 
@@ -147,8 +147,8 @@ export default function AdminCalendar() {
             event: CustomEvent,
           }}
           onSelectEvent={(event) => {
-            setSelectedDate(event.start); // Cambia la fecha seleccionada al inicio del evento
-            setView(Views.DAY); // Cambia la vista a "day"
+            setSelectedDate(event.start);  
+            setView(Views.DAY); 
           }}
         />
       </div>
