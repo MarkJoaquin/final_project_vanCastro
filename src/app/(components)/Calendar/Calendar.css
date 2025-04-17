@@ -76,10 +76,13 @@
 
 /* Ajustar el evento en la vista de mes */
 .rbc-month-view .rbc-event {
-    width: 20px; 
+    width: auto; 
     margin: 0 auto; 
     text-align: center; 
-    border-radius: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
 /* Vista de día */

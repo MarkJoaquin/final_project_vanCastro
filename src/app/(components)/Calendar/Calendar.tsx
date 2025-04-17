@@ -76,19 +76,12 @@ export default function AdminCalendar() {
 
   // Componente personalizado para los eventos
   const CustomEvent = ({ event }: { event: CalendarEvent }) => {
-    // Renderizar un punto para la vista de mes
+    // Renderizar el título del evento en la vista de mes
     if (view === Views.MONTH) {
       return (
-        <div
-          className={`event-instructor-${event.instructorId}`}
-          style={{
-            width: "10px",
-            height: "10px",
-            borderRadius: "50%",
-            backgroundColor: "currentColor", // El color se define en CSS
-            margin: "0 auto",
-          }}
-        ></div>
+        <div className={`event-instructor-${event.instructorId}`}>
+          <strong>{event.title}</strong> {/* Muestra el título del evento */}
+        </div>
       );
     }
 
