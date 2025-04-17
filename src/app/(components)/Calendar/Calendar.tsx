@@ -5,7 +5,7 @@ import { Calendar, Views, View, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { formatLessons } from "@/lib/formatLessons";
-import "./Calendar.css"; 
+import "./Calendar.css";
 
 const localizer = momentLocalizer(moment);
 
@@ -14,7 +14,7 @@ interface CalendarEvent {
   title: string;
   start: Date;
   end: Date;
-  instructorId: string; 
+  instructorId: string;
 }
 
 export default function AdminCalendar() {
@@ -61,15 +61,19 @@ export default function AdminCalendar() {
     const currentMonth = moment(selectedDate).month();
     const currentYear = moment(selectedDate).year();
 
-    
     const isInCurrentMonth = eventDate.month() === currentMonth && eventDate.year() === currentYear;
-
-    
     const isBySelectedInstructor = selectedInstructorId ? event.instructorId === selectedInstructorId : true;
 
-    
     return isInCurrentMonth && isBySelectedInstructor;
   });
+
+  const totalLessons = filteredLessons.length;
+  const totalLessonsAll = events.length;
+
+  const lessonsByInstructor = events.reduce((acc, event) => {
+    acc[event.instructorId] = (acc[event.instructorId] || 0) + 1;
+    return acc;
+  }, {} as Record<string, number>);
 
   const handleNavigate = (date: Date, viewType?: View) => {
     setSelectedDate(date);
@@ -114,7 +118,7 @@ export default function AdminCalendar() {
             id="instructor-select"
             value={selectedInstructorId || ""}
             onChange={(e) => setSelectedInstructorId(e.target.value || null)}
-            className="border rounded px-2 py-1"
+            className="border rounded px-2 py-1 text-sm"
           >
             <option value="">All Instructors</option>
             {instructors.map((instructor) => (
@@ -147,10 +151,22 @@ export default function AdminCalendar() {
             event: CustomEvent,
           }}
           onSelectEvent={(event) => {
-            setSelectedDate(event.start);  
-            setView(Views.DAY); 
+            setSelectedDate(event.start);
+            setView(Views.DAY);
           }}
         />
+      </div>
+      <div className="flex flex-col items-start mt-4 p-4 bg-gray-100 rounded-md shadow-md w-[300px]">
+        <p className="text-md">
+          Total Lessons: <span className="font-bold">{totalLessonsAll}</span>
+        </p>
+        <div className="text-md mt-2 flex flex-col items-end">
+          {Object.entries(lessonsByInstructor).map(([instructorId, count]) => (
+            <p key={instructorId}>
+              {getInstructorName(instructorId)}: <span className="font-bold">{count}</span>
+            </p>
+          ))}
+        </div>
       </div>
     </div>
   );
