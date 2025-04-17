@@ -96,7 +96,7 @@ export default function AdminCalendar() {
             id="instructor-select"
             value={selectedInstructorId || ""}
             onChange={(e) => setSelectedInstructorId(e.target.value || null)}
-            className="border rounded px-2 py-1"
+            className="border rounded px-2 py-1 text-sm"
           >
             <option value="">All Instructors</option>
             {Array.from(new Set(events.map((event) => event.instructorId))).map((id) => (
