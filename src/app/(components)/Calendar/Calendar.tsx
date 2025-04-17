@@ -22,6 +22,7 @@ export default function AdminCalendar() {
   const [view, setView] = useState<'month' | 'day'>(Views.MONTH);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedInstructorId, setSelectedInstructorId] = useState<string | null>(null);
+  const [instructors, setInstructors] = useState<{ id: string; name: string }[]>([]);
 
   useEffect(() => {
     async function fetchLessons() {
@@ -36,8 +37,24 @@ export default function AdminCalendar() {
       setEvents(formatted);
     }
 
+    async function fetchInstructors() {
+      try {
+        const res = await fetch("/api/instructors");
+        const data = await res.json();
+        setInstructors(data);
+      } catch (error) {
+        console.error("Error fetching instructors:", error);
+      }
+    }
+
     fetchLessons();
+    fetchInstructors();
   }, []);
+
+  const getInstructorName = (id: string) => {
+    const instructor = instructors.find((instructor) => instructor.id === id);
+    return instructor ? instructor.name : "Unknown Instructor";
+  };
 
   const filteredLessons = events.filter((event) => {
     const eventDate = moment(event.start);
@@ -72,6 +89,7 @@ export default function AdminCalendar() {
       return (
         <div className={`event-instructor-${event.instructorId}`}>
           <strong>{event.title}</strong>
+          {/* <p>{getInstructorName(event.instructorId)}</p> */}
         </div>
       );
     }
@@ -79,7 +97,7 @@ export default function AdminCalendar() {
     return (
       <div className={`event-instructor-${event.instructorId}`}>
         <strong>{event.title}</strong>
-        <p>{event.instructorId}</p>
+        <p>{getInstructorName(event.instructorId)}</p>
       </div>
     );
   };
@@ -96,12 +114,12 @@ export default function AdminCalendar() {
             id="instructor-select"
             value={selectedInstructorId || ""}
             onChange={(e) => setSelectedInstructorId(e.target.value || null)}
-            className="border rounded px-2 py-1 text-sm"
+            className="border rounded px-2 py-1"
           >
             <option value="">All Instructors</option>
-            {Array.from(new Set(events.map((event) => event.instructorId))).map((id) => (
-              <option key={id} value={id}>
-                {id} {/* Puedes reemplazar esto con el nombre del instructor si está disponible */}
+            {instructors.map((instructor) => (
+              <option key={instructor.id} value={instructor.id}>
+                {instructor.name}
               </option>
             ))}
           </select>
