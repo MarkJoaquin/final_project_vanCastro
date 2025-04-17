@@ -4,12 +4,8 @@ import { useEffect, useState } from "react";
 import { Calendar, Views, View, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import { useSession } from "next-auth/react";
 import { formatLessons } from "@/lib/formatLessons";
 import "./Calendar.css"; // Importa tu CSS para el calendario
-// import { format } from "path";
-
-// import {getInstructorLessonsByEmail} from "@/app/api/lessons/confirmed/route"
 
 const localizer = momentLocalizer(moment);
 
@@ -22,17 +18,17 @@ interface CalendarEvent {
 }
 
 export default function AdminCalendar() {
-  const { data: session } = useSession();
   const [events, setEvents] = useState<CalendarEvent[]>([]);
   const [view, setView] = useState<'month' | 'day'>(Views.MONTH);
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedInstructorId, setSelectedInstructorId] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchLessons() {
       const res = await fetch("/api/lessons/confirmed", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({}), // No enviamos email para obtener todas las lecciones
+        body: JSON.stringify({}),
       });
 
       const lessons = await res.json();
@@ -43,28 +39,25 @@ export default function AdminCalendar() {
     fetchLessons();
   }, []);
 
-  console.log("LESSONS ====> ", events);
-
   const filteredLessons = events.filter((event) => {
     const eventDate = moment(event.start);
-    const selected = moment(selectedDate);
+    const currentMonth = moment(selectedDate).month();
+    const currentYear = moment(selectedDate).year();
 
-    if (view === Views.DAY) {
-      return eventDate.isSame(selected, "day");
-    }
-    if (view === Views.MONTH) {
-      return eventDate.isSame(selected, "month");
-    }
-    return true;
+    // Filtrar por mes y año visible
+    const isInCurrentMonth = eventDate.month() === currentMonth && eventDate.year() === currentYear;
+
+    // Filtrar por instructor seleccionado
+    const isBySelectedInstructor = selectedInstructorId ? event.instructorId === selectedInstructorId : true;
+
+    // Combinar ambos filtros
+    return isInCurrentMonth && isBySelectedInstructor;
   });
 
   const handleNavigate = (date: Date, viewType?: View) => {
     setSelectedDate(date);
-
     if (viewType === Views.DAY || viewType === Views.MONTH) {
       setView(viewType as "month" | "day");
-    } else if (view === Views.DAY) {
-      setSelectedDate(date);
     }
   };
 
@@ -74,18 +67,15 @@ export default function AdminCalendar() {
     }
   };
 
-  // Componente personalizado para los eventos
   const CustomEvent = ({ event }: { event: CalendarEvent }) => {
-    // Renderizar el título del evento en la vista de mes
     if (view === Views.MONTH) {
       return (
         <div className={`event-instructor-${event.instructorId}`}>
-          <strong>{event.title}</strong> {/* Muestra el título del evento */}
+          <strong>{event.title}</strong>
         </div>
       );
     }
 
-    // Renderizar información completa para otras vistas (como la vista de día)
     return (
       <div className={`event-instructor-${event.instructorId}`}>
         <strong>{event.title}</strong>
@@ -96,7 +86,27 @@ export default function AdminCalendar() {
 
   return (
     <div className="p-4">
-      <h2 className="text-xl font-bold mb-4">Lessons Calendar</h2>
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-xl font-bold">Lessons Calendar</h2>
+        <div className="flex items-center gap-2">
+          <label htmlFor="instructor-select" className="text-sm font-medium">
+            Filter by Instructor
+          </label>
+          <select
+            id="instructor-select"
+            value={selectedInstructorId || ""}
+            onChange={(e) => setSelectedInstructorId(e.target.value || null)}
+            className="border rounded px-2 py-1"
+          >
+            <option value="">All Instructors</option>
+            {Array.from(new Set(events.map((event) => event.instructorId))).map((id) => (
+              <option key={id} value={id}>
+                {id} {/* Puedes reemplazar esto con el nombre del instructor si está disponible */}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
       <div className="h-[70vh] relative">
         <Calendar
           localizer={localizer}
@@ -116,25 +126,13 @@ export default function AdminCalendar() {
             return { className };
           }}
           components={{
-            event: CustomEvent, // Usa el componente personalizado aquí
-          }}
-          onDrillDown={(date) => {
-            setSelectedDate(date);
-            setView(Views.DAY);
+            event: CustomEvent,
           }}
           onSelectEvent={(event) => {
-            setSelectedDate(event.start);
-            setView(Views.DAY);
+            setSelectedDate(event.start); // Cambia la fecha seleccionada al inicio del evento
+            setView(Views.DAY); // Cambia la vista a "day"
           }}
         />
-      </div>
-
-      <div className="flex justify-end mt-4">
-        <div>
-          <p className="text-sm font-semibold total-lesson">
-            Total: <span className="total-number">{events.length} Lessons</span>
-          </p>
-        </div>
       </div>
     </div>
   );
