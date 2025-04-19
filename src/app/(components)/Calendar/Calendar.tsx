@@ -6,6 +6,7 @@ import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { formatLessons } from "@/lib/formatLessons";
 import "./Calendar.css";
+import ModalEvent from "./ModalEvent";
 
 const localizer = momentLocalizer(moment);
 
@@ -23,6 +24,8 @@ export default function AdminCalendar() {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedInstructorId, setSelectedInstructorId] = useState<string | null>(null);
   const [instructors, setInstructors] = useState<{ id: string; name: string }[]>([]);
+  const [selectedLesson, setSelectedLesson] = useState<CalendarEvent | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     async function fetchLessons() {
@@ -34,6 +37,7 @@ export default function AdminCalendar() {
 
       const lessons = await res.json();
       const formatted = formatLessons(lessons);
+      console.log("Formatted lessons:", formatted);
       setEvents(formatted);
     }
 
@@ -54,6 +58,11 @@ export default function AdminCalendar() {
   const getInstructorName = (id: string) => {
     const instructor = instructors.find((instructor) => instructor.id === id);
     return instructor ? instructor.name : "Unknown Instructor";
+  };
+
+  const handleEventClick = (event: CalendarEvent) => {
+    setSelectedLesson(event);
+    setIsModalOpen(true);
   };
 
   const filteredLessons = events.filter((event) => {
@@ -151,11 +160,22 @@ export default function AdminCalendar() {
             event: CustomEvent,
           }}
           onSelectEvent={(event) => {
-            setSelectedDate(event.start);
-            setView(Views.DAY);
+            if (view === Views.DAY) {
+              handleEventClick(event);
+            } else {
+              setSelectedDate(event.start);
+              setView(Views.DAY);
+            }
           }}
         />
       </div>
+      {isModalOpen && (
+        <ModalEvent
+          lesson={selectedLesson}
+          getInstructorName={getInstructorName}
+          onClose={() => setIsModalOpen(false)}
+        />
+      )}
       <div className="flex flex-col items-start mt-4 p-4 bg-gray-100 rounded-md shadow-md w-[300px]">
         <p className="text-md">
           Total Lessons: <span className="font-bold">{totalLessonsAll}</span>
