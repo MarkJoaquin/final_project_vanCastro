@@ -171,7 +171,7 @@ export default function AdminCalendar() {
       </div>
       {isModalOpen && (
         <ModalEvent
-          lesson={selectedLesson}
+          lessonId={selectedLesson?.id || null}
           getInstructorName={getInstructorName}
           onClose={() => setIsModalOpen(false)}
         />
