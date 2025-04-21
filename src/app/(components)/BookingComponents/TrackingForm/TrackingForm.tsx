@@ -1,16 +1,17 @@
 "use client"
 
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { FaMapMarkerAlt } from 'react-icons/fa'
 
 type FormData = {
   trackingNumber: string
 }
 
-type BookingStatus = 'PENDING' | 'CONFIRMED' | 'CANCELLED' | 'COMPLETED' | 
-                     'REQUESTED' | 'AWAITING_PAYMENT' | 'REJECTED' | 'LATE_RESPONSE'
+type BookingStatus = 'PENDING' | 'CONFIRMED' | 'CANCELLED' | 'COMPLETED' |
+  'REQUESTED' | 'AWAITING_PAYMENT' | 'REJECTED' | 'LATE_RESPONSE'
 
 type PaymentStatus = 'PENDING' | 'PAID' | 'FAILED'
 
@@ -52,7 +53,7 @@ const TrackingForm = () => {
     try {
       const response = await fetch(`/api/lessons/tracking?trackingNumber=${data.trackingNumber}`)
       const result = await response.json()
-      
+
       setTrackingResult(result)
     } catch (error) {
       console.error('Error tracking booking:', error)
@@ -163,7 +164,7 @@ const TrackingForm = () => {
                     {trackingResult.data?.status.replace('_', ' ')}
                   </span>
                 </div>
-                
+
                 {trackingResult.data?.paymentStatus && (
                   <div className="flex justify-between items-center">
                     <span className="font-medium">Payment:</span>
@@ -178,28 +179,41 @@ const TrackingForm = () => {
                   <div className="grid grid-cols-2 gap-2 text-sm">
                     <span className="text-gray-600">Date:</span>
                     <span>{formatDate(trackingResult.data?.date || '')}</span>
-                    
+
                     <span className="text-gray-600">Time:</span>
                     <span>{trackingResult.data?.startTime} - {trackingResult.data?.endTime}</span>
-                    
+
                     <span className="text-gray-600">Duration:</span>
                     <span>{trackingResult.data?.duration} min</span>
-                    
+
                     <span className="text-gray-600">Instructor:</span>
                     <span>{trackingResult.data?.instructorName}</span>
-                    
+
                     <span className="text-gray-600">Location:</span>
-                    <span>{trackingResult.data?.location}</span>
-                    
+                    <span className="flex items-center gap-2">
+                      {trackingResult.data?.location}
+                      {trackingResult.data?.location && (
+                        <a 
+                          href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(trackingResult.data.location)}`} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          title="View on Google Maps"
+                          className="text-blue-500 hover:text-blue-700 transition-colors"
+                        >
+                          <FaMapMarkerAlt size={16} />
+                        </a>
+                      )}
+                    </span>
+
                     <span className="text-gray-600">License Class:</span>
                     <span>{trackingResult.data?.licenseClass}</span>
-                    
+
                     <span className="text-gray-600">Plan:</span>
                     <span>{trackingResult.data?.plan}</span>
-                    
+
                     <span className="text-gray-600">Price:</span>
                     <span>${trackingResult.data?.price}</span>
-                    
+
                     {trackingResult.data?.paymentMethod && (
                       <>
                         <span className="text-gray-600">Payment Method:</span>

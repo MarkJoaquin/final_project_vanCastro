@@ -15,6 +15,8 @@ import "./calendar-styles.css" // Importar estilos personalizados del calendario
 import { countries } from '@/data/countries'
 import { icbcLocations } from '@/data/icbcLocations'
 import ConfirmationModal from '../ConfirmationModal/ConfirmationModal'
+import LocationDropdown from '../LocationDropdown/LocationDropdown'
+import { FaMapMarkerAlt } from 'react-icons/fa'
 
 const BookingForm = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -54,6 +56,8 @@ const BookingForm = () => {
                 throw new Error(result.error || 'Error al enviar la solicitud');
             }
 
+            // Capture the selected location object before resetting the form
+            setBookingLocation(locations.find(loc => loc.id === data.location) || null);
             setSubmitSuccess(true);
             setTrackingNumber(result.trackingNumber);
             console.log('Solicitud creada exitosamente:', result);
@@ -114,6 +118,7 @@ const BookingForm = () => {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
     const [selectedDate, setSelectedDate] = useState<Date | null>(null)
+    const [bookingLocation, setBookingLocation] = useState<Location | null>(null)
 
     // Campos observados para los detalles de la lección
     const selectedClass = watch('licenseClass')
@@ -130,6 +135,8 @@ const BookingForm = () => {
     const EXPIRATION_TIME = 24 * 60 * 60 * 1000 // 24 hours in milliseconds
     const [learningPermitStatus, setLearningPermitStatus] = useLocalStorageWithExpiration('learningPermitAnswer', EXPIRATION_TIME)
     const [isFormDisabled, setIsFormDisabled] = useState(false)
+
+    // Removed currentLocation derived from watch; using bookingLocation state instead
 
     // Fetch classes, instructors and locations from API
     useEffect(() => {
@@ -468,6 +475,17 @@ const BookingForm = () => {
                     <div className="bg-white p-4 rounded-md inline-block mb-4">
                         <p className="text-sm text-gray-600">Tracking Number:</p>
                         <p className="text-2xl font-mono font-bold tracking-wider">{trackingNumber}</p>
+                    </div>
+                    <div className="flex items-center gap-2 mb-4 justify-center">
+                        <FaMapMarkerAlt className="text-blue-500" />
+                        <a
+                            href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${bookingLocation?.address}, ${bookingLocation?.city}, ${bookingLocation?.zip}`)}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-blue-500 hover:underline"
+                        >
+                            {`${bookingLocation?.address}, ${bookingLocation?.city}, ${bookingLocation?.zip}`}
+                        </a>
                     </div>
                     <p className="text-sm text-gray-600 mb-6">
                         Save this number to check the status of your reservation. We will send you an email with the details.
@@ -896,41 +914,21 @@ const BookingForm = () => {
 
                                 <div className="mt-6">
                                     <h3 className="text-xl font-semibold mb-4">Choose Your Location</h3>
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                                        {locations.map((location) => (
-                                            <div key={location.id}
-                                                className={`relative border rounded-xl p-4 cursor-pointer transition-all duration-200 ${selectedLocation === location.id
-                                                    ? 'border-blue-500 bg-blue-50'
-                                                    : 'hover:border-gray-300'
-                                                    }`}
-                                            >
-                                                <input
-                                                    type="radio"
-                                                    {...register('location', {
-                                                        required: 'Please select a location'
-                                                    })}
-                                                    value={location.id}
-                                                    id={`location-${location.id}`}
-                                                    className="hidden"
-                                                />
-                                                {errors.location && (
-                                                    <p className="text-sm text-red-500 mt-2 text-center">
-                                                        {errors.location.message}
-                                                    </p>
-                                                )}
-                                                <label
-                                                    htmlFor={`location-${location.id}`}
-                                                    className="block cursor-pointer"
-                                                >
-                                                    <div className="font-medium">{location.name}</div>
-                                                    {/* <p className="text-sm text-gray-500">{location.address}</p>
-                                                    <div className="text-sm text-gray-500">
-                                                        {location.city}, {location.zip}
-                                                    </div> */}
-                                                </label>
-                                            </div>
-                                        ))}
-                                    </div>
+                                    <Controller
+                                        name="location"
+                                        control={control}
+                                        rules={{ required: 'Please select a location' }}
+                                        render={({ field }) => (
+                                            <LocationDropdown
+                                                locations={locations}
+                                                selectedLocation={field.value}
+                                                onChange={(id) => field.onChange(id)}
+                                                disabled={isFormDisabled || !selectedClass || !selectedPlan || !selectedInstructor}
+                                                error={errors.location?.message}
+                                                selectedInstructor={instructors.find(instructor => instructor.id === selectedInstructor)?.name || ''}
+                                            />
+                                        )}
+                                    />
                                 </div>
 
                                 {selectedLocation && selectedInstructor && selectedPlan && (
@@ -1063,7 +1061,7 @@ const BookingForm = () => {
                                     {/* Sección de Método de Pago - Mostrar solo si hay fecha/hora seleccionada */}
                                     {selectedDateTime && hasValidTime(selectedDateTime) && !timeSlotError && !validatingTimeSlot && (
                                         <div className="mb-8 mt-6 border p-6 rounded-md bg-white">
-                                            <h3 className="text-xl font-semibold mb-6">Payment Methods</h3>
+                                            <h3 className="text-xl font-semibold">Payment Methods</h3>
                                             
                                             <div className="space-y-4">
                                                 <div className="flex items-center space-x-3">
