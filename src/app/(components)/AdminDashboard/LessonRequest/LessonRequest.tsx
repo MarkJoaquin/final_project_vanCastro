@@ -166,12 +166,18 @@ export default function LessonRequests() {
     // Function to handle accepting a booking request
     const handleAcceptRequest = async (requestId: string) => {
         // Setup confirmación
-        const request = lessonRequests.find(req => req.id === requestId);
+        const request = lessonRequests.find((req: LessonRequest) => req.id === requestId);
         const studentName = request?.student.name || 'the student';
         
-        setConfirmTitle(`Accept Lesson Request?`);
-        setConfirmDescription(`Are you sure you want to accept the lesson request from ${studentName}?`);
-        setConfirmButtonText("Accept");
+        if (request?.lessonStatus === "AWAITING_PAYMENT") {
+            setConfirmTitle(`Confirm Lesson Payment?`);
+            setConfirmDescription(`Are you sure you want to confirm the payment for the lesson from ${studentName}? This will create the lesson in the system.`);
+            setConfirmButtonText("Confirm Lesson");
+        } else {
+            setConfirmTitle(`Accept Lesson Request?`);
+            setConfirmDescription(`Are you sure you want to accept the lesson request from ${studentName}?`);
+            setConfirmButtonText("Accept");
+        }
         
         // Preparar acción que se ejecutará si el usuario confirma
         setConfirmAction(() => async () => {
@@ -222,11 +228,14 @@ export default function LessonRequests() {
                 }
                 
                 // Refrescar la lista de solicitudes para que esta ya no aparezca
-                const updatedRequests = lessonRequests.filter(req => req.id !== requestId);
-                setLessonRequests(updatedRequests);
+                setLessonRequests((prevRequests: LessonRequest[]) => 
+                    prevRequests.filter((req: LessonRequest) => req.id !== requestId)
+                );
                 
-                toast.success("Booking request accepted!", {
-                    description: "The lesson has been confirmed and a notification email has been sent to the student.",
+                const actionText = request?.lessonStatus === "AWAITING_PAYMENT" ? "confirmed" : "accepted";
+                
+                toast.success(`Booking request ${actionText}!`, {
+                    description: `The lesson has been ${actionText} and a notification email has been sent to the student.`,
                     duration: 4000
                 });
             } catch (error) {
@@ -247,13 +256,19 @@ export default function LessonRequests() {
     // Function to handle declining a booking request
     const handleDeclineRequest = async (requestId: string) => {
         // Buscar los detalles de la solicitud para mostrarlos en la confirmación
-        const requestDetails = lessonRequests.find(req => req.id === requestId);
+        const requestDetails = lessonRequests.find((req: LessonRequest) => req.id === requestId);
         const studentName = requestDetails?.student.name || 'this student';
         
-        // Setup confirmación
-        setConfirmTitle(`Decline Lesson Request?`);
-        setConfirmDescription(`Are you sure you want to decline the lesson request from ${studentName}? This action cannot be undone.`);
-        setConfirmButtonText("Decline");
+        // Setup confirmación según el estado de la solicitud
+        if (requestDetails?.lessonStatus === "AWAITING_PAYMENT") {
+            setConfirmTitle(`Cancel Payment Request?`);
+            setConfirmDescription(`Are you sure you want to cancel the payment request for ${studentName}? This will return the lesson to REJECTED status.`);
+            setConfirmButtonText("Cancel Payment");
+        } else {
+            setConfirmTitle(`Decline Lesson Request?`);
+            setConfirmDescription(`Are you sure you want to decline the lesson request from ${studentName}? This action cannot be undone.`);
+            setConfirmButtonText("Decline");
+        }
         
         // Preparar acción que se ejecutará si el usuario confirma
         setConfirmAction(() => async () => {
@@ -296,13 +311,14 @@ export default function LessonRequests() {
                 }
                 
                 // Update the local state with the updated request
-                setLessonRequests(prevRequests => 
-                    prevRequests.map(req => 
-                        req.id === requestId ? { ...req, lessonStatus: "DECLINED" } : req
-                    )
+                setLessonRequests((prevRequests: LessonRequest[]) => 
+                    prevRequests.filter((req: LessonRequest) => req.id !== requestId)
                 );
 
-                toast.success("Booking request declined successfully", {
+                // Mensaje personalizado según el estado que tenía la solicitud
+                const actionText = requestDetails?.lessonStatus === "AWAITING_PAYMENT" ? "cancelled" : "declined";
+                
+                toast.success(`Booking request ${actionText} successfully`, {
                     description: "A notification email has been sent to the student.",
                     duration: 4000
                 });
@@ -350,13 +366,13 @@ export default function LessonRequests() {
                 }
 
                 // Actualizar el estado local para reflejar el cambio a AWAITING_PAYMENT
-                setLessonRequests(prevRequests => 
-                    prevRequests.map(req => 
+                setLessonRequests((prevRequests: LessonRequest[]) => 
+                    prevRequests.map((req: LessonRequest) => 
                         req.id === requestId ? { ...req, lessonStatus: "AWAITING_PAYMENT" } : req
                     )
                 );
 
-                const request = lessonRequests.find(req => req.id === requestId);
+                const request = lessonRequests.find((req: LessonRequest) => req.id === requestId);
                 const studentName = request?.student.name || 'the student';
                 
                 toast.success(`Invoice sent successfully!`, {
@@ -506,7 +522,7 @@ export default function LessonRequests() {
                                             {isLoading ? "Processing..." : (
                                                 <>
                                                     <CheckCircle className="mr-2 h-4 w-4" />
-                                                    Accept
+                                                    {request.lessonStatus === "AWAITING_PAYMENT" ? "Confirm Lesson" : "Accept"}
                                                 </>
                                             )}
                                         </Button>

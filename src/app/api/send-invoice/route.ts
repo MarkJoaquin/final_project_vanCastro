@@ -90,7 +90,7 @@ export async function POST(req: Request) {
       subject: `Your Lesson Invoice - ${lessonRequest.trackingNumber} - VanCastro Driving School`,
       attachments: [
         {
-          filename: `Contrato-${lessonRequest.trackingNumber}.pdf`,
+          filename: `Contract-${lessonRequest.trackingNumber}.pdf`,
           content: pdfBase64Content
         }
       ],

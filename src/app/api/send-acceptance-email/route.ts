@@ -178,7 +178,7 @@ export async function POST(req: Request) {
               
               <p>We look forward to seeing you!</p>
               
-              <a href="#" class="button">View Your Schedule</a>
+              <a href="#" class="button">Track Your Lesson</a>
             </div>
             
             <div class="footer">
