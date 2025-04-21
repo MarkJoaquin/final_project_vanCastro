@@ -200,6 +200,36 @@ export async function POST(request: NextRequest) {
       });
     }
 
+    // Enviar correo de confirmación al estudiante
+    try {
+      await fetch(`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/send-booking-confirmation-email`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ requestId: lessonRequest.id }),
+      });
+      console.log('Booking confirmation email sent to student');
+    } catch (emailError) {
+      console.error('Error sending booking confirmation email:', emailError);
+      // No interrumpimos el flujo si falla el envío del correo
+    }
+
+    // Enviar notificación al instructor
+    try {
+      await fetch(`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/send-instructor-notification-email`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ requestId: lessonRequest.id }),
+      });
+      console.log('Notification email sent to instructor');
+    } catch (emailError) {
+      console.error('Error sending instructor notification email:', emailError);
+      // No interrumpimos el flujo si falla el envío del correo
+    }
+
     return NextResponse.json({
       success: true,
       message: 'Solicitud de lección creada exitosamente',
