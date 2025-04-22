@@ -1,9 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
-import { writeFile } from 'fs/promises';
-import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
-import * as fs from 'fs';
 
 const prisma = new PrismaClient();
 
@@ -33,43 +30,41 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Convertir el archivo a un ArrayBuffer y luego a Buffer
+    // Convertir el archivo a un ArrayBuffer y luego a Buffer para almacenar en base64
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
-
-    // Generar un nombre único para el archivo
-    const fileName = `${uuidv4()}-${file.name.replace(/\s+/g, '_')}`;
     
-    // Crear la ruta donde se guardará el archivo
-    // En una implementación real, probablemente usarías un servicio como S3, Cloudinary, etc.
-    const uploadsDir = path.join(process.cwd(), 'public', 'uploads');
-    const filePath = path.join(uploadsDir, fileName);
+    // Convertir a base64 para almacenar en la base de datos
+    const base64Image = buffer.toString('base64');
     
-    // Asegurarse de que el directorio existe
-    if (!fs.existsSync(uploadsDir)) {
-      fs.mkdirSync(uploadsDir, { recursive: true });
+    // Generar un ID único para la imagen
+    const imageId = uuidv4();
+    
+    // Construir una URL de datos (data URL) para la imagen
+    const fileType = file.type || 'image/jpeg';
+    const fileUrl = `data:${fileType};base64,${base64Image}`;
+    
+    try {
+      // Actualizar el estudiante con la URL de datos de la imagen
+      const updatedStudent = await prisma.student.upsert({
+        where: { email },
+        update: { 
+          learnerPermitUrl: fileUrl 
+        },
+        create: {
+          email,
+          name: email.split('@')[0], // Nombre temporal hasta que se complete el formulario
+          phone: '',
+          learnerPermitUrl: fileUrl
+        }
+      });
+      
+      console.log(`Updated student with email ${email} with learner permit image`);
+    } catch (dbError) {
+      console.error('Database error while updating student:', dbError);
+      // Continuamos aunque haya error en la BD, ya que el endpoint principal
+      // también intentará actualizar el estudiante
     }
-
-    // Guardar el archivo
-    await writeFile(filePath, buffer);
-    
-    // URL pública del archivo
-    const fileUrl = `/uploads/${fileName}`;
-    
-    // En lugar de buscar y actualizar el estudiante aquí, simplemente retornamos la URL
-    // El endpoint principal de registro (/api/lessons/request) se encargará de crear o actualizar
-    // el estudiante con todos sus datos, incluyendo esta URL
-    
-    // Solo como registro, verificamos si ya existe un estudiante con este email
-    const existingStudent = await prisma.student.findUnique({
-      where: { email }
-    });
-    
-    console.log(
-      existingStudent
-        ? `Found existing student with email ${email}`
-        : `No student found with email ${email}, will be created during form submission`
-    );
 
     return NextResponse.json({
       success: true,
