@@ -39,6 +39,19 @@ export async function GET() {
           student: {
             select: {
               name: true,
+              hasLicense: true,
+              learnerPermitUrl: true,
+              licenses: {
+                select: {
+                  licenseNumber: true,
+                  licenseType: true,
+                  expirationDate: true,
+                },
+                orderBy: {
+                  createdAt: 'desc'
+                },
+                take: 1
+              },
             },
           },
           location: {
@@ -100,7 +113,16 @@ export async function POST (req: Request){
         include: {
             lessons: {
                 include: {
-                    student:true
+                    student: {
+                      include: {
+                        licenses: {
+                          orderBy: {
+                            createdAt: 'desc'
+                          },
+                          take: 1
+                        }
+                      }
+                    }
                 }
             }
         }

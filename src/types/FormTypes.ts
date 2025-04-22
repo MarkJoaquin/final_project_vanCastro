@@ -26,8 +26,7 @@ export type FormData = {
     // Datos personales
     firstName: string;
     lastName: string;
-    birthDate: Date | null;
-    country: string;
+    // birthDate y country eliminados
     phone: string;
     email: string;
     
@@ -37,9 +36,10 @@ export type FormData = {
     licenseType?: string;
     licenseExpiryDate?: Date | null;
     
-    // Información de road test
-    hasBookedRoadTest: 'yes' | 'no' | '';
-    roadTestLocation?: string;
+    // Información de learner permit
+    hasLearnerPermit: 'yes' | 'no' | '';
+    learnerPermitImage?: any;
+    learnerPermitUrl?: string;
     
     // Selección de lección
     licenseClass: string;

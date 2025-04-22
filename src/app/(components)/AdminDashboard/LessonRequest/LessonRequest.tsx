@@ -3,16 +3,14 @@
 import { useEffect, useState } from "react";
 import AdminTemplate from "../Template/AdminTemplate";
 import { useAdminDataContext } from "@/app/(context)/adminContext";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
-import { toast } from "sonner";
+import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
-import { CheckCircle, XCircle, Mail, Calendar } from "lucide-react";
+import { Mail, Check, X, CheckCircle, XCircle, Calendar } from "lucide-react";
+import { toast } from "sonner";
+import ImageViewer from "../../ImageViewer/ImageViewer";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -25,28 +23,67 @@ import {
 } from "@/components/ui/alert-dialog";
 
 interface LessonRequest {
-    id: string;
-    lessonPlan: string;
-    lessonDate: string;
-    lessonLocation: string; 
-    startTime: string;
-    endTime: string;
-    lessonDuration: string;
-    lessonPrice: string;
-    lessonStatus: string; 
-    instructorId: string;
-    trackingNumber: string;
-    createdAt: string;
-    licenseClass?: string;
-    paymentMethod?: string;
-    student: {
-        name: string; 
-        email?: string;
-    };
+  id: string;
+  lessonPlan: string;
+  lessonDate: string;
+  lessonLocation: string;
+  startTime: string;
+  endTime: string;
+  lessonDuration: string;
+  lessonPrice: string;
+  lessonStatus: string;
+  instructorId: string;
+  trackingNumber: string;
+  createdAt: string;
+  licenseClass?: string;
+  paymentMethod?: string;
+  student: {
+    name: string;
+    email?: string;
+    hasLicense?: boolean;
+    learnerPermitUrl?: string;
+    licenses?: {
+      licenseNumber: string;
+      licenseType: string;
+      expirationDate: Date;
+    }[];
+  };
 }
 
 interface Location {
+  id: string;
+  address: string;
+  city: string;
+}
+
+interface LessonRequestData {
+  id: string;
+  trackingNumber: string;
+  instructorId: string;
+  startTime: string;
+  endTime: string;
+  lessonDate: Date;
+  lessonLocation: string;
+  lessonPlan: string;
+  lessonPrice: number;
+  lessonDuration: string;
+  lessonStatus: string;
+  paymentMethod: string | null;
+  licenseClass?: string;
+  createdAt: Date;
+  updatedAt: Date;
+  student: {
     id: string;
+    name: string;
+    email: string | null;
+    hasLicense?: boolean;
+    learnerPermitUrl?: string;
+    licenses?: {
+      licenseNumber: string;
+      licenseType: string;
+      expirationDate: Date;
+    }[];
+  };
     address: string;
     city: string;
 }
@@ -499,6 +536,26 @@ export default function LessonRequests() {
                                     </p>
                                     {request.licenseClass && (
                                         <p><span className="text-gray-600">License Class:</span> {request.licenseClass}</p>
+                                    )}
+                                    
+                                    {/* Student ID Verification Section */}
+                                    <h4 className="font-semibold mt-3 mb-1">Student ID Verification</h4>
+                                    {request.student.learnerPermitUrl ? (
+                                        <div className="mt-2">
+                                            <p><span className="text-gray-600">Learner Permit:</span></p>
+                                            <ImageViewer 
+                                                imageUrl={request.student.learnerPermitUrl} 
+                                                altText="Learner Permit" 
+                                            />
+                                        </div>
+                                    ) : request.student.hasLicense && request.student.licenses && request.student.licenses.length > 0 ? (
+                                        <div className="mt-2">
+                                            <p><span className="text-gray-600">License Number:</span> {request.student.licenses[0].licenseNumber}</p>
+                                            <p><span className="text-gray-600">License Type:</span> {request.student.licenses[0].licenseType}</p>
+                                            <p><span className="text-gray-600">Expiration Date:</span> {new Date(request.student.licenses[0].expirationDate).toLocaleDateString()}</p>
+                                        </div>
+                                    ) : (
+                                        <p><span className="text-gray-600">No ID verification provided</span></p>
                                     )}
                                 </div>
                                 

@@ -1,10 +1,11 @@
 "use client"
 
-import React, { useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { FaMapMarkerAlt } from 'react-icons/fa'
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import ImageViewer from '../../ImageViewer/ImageViewer';
+import { FaMapMarkerAlt, FaIdCard } from 'react-icons/fa'
 
 type FormData = {
   trackingNumber: string
@@ -32,6 +33,13 @@ type BookingData = {
   paymentMethod?: string
   trackingNumber: string
   createdAt: string
+  learnerPermitUrl?: string
+  hasLicense?: boolean
+  licenseInfo?: {
+    licenseNumber: string
+    licenseClass: string
+    expiryDate: string
+  }
 }
 
 type TrackingResponse = {
@@ -204,6 +212,36 @@ const TrackingForm = () => {
                         </a>
                       )}
                     </span>
+
+                    {/* Mostrar información de learner permit o licencia */}
+                    {trackingResult.data?.learnerPermitUrl && (
+                      <>
+                        <span className="text-gray-600 col-span-2 pt-2 mt-2 border-t">Learner Permit:</span>
+                        <div className="col-span-2">
+                          <div className="mt-2" style={{ maxWidth: '300px' }}>
+                            <ImageViewer 
+                              imageUrl={trackingResult.data.learnerPermitUrl} 
+                              altText="Learner Permit" 
+                            />
+                          </div>
+                        </div>
+                      </>
+                    )}
+                    
+                    {/* Mostrar información de licencia si la tiene */}
+                    {trackingResult.data?.hasLicense && trackingResult.data?.licenseInfo && (
+                      <>
+                        {/* <span className="text-gray-600 col-span-2 pt-2 mt-2 border-t">Driver License:</span> */}
+                        <span className="text-gray-600">License Number:</span>
+                        <span>{trackingResult.data.licenseInfo.licenseNumber}</span>
+                        
+                        <span className="text-gray-600">Class:</span>
+                        <span>{trackingResult.data.licenseInfo.licenseClass}</span>
+                        
+                        <span className="text-gray-600">Expiry Date:</span>
+                        <span>{formatDate(trackingResult.data.licenseInfo.expiryDate || '')}</span>
+                      </>
+                    )}
 
                     <span className="text-gray-600">License Class:</span>
                     <span>{trackingResult.data?.licenseClass}</span>
