@@ -83,23 +83,6 @@ export default function AdminSidebar() {
                     </li>
                     <li className={styles.link}>
                         <Link
-                            href="/admin/pending-action"
-                            className={`${styles.activeLink} ${
-                                pathname === "/admin/pending-action" ? styles.active : ""
-                            }`}
-                        >
-                            <Image
-                                src="/sidebar/pending.svg"
-                                alt="Pending Action"
-                                width={20}
-                                height={20}
-                                className={styles.icon}
-                            />
-                            Pending Action
-                        </Link>
-                    </li>
-                    <li className={styles.link}>
-                        <Link
                             href="/admin/lesson"
                             className={`${styles.activeLink} ${
                                 pathname === "/admin/lesson" ? styles.active : ""
