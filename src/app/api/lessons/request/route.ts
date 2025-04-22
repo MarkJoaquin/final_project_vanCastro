@@ -45,12 +45,14 @@ export async function POST(request: NextRequest) {
       name: `${data.firstName} ${data.lastName}`,
       phone: data.phone,
       language: null,
-      // Nuevos campos añadidos al esquema
-      birthDate: data.birthDate && data.birthDate !== '' ? new Date(data.birthDate) : null, // Ahora es opcional
-      country: data.country || null, // Ahora es opcional
+      // Campos birthDate y country eliminados
       hasLicense: data.hasDriverLicense ? data.hasDriverLicense === 'yes' : null, // Ahora es opcional
-      hasRoadTest: data.hasBookedRoadTest ? data.hasBookedRoadTest === 'yes' : null // Ahora es opcional
+      hasRoadTest: data.hasLearnerPermit ? false : null, // Ya no usamos hasBookedRoadTest
+      // Añadir URL del learner permit si existe
+      learnerPermitUrl: data.learnerPermitUrl || null
     };
+    
+    console.log('Student data with learnerPermitUrl:', studentData);
 
     // Asegurarnos de que los campos booleanos tengan valores predeterminados para la creación
     const createData = {
@@ -73,12 +75,12 @@ export async function POST(request: NextRequest) {
           // Mantener el nombre y teléfono actualizados
           name: `${data.firstName} ${data.lastName}`,
           phone: data.phone,
-          // Actualizar los campos nuevos
-          birthDate: studentData.birthDate,
-          country: studentData.country,
+          // Campos birthDate y country eliminados
           // Solo actualizar si hay un valor definido
           ...(studentData.hasLicense !== null && { hasLicense: studentData.hasLicense }),
-          ...(studentData.hasRoadTest !== null && { hasRoadTest: studentData.hasRoadTest })
+          ...(studentData.hasRoadTest !== null && { hasRoadTest: studentData.hasRoadTest }),
+          // Incluir URL del learner permit si existe
+          ...(data.learnerPermitUrl && { learnerPermitUrl: data.learnerPermitUrl })
         }
       });
     }
@@ -200,6 +202,36 @@ export async function POST(request: NextRequest) {
       });
     }
 
+    // Enviar correo de confirmación al estudiante
+    try {
+      await fetch(`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/send-booking-confirmation-email`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ requestId: lessonRequest.id }),
+      });
+      console.log('Booking confirmation email sent to student');
+    } catch (emailError) {
+      console.error('Error sending booking confirmation email:', emailError);
+      // No interrumpimos el flujo si falla el envío del correo
+    }
+
+    // Enviar notificación al instructor
+    try {
+      await fetch(`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/send-instructor-notification-email`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ requestId: lessonRequest.id }),
+      });
+      console.log('Notification email sent to instructor');
+    } catch (emailError) {
+      console.error('Error sending instructor notification email:', emailError);
+      // No interrumpimos el flujo si falla el envío del correo
+    }
+
     return NextResponse.json({
       success: true,
       message: 'Solicitud de lección creada exitosamente',
@@ -243,7 +275,16 @@ export async function GET(request: NextRequest) {
       const lessonRequest = await prisma.lessonsRequest.findFirst({
         where: { trackingNumber },
         include: {
-          student: true, // Incluye información del estudiante
+          student: {
+            include: {
+              licenses: {
+                orderBy: {
+                  createdAt: 'desc'
+                },
+                take: 1
+              }
+            }
+          },
           instructor: true // Incluye información del instructor
         }
       });
@@ -261,7 +302,16 @@ export async function GET(request: NextRequest) {
     // Si no se proporciona trackingNumber, devolver todas las solicitudes
     const lessonRequests = await prisma.lessonsRequest.findMany({
       include: {
-        student: true, // Incluye información del estudiante
+        student: {
+          include: {
+            licenses: {
+              orderBy: {
+                createdAt: 'desc'
+              },
+              take: 1
+            }
+          }
+        },
         instructor: true // Incluye información del instructor
       }
     });

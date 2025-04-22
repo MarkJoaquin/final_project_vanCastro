@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import AddNewLessonModal from "../Modals/AddNewLessonModal";
+import ImageViewer from "../../ImageViewer/ImageViewer";
 
 interface ConfirmedLesson {
   id: string;
@@ -31,6 +32,13 @@ interface ConfirmedLesson {
   paymentMethod?: string;
   student: {
     name: string;
+    hasLicense?: boolean;
+    learnerPermitUrl?: string;
+    licenses?: {
+      licenseNumber: string;
+      licenseType: string;
+      expirationDate: Date;
+    }[];
   };
   location: {
     name: string;
@@ -184,7 +192,7 @@ export default function LessonList() {
     const sections = ["Today", "Tomorrow", "This Week", "Upcoming"];
     
     return (
-      <div className="w-full space-y-6">
+      <div className="w-full">
         {sections.map(section => {
           const lessons = groupedLessons[section];
           
@@ -218,6 +226,26 @@ export default function LessonList() {
                   <p><span className="text-gray-600">Payment Status:</span> {lesson.paymentStatus}</p>
                   {lesson.licenseClass && (
                     <p><span className="text-gray-600">License Class:</span> {lesson.licenseClass}</p>
+                  )}
+                  
+                  {/* Student ID Verification Section */}
+                  <h4 className="font-semibold mt-3 mb-1">Student ID Verification</h4>
+                  {lesson.student.learnerPermitUrl ? (
+                    <div className="mt-2">
+                      <p><span className="text-gray-600">Learner Permit:</span></p>
+                      <ImageViewer 
+                        imageUrl={lesson.student.learnerPermitUrl} 
+                        altText="Learner Permit" 
+                      />
+                    </div>
+                  ) : lesson.student.hasLicense && lesson.student.licenses && lesson.student.licenses.length > 0 ? (
+                    <div className="mt-2">
+                      <p><span className="text-gray-600">License Number:</span> {lesson.student.licenses[0].licenseNumber}</p>
+                      <p><span className="text-gray-600">License Type:</span> {lesson.student.licenses[0].licenseType}</p>
+                      <p><span className="text-gray-600">Expiration Date:</span> {new Date(lesson.student.licenses[0].expirationDate).toLocaleDateString()}</p>
+                    </div>
+                  ) : (
+                    <p><span className="text-gray-600">No ID verification provided</span></p>
                   )}
                 </div>
                 

@@ -39,6 +39,19 @@ export async function GET() {
           student: {
             select: {
               name: true,
+              hasLicense: true,
+              learnerPermitUrl: true,
+              licenses: {
+                select: {
+                  licenseNumber: true,
+                  licenseType: true,
+                  expirationDate: true,
+                },
+                orderBy: {
+                  createdAt: 'desc'
+                },
+                take: 1
+              },
             },
           },
           location: {
@@ -87,3 +100,35 @@ export async function GET() {
     }
   }
 }
+
+export async function POST (req: Request){
+    const {email} = await req.json();
+
+    if(!email){
+        return NextResponse.json({message:"Email is required"},{status:400});
+    }
+
+    const instructor = await prisma.instructor.findUnique({
+        where: {email},
+        include: {
+            lessons: {
+                include: {
+                    student: {
+                      include: {
+                        licenses: {
+                          orderBy: {
+                            createdAt: 'desc'
+                          },
+                          take: 1
+                        }
+                      }
+                    }
+                }
+            }
+        }
+    })
+
+    return NextResponse.json(instructor?.lessons ?? []);
+}
+
+

@@ -76,6 +76,7 @@ const AddNewLessonModal = ({
     message: null
   });
   const [unavailableSlots, setUnavailableSlots] = useState<Date[]>([]);
+  const [formattedSlots, setFormattedSlots] = useState<Array<{date: string, startTime: string, endTime: string, type?: string}>>([]);
   const [availableTimes, setAvailableTimes] = useState<{startTime: string, endTime: string}[]>([]);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
@@ -245,6 +246,7 @@ const AddNewLessonModal = ({
       const fetchUnavailableSlots = async () => {
         try {
           // Use the selected date for unavailable slots
+          console.log('Selected dateeeeeeeeeeeeeeeeeeeee:', selectedDateTime);
           const date = new Date(selectedDateTime);
           date.setHours(0, 0, 0, 0); // Reset time to start of day
           
@@ -256,6 +258,7 @@ const AddNewLessonModal = ({
 
           try {
             // 1. Obtener slots no disponibles por validación de tránsito y otras restricciones
+            console.log(`Fetching unavailable slots: /api/lessons/unavailable?date=${dateStr}&instructorId=${instructorId}&locationId=${selectedLocation}`);
             const unavailableResponse = await fetch(`/api/lessons/unavailable?date=${dateStr}&instructorId=${instructorId}&locationId=${selectedLocation}`);
             
             // 2. Obtener lecciones existentes del instructor para la fecha seleccionada
@@ -265,10 +268,36 @@ const AddNewLessonModal = ({
             
             // Procesar slots no disponibles por validación
             if (unavailableResponse.ok) {
-              const data = await unavailableResponse.json();
+              const lessons = await unavailableResponse.json();
+              console.log('Unavailable API response:', lessons);
               
-              if (data.unavailableTimes && Array.isArray(data.unavailableTimes)) {
-                const validationUnavailableTimes = data.unavailableTimes.map((timeStr: string) => {
+              if (Array.isArray(lessons)) {
+                // La API devuelve un array directo de lecciones/solicitudes
+                const validationUnavailableTimes: Date[] = [];
+                
+                // Crear slots de 15 minutos para cada lección/solicitud
+                lessons.forEach((lesson: any) => {
+                  if (lesson.startTime && lesson.duration) {
+                    const [startHours, startMinutes] = lesson.startTime.split(':').map(Number);
+                    const duration = parseInt(lesson.duration);
+                    
+                    // Calcular el número total de slots de 15 minutos
+                    const numSlots = Math.ceil(duration / 15);
+                    
+                    // Crear un slot para cada intervalo de 15 minutos
+                    for (let i = 0; i < numSlots; i++) {
+                      const time = new Date(date);
+                      time.setHours(startHours, startMinutes + (i * 15), 0, 0);
+                      validationUnavailableTimes.push(time);
+                    }
+                  }
+                });
+                
+                unavailableTimes = [...validationUnavailableTimes];
+                console.log('Created validation unavailable times:', validationUnavailableTimes.length);
+              } else if (lessons.unavailableTimes && Array.isArray(lessons.unavailableTimes)) {
+                // Formato alternativo: objeto con array unavailableTimes
+                const validationUnavailableTimes = lessons.unavailableTimes.map((timeStr: string) => {
                   const [hours, minutes] = timeStr.split(':').map(Number);
                   const time = new Date(date);
                   time.setHours(hours, minutes, 0, 0);
@@ -276,20 +305,39 @@ const AddNewLessonModal = ({
                 });
                 
                 unavailableTimes = [...validationUnavailableTimes];
+                console.log('Created validation unavailable times (from string format):', validationUnavailableTimes.length);
+              } else {
+                console.log('Respuesta con formato inesperado');
               }
             } else {
-              console.log('No data for unavailable slots from validation');
+              console.log('Response not OK for unavailable slots. Status:', unavailableResponse.status);
+              const errorText = await unavailableResponse.text().catch(() => 'Failed to get error text');
+              console.log('Error response:', errorText);
             }
+            
+            // Asegurarse de guardar los datos una sola vez, ya que no podemos leer el cuerpo dos veces
+            let lessonsData = null;
+            let lessonsArray = [];
             
             // Procesar lecciones existentes del instructor
             if (existingLessonsResponse.ok) {
-              const lessonsData = await existingLessonsResponse.json();
+              lessonsData = await existingLessonsResponse.json();
+              console.log('Existing lessons data:', lessonsData);
               
-              if (lessonsData.lessons && Array.isArray(lessonsData.lessons)) {
-                const lessonUnavailableTimes = lessonsData.lessons.flatMap((lesson: any) => {
-                  // Extraer hora de inicio y duración
-                  const startTime = lesson.lessonTime;
-                  const duration = parseInt(lesson.lessonDuration) || 60; // Duración en minutos, por defecto 60
+              // Manejar dos posibles formatos de respuesta:
+              // 1. { lessons: [...] } o 2. Arreglo directo de lecciones
+              lessonsArray = lessonsData.lessons || lessonsData || [];
+              
+              if (Array.isArray(lessonsArray) && lessonsArray.length > 0) {
+                console.log('Processing lessons:', lessonsArray);
+                
+                // PASO 1: Crear slots no disponibles para cada lección
+                const lessonUnavailableTimes = lessonsArray.flatMap((lesson: any) => {
+                  // Extraer hora de inicio y duración (manejar multiples formatos de campo)
+                  const startTime = lesson.startTime || lesson.lessonTime;
+                  const duration = parseInt(lesson.duration || lesson.lessonDuration) || 60; // Duración en minutos, por defecto 60
+                  
+                  console.log(`Processing lesson: ${startTime}, duration: ${duration} mins`);
                   
                   // Crear un array de slots de 15 minutos para toda la duración de la lección
                   const slots: Date[] = [];
@@ -302,26 +350,96 @@ const AddNewLessonModal = ({
                     // Agregar el slot inicial
                     slots.push(new Date(startDate));
                     
-                    // Agregar slots para toda la duración (cada 15 minutos)
+                    // Agregar slots para toda la duración (cada 15 minutos), INCLUYENDO el horario final
                     const numSlots = Math.ceil(duration / 15);
-                    for (let i = 1; i < numSlots; i++) {
+                    console.log(`Creating ${numSlots} slots for this lesson`);
+                    for (let i = 1; i <= numSlots; i++) {
                       const slotTime = new Date(startDate);
                       slotTime.setMinutes(startDate.getMinutes() + (i * 15));
                       slots.push(slotTime);
+                    }
+                    
+                    // Agregar explícitamente el horario de finalización
+                    if (lesson.endTime) {
+                      const [endHours, endMinutes] = lesson.endTime.split(':').map(Number);
+                      const endTime = new Date(date);
+                      endTime.setHours(endHours, endMinutes, 0, 0);
+                      // Añadir solo si no está ya incluido
+                      if (!slots.some(slot => slot.getHours() === endHours && slot.getMinutes() === endMinutes)) {
+                        slots.push(endTime);
+                        console.log(`Explicitly added end time slot: ${endHours}:${endMinutes}`);
+                      }
                     }
                   }
                   
                   return slots;
                 });
                 
+                console.log(`Created ${lessonUnavailableTimes.length} unavailable slots from lessons`);
+                
                 // Combinar con los slots no disponibles por validación
                 unavailableTimes = [...unavailableTimes, ...lessonUnavailableTimes];
+                
+                // PASO 2: Agregar explícitamente todos los tiempos finales como no disponibles
+                const endTimes: Date[] = [];
+                
+                // Procesar todos los endTimes explícitamente de los datos que ya tenemos
+                lessonsArray.forEach(lesson => {
+                  if (lesson.endTime) {
+                    const [endHours, endMinutes] = lesson.endTime.split(':').map(Number);
+                    const endTimeDate = new Date(date);
+                    endTimeDate.setHours(endHours, endMinutes, 0, 0);
+                    endTimes.push(endTimeDate);
+                    console.log(`Añadido endTime explícito: ${endHours}:${endMinutes}`);
+                  }
+                });
+                
+                // Agregar estos endTimes a los slots no disponibles
+                unavailableTimes = [...unavailableTimes, ...endTimes];
+              } else {
+                console.log('No lessons array found or it\'s empty');
               }
             } else {
-              console.log('No data for existing lessons');
+              console.log('Response not OK for existing lessons. Status:', existingLessonsResponse.status);
+              const errorText = await existingLessonsResponse.text().catch(() => 'Failed to get error text');
+              console.log('Error response:', errorText);
             }
             
-            // Eliminar duplicados (si hay)
+            // Convertir nuestros datos de lecciones a un formato similar al de Form.tsx
+            // En Form.tsx, cada slot no disponible tiene fecha, startTime y endTime
+            const formattedUnavailableSlots = [];
+            
+            // 1. Agregar lecciones existentes como slots no disponibles
+            if (Array.isArray(lessonsArray) && lessonsArray.length > 0) {
+              for (const lesson of lessonsArray) {
+                if (lesson.startTime && (lesson.duration || lesson.endTime)) {
+                  const startTime = lesson.startTime;
+                  const endTime = lesson.endTime || (() => {
+                    // Calcular el endTime basado en startTime y duration si no está disponible
+                    const [hours, minutes] = startTime.split(':').map(Number);
+                    const duration = parseInt(lesson.duration || '60');
+                    const endMinutes = (minutes + duration) % 60;
+                    const endHours = hours + Math.floor((minutes + duration) / 60);
+                    return `${endHours.toString().padStart(2, '0')}:${endMinutes.toString().padStart(2, '0')}`;
+                  })();
+                  
+                  formattedUnavailableSlots.push({
+                    date: date.toISOString(),
+                    startTime,
+                    endTime,
+                    type: lesson.type || 'lesson'
+                  });
+                  
+                  console.log(`Agregado slot no disponible: ${startTime}-${endTime}`);
+                }
+              }
+            }
+            
+            // 2. Para backward compatibility, también agregamos los unavailableTimes individuales
+            // Esto es un respaldo en caso de que haya slots individuales que no estén cubiertos por lecciones completas
+            setFormattedSlots(formattedUnavailableSlots);
+            
+            // También mantenemos los slots individuales para compatibilidad
             const uniqueUnavailableTimes = unavailableTimes.filter((time, index, self) => 
               index === self.findIndex(t => 
                 t.getHours() === time.getHours() && t.getMinutes() === time.getMinutes()
@@ -329,7 +447,8 @@ const AddNewLessonModal = ({
             );
             
             setUnavailableSlots(uniqueUnavailableTimes);
-            console.log('Total unavailable times loaded:', uniqueUnavailableTimes.length, uniqueUnavailableTimes);
+            console.log('Total unavailable slots (formatted):', formattedUnavailableSlots.length);
+            console.log('Total unavailable times (individual):', uniqueUnavailableTimes.length);
             
           } catch (apiError) {
             console.error('Error with API calls:', apiError);
@@ -388,16 +507,15 @@ const AddNewLessonModal = ({
     return intervals;
   };
 
-  // Filter function for the DatePicker
+  // Filter function for the DatePicker - Implementación similar a la de Form.tsx
   const filterTime = (time: Date) => {
     const hours = time.getHours();
     const minutes = time.getMinutes();
-    const timeString = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
     
     // Solo permitir intervalos de 15 minutos (0, 15, 30, 45)
     if (minutes % 15 !== 0) return false;
     
-    // Verificar si está dentro del horario de trabajo del instructor
+    // Verificar si está dentro del horario de trabajo del instructor - PASO 1
     const timeInMinutes = hours * 60 + minutes;
     const isWithinWorkingHours = availableTimes.some(slot => {
       const [startHour, startMinute] = slot.startTime.split(':').map(Number);
@@ -409,27 +527,51 @@ const AddNewLessonModal = ({
       return timeInMinutes >= startInMinutes && timeInMinutes <= endInMinutes;
     });
     
-    if (!isWithinWorkingHours) {
-      // console.log(`Time ${timeString} is outside working hours`);
+    if (!isWithinWorkingHours) return false;
+    
+    // PASO 2A: Verificar contra los slots de lecciones completas (al estilo Form.tsx)
+    // Esta es la manera más robusta que garantiza que los tiempos de finalización también sean bloqueados
+    const datePickerDate = selectedDate ? selectedDate.toISOString().split('T')[0] : '';
+    
+    const isUnavailable = formattedSlots.some(slot => {
+      // Asegurarnos de que el slot tenga una fecha válida
+      if (!slot.date) return false;
+      
+      // Convertir la fecha del slot a formato YYYY-MM-DD
+      const slotDate = new Date(slot.date).toISOString().split('T')[0];
+      
+      // Solo considerar slots de la fecha seleccionada en el DatePicker
+      if (slotDate !== datePickerDate) return false;
+      
+      // Verificar que tenga tiempos de inicio y fin
+      if (!slot.startTime || !slot.endTime) return false;
+      
+      const [startHour, startMinute] = slot.startTime.split(':').map(Number);
+      const [endHour, endMinute] = slot.endTime.split(':').map(Number);
+      
+      const slotStartInMinutes = startHour * 60 + startMinute;
+      const slotEndInMinutes = endHour * 60 + endMinute;
+      
+      // Bloquear completamente el slot, incluyendo el tiempo de finalización
+      return timeInMinutes >= slotStartInMinutes && timeInMinutes <= slotEndInMinutes;
+    });
+    
+    if (isUnavailable) {
+      // console.log(`Hora ${timeString} bloqueada por coincidencia con rango de lección`);
       return false;
     }
     
-    // MÉTODO ROBUSTO: Comparar strings de hora en lugar de objetos Date
-    // Esto evita problemas con diferentes instancias de objetos Date
-    const isUnavailable = unavailableSlots.some(unavailable => {
-      const unavailableHour = unavailable.getHours();
-      const unavailableMinute = unavailable.getMinutes();
-      const unavailableString = `${unavailableHour.toString().padStart(2, '0')}:${unavailableMinute.toString().padStart(2, '0')}`;
-      
-      const match = unavailableHour === hours && unavailableMinute === minutes;
-      if (match) {
-        console.log(`Found unavailable match for ${timeString} (${unavailableString})`);
+    // PASO 2B: Verificación adicional contra slots individuales (respaldo)
+    for (const unavailable of unavailableSlots) {
+      if (unavailable.getHours() === hours && unavailable.getMinutes() === minutes) {
+        // Esta hora está ocupada - la encontramos en la lista de no disponibles
+        // console.log(`Hora ${timeString} bloqueada por coincidencia exacta`);
+        return false;
       }
-      return match;
-    });
+    }
     
-    // Solo devolver true si está dentro del horario de trabajo Y no está en la lista de slots no disponibles
-    return !isUnavailable;
+    // Si llegamos aquí, la hora está disponible
+    return true;
   };
 
   // Check if a date is a weekend
@@ -699,7 +841,6 @@ const AddNewLessonModal = ({
                         // Personalizar la navegación del calendario
                         previousMonthButtonLabel="‹"
                         nextMonthButtonLabel="›"
-                        // Usar el formato de mes y año predeterminado
                         monthsShown={1}
                       />
                     </div>
@@ -719,8 +860,10 @@ const AddNewLessonModal = ({
                               <div className="h-80 overflow-y-auto pr-2 border rounded-md p-4 bg-white shadow-sm">
                                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                                   {getTimeIntervals().map((time, index) => {
+                                    // Usar la función filterTime para determinar disponibilidad
                                     const isAvailable = filterTime(time);
                                     const timeString = `${time.getHours().toString().padStart(2, '0')}:${time.getMinutes().toString().padStart(2, '0')}`;
+                                    
                                     const isSelected = field.value && 
                                       field.value.getHours() === time.getHours() && 
                                       field.value.getMinutes() === time.getMinutes();

@@ -79,14 +79,7 @@ const ConfirmationModal = ({
                 <span className="w-6 mr-2">👤</span>
                 <span>{formData.firstName} {formData.lastName || 'Complete this field'}</span>
               </div>
-              <div className="flex items-center">
-                <span className="w-6 mr-2">🎂</span>
-                <span>{formatDate(formData.birthDate) || 'Complete this field'}</span>
-              </div>
-              <div className="flex items-center">
-                <span className="w-6 mr-2">🌎</span>
-                <span>{formData.country || 'Complete this field'}</span>
-              </div>
+
               <div className="flex items-center">
                 <span className="w-6 mr-2">📞</span>
                 <span>{formData.phone || 'Complete this field'}</span>
@@ -137,7 +130,8 @@ const ConfirmationModal = ({
                 <span className="w-6 mr-2">🕒</span>
                 <span>
                   {formData.dateTime ? formatTime(formData.dateTime) : 'N/A'} - 
-                  {selectedPlan ? ` ${selectedPlan.time} mins` : 'N/A'}
+                  {formData.dateTime && selectedPlan ? formatTime(new Date(formData.dateTime.getTime() + selectedPlan.time * 60000)) : 'N/A'}
+                  <span className="text-sm text-gray-600 ml-1">({selectedPlan ? `${selectedPlan.time} mins` : 'N/A'})</span>
                 </span>
               </div>
               <div className="flex items-center">

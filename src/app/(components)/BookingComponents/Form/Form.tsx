@@ -12,9 +12,12 @@ import Image from 'next/image'
 import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css"
 import "./calendar-styles.css" // Importar estilos personalizados del calendario
-import { countries } from '@/data/countries'
+// import { countries } from '@/data/countries'
 import { icbcLocations } from '@/data/icbcLocations'
 import ConfirmationModal from '../ConfirmationModal/ConfirmationModal'
+import LocationDropdown from '../LocationDropdown/LocationDropdown'
+import { FaMapMarkerAlt } from 'react-icons/fa'
+// Eliminamos la importación de InputMask que causa problemas
 
 const BookingForm = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -33,19 +36,73 @@ const BookingForm = () => {
         reset();
     };
 
+    // Función para subir la imagen del learner permit
+    const uploadLearnerPermitImage = async (email: string): Promise<string | null> => {
+        if (!learnerPermitImage) return null;
+        
+        try {
+            const imageFormData = new FormData();
+            imageFormData.append('file', learnerPermitImage);
+            imageFormData.append('email', email);
+            
+            const response = await fetch('/api/upload-image', {
+                method: 'POST',
+                body: imageFormData,
+            });
+            
+            if (!response.ok) {
+                throw new Error('Error al subir la imagen');
+            }
+            
+            const result = await response.json();
+            console.log('Imagen subida exitosamente:', result);
+            
+            return result.fileUrl;
+        } catch (error) {
+            console.error('Error al subir la imagen:', error);
+            throw error;
+        }
+    };
+
     const onSubmit = async (data: FormData) => {
         setIsSubmitting(true);
         setSubmitError(null);
 
         try {
             console.log('Form submitted with data:', data);
+            
+            let formData = data;
+            let permitUrl = null;
+            
+            // Si el usuario no tiene licencia pero tiene learner permit, subir la imagen
+            if (hasDriverLicense === 'no' && hasLearnerPermit === 'yes' && learnerPermitImage) {
+                try {
+                    permitUrl = await uploadLearnerPermitImage(data.email);
+                    setLearnerPermitImageUrl(permitUrl);
+                    
+                    // Incluir la URL de la imagen en los datos del formulario
+                    // y también en el campo learnerPermitUrl para que el backend
+                    // pueda guardarlo en el modelo Student
+                    formData = {
+                        ...data,
+                        learnerPermitImage: permitUrl,
+                        // Verificar que permitUrl no sea null antes de asignarlo
+                        ...(permitUrl ? { learnerPermitUrl: permitUrl } : {})
+                    };
+                } catch (error) {
+                    console.error('Error al subir la imagen del learner permit:', error);
+                    setSubmitError('Error al subir la imagen. Por favor intente nuevamente.');
+                    setIsSubmitting(false);
+                    return;
+                }
+            }
 
             const response = await fetch('/api/lessons/request', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(data),
+                body: JSON.stringify(formData),
             });
 
             const result = await response.json();
@@ -54,6 +111,8 @@ const BookingForm = () => {
                 throw new Error(result.error || 'Error al enviar la solicitud');
             }
 
+            // Capture the selected location object before resetting the form
+            setBookingLocation(locations.find(loc => loc.id === data.location) || null);
             setSubmitSuccess(true);
             setTrackingNumber(result.trackingNumber);
             console.log('Solicitud creada exitosamente:', result);
@@ -75,8 +134,7 @@ const BookingForm = () => {
             // Datos personales
             firstName: '',
             lastName: '',
-            birthDate: null,
-            country: '',
+            // Removed birthDate and country fields
             phone: '',
             email: '',
 
@@ -86,9 +144,9 @@ const BookingForm = () => {
             licenseType: '',
             licenseExpiryDate: null,
 
-            // Información de road test
-            hasBookedRoadTest: '',
-            roadTestLocation: '',
+            // Información de learner permit
+            hasLearnerPermit: '',
+            learnerPermitImage: '',
 
             // Selección de lección
             licenseClass: '',
@@ -114,6 +172,7 @@ const BookingForm = () => {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
     const [selectedDate, setSelectedDate] = useState<Date | null>(null)
+    const [bookingLocation, setBookingLocation] = useState<Location | null>(null)
 
     // Campos observados para los detalles de la lección
     const selectedClass = watch('licenseClass')
@@ -125,11 +184,15 @@ const BookingForm = () => {
 
     // Campos observados para licencia y road test
     const hasDriverLicense = watch('hasDriverLicense')
-    const hasBookedRoadTest = watch('hasBookedRoadTest')
+    const hasLearnerPermit = watch('hasLearnerPermit')
     const [showLearningPermitDialog, setShowLearningPermitDialog] = useState(false)
     const EXPIRATION_TIME = 24 * 60 * 60 * 1000 // 24 hours in milliseconds
     const [learningPermitStatus, setLearningPermitStatus] = useLocalStorageWithExpiration('learningPermitAnswer', EXPIRATION_TIME)
     const [isFormDisabled, setIsFormDisabled] = useState(false)
+    const [learnerPermitImage, setLearnerPermitImage] = useState<File | null>(null)
+    const [learnerPermitImageUrl, setLearnerPermitImageUrl] = useState<string | null>(null)
+
+    // Removed currentLocation derived from watch; using bookingLocation state instead
 
     // Fetch classes, instructors and locations from API
     useEffect(() => {
@@ -448,11 +511,20 @@ const BookingForm = () => {
         }
     }
 
-    // Handle Learning Permit status change
+    // Manejar el cambio de estado del Learner Permit
     const handleChangePermitStatus = () => {
         setLearningPermitStatus(true)
         setIsFormDisabled(false)
     }
+    
+    // Deshabilitar formulario si el usuario no tiene licencia ni learner permit
+    useEffect(() => {
+        if (hasDriverLicense === 'no' && hasLearnerPermit === 'no') {
+            setIsFormDisabled(true);
+        } else if (hasDriverLicense === 'yes' || hasLearnerPermit === 'yes') {
+            setIsFormDisabled(false);
+        }
+    }, [hasDriverLicense, hasLearnerPermit])
 
     if (loading) return <div className="text-center">Loading...</div>
     if (error) return <div className="text-center text-red-500">{error}</div>
@@ -468,6 +540,17 @@ const BookingForm = () => {
                     <div className="bg-white p-4 rounded-md inline-block mb-4">
                         <p className="text-sm text-gray-600">Tracking Number:</p>
                         <p className="text-2xl font-mono font-bold tracking-wider">{trackingNumber}</p>
+                    </div>
+                    <div className="flex items-center gap-2 mb-4 justify-center">
+                        <FaMapMarkerAlt className="text-blue-500" />
+                        <a
+                            href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${bookingLocation?.address}, ${bookingLocation?.city}, ${bookingLocation?.zip}`)}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-blue-500 hover:underline"
+                        >
+                            {`${bookingLocation?.address}, ${bookingLocation?.city}, ${bookingLocation?.zip}`}
+                        </a>
                     </div>
                     <p className="text-sm text-gray-600 mb-6">
                         Save this number to check the status of your reservation. We will send you an email with the details.
@@ -501,7 +584,7 @@ const BookingForm = () => {
                                         type="text"
                                         id="firstName"
                                         {...register('firstName', { required: 'First name is required' })}
-                                        className="w-full p-2 border rounded-md"
+                                        className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)]"
                                         disabled={isFormDisabled}
                                     />
                                     {errors.firstName && (
@@ -518,64 +601,11 @@ const BookingForm = () => {
                                         type="text"
                                         id="lastName"
                                         {...register('lastName', { required: 'Last name is required' })}
-                                        className="w-full p-2 border rounded-md"
+                                        className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)]"
                                         disabled={isFormDisabled}
                                     />
                                     {errors.lastName && (
                                         <p className="text-sm text-red-500 mt-1">{errors.lastName.message}</p>
-                                    )}
-                                </div>
-
-                                {/* Fecha de nacimiento */}
-                                <div>
-                                    <label htmlFor="birthDate" className="block text-sm font-medium mb-2">
-                                        Date of Birth
-                                    </label>
-                                    <Controller
-                                        control={control}
-                                        name="birthDate"
-                                        rules={{ required: 'Date of birth is required' }}
-                                        render={({ field }) => (
-                                            <DatePicker
-                                                id="birthDate"
-                                                selected={field.value}
-                                                onChange={(date) => field.onChange(date)}
-                                                dateFormat="MMMM d, yyyy"
-                                                showMonthDropdown
-                                                showYearDropdown
-                                                dropdownMode="select"
-                                                className="w-full p-2 border rounded-md"
-                                                placeholderText="Select your date of birth"
-                                                maxDate={new Date(new Date().setFullYear(new Date().getFullYear() - 14))}
-                                                disabled={isFormDisabled}
-                                            />
-                                        )}
-                                    />
-                                    {errors.birthDate && (
-                                        <p className="text-sm text-red-500 mt-1">{errors.birthDate.message}</p>
-                                    )}
-                                </div>
-
-                                {/* País */}
-                                <div>
-                                    <label htmlFor="country" className="block text-sm font-medium mb-2">
-                                        Where are you from?
-                                    </label>
-                                    <select
-                                        id="country"
-                                        {...register('country', { required: 'Country is required' })}
-                                        className="w-full p-2 border rounded-md"
-                                        disabled={isFormDisabled}
-                                    >
-                                        <option value="">Select your country</option>
-                                        {countries.map((country) => (
-                                            <option key={country} value={country}>
-                                                {country}
-                                            </option>
-                                        ))}
-                                    </select>
-                                    {errors.country && (
-                                        <p className="text-sm text-red-500 mt-1">{errors.country.message}</p>
                                     )}
                                 </div>
 
@@ -584,19 +614,75 @@ const BookingForm = () => {
                                     <label htmlFor="phone" className="block text-sm font-medium mb-2">
                                         Phone Number
                                     </label>
-                                    <input
-                                        type="tel"
-                                        id="phone"
-                                        {...register('phone', {
+                                    <Controller
+                                        name="phone"
+                                        control={control}
+                                        rules={{
                                             required: 'Phone number is required',
-                                            pattern: {
-                                                value: /^[0-9+\-\s()]*$/,
-                                                message: 'Please enter a valid phone number'
+                                            validate: value => {
+                                                // Verificar que el número tenga 10 dígitos (formato canadiense)
+                                                const digitsOnly = value.replace(/\D/g, '');
+                                                return digitsOnly.length === 10 || 'Canadian phone numbers must have exactly 10 digits';
                                             }
-                                        })}
-                                        className="w-full p-2 border rounded-md"
-                                        placeholder="+1 (123) 456-7890"
-                                        disabled={isFormDisabled}
+                                        }}
+                                        render={({ field }) => (
+                                            <input
+                                                type="tel"
+                                                id="phone"
+                                                inputMode="numeric"
+                                                {...field}
+                                                value={field.value}
+                                                onChange={(e) => {
+                                                    // Obtener solo los dígitos
+                                                    let digits = e.target.value.replace(/\D/g, '');
+                                                    
+                                                    // Limitar a 10 dígitos
+                                                    digits = digits.substring(0, 10);
+                                                    
+                                                    // Formatear como número canadiense
+                                                    let formattedValue = '';
+                                                    if (digits.length > 0) {
+                                                        formattedValue = '(' + digits.substring(0, Math.min(3, digits.length));
+                                                        if (digits.length > 3) {
+                                                            formattedValue += ') ' + digits.substring(3, Math.min(6, digits.length));
+                                                            if (digits.length > 6) {
+                                                                formattedValue += '-' + digits.substring(6, 10);
+                                                            }
+                                                        }
+                                                    }
+                                                    
+                                                    // Actualizar el valor en el formulario
+                                                    field.onChange(formattedValue);
+                                                }}
+                                                onKeyDown={e => {
+                                                    // Permitir teclas de navegación y borrado
+                                                    if (!/[0-9]/.test(e.key) && !['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(e.key)) {
+                                                        e.preventDefault();
+                                                    }
+                                                }}
+                                                onPaste={e => {
+                                                    e.preventDefault();
+                                                    const paste = e.clipboardData.getData('Text').replace(/\D/g, '').substring(0, 10);
+                                                    
+                                                    // Formatear el texto pegado
+                                                    let formattedValue = '';
+                                                    if (paste.length > 0) {
+                                                        formattedValue = '(' + paste.substring(0, Math.min(3, paste.length));
+                                                        if (paste.length > 3) {
+                                                            formattedValue += ') ' + paste.substring(3, Math.min(6, paste.length));
+                                                            if (paste.length > 6) {
+                                                                formattedValue += '-' + paste.substring(6, 10);
+                                                            }
+                                                        }
+                                                    }
+                                                    
+                                                    field.onChange(formattedValue);
+                                                }}
+                                                className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)]"
+                                                placeholder="(604) 123-4567"
+                                                disabled={isFormDisabled}
+                                            />
+                                        )}
                                     />
                                     {errors.phone && (
                                         <p className="text-sm text-red-500 mt-1">{errors.phone.message}</p>
@@ -618,7 +704,7 @@ const BookingForm = () => {
                                                 message: 'Please enter a valid email address'
                                             }
                                         })}
-                                        className="w-full p-2 border rounded-md"
+                                        className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)]"
                                         disabled={isFormDisabled}
                                     />
                                     {errors.email && (
@@ -667,14 +753,47 @@ const BookingForm = () => {
                                         <label htmlFor="licenseNumber" className="block text-sm font-medium mb-2">
                                             License Number
                                         </label>
-                                        <input
-                                            type="text"
-                                            id="licenseNumber"
-                                            {...register('licenseNumber', {
-                                                required: 'License number is required'
-                                            })}
-                                            className="w-full p-2 border rounded-md"
-                                            disabled={isFormDisabled}
+                                        <Controller
+                                            name="licenseNumber"
+                                            control={control}
+                                            rules={{
+                                                required: 'License number is required',
+                                                pattern: {
+                                                    // Patrón para números de licencia canadienses (alfanuméricos)
+                                                    value: /^[A-Za-z0-9-]{1,15}$/,
+                                                    message: 'Please enter a valid Canadian license number'
+                                                }
+                                            }}
+                                            render={({ field }) => (
+                                                <input
+                                                    type="text"
+                                                    id="licenseNumber"
+                                                    {...field}
+                                                    onChange={(e) => {
+                                                        // Convertir a mayúsculas y limitar a 15 caracteres
+                                                        const value = e.target.value.toUpperCase().slice(0, 15);
+                                                        field.onChange(value);
+                                                    }}
+                                                    onKeyDown={e => {
+                                                        // Permitir letras, números, guión y teclas de navegación
+                                                        const validKeys = /[A-Za-z0-9-]/.test(e.key);
+                                                        const navigationKeys = ['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(e.key);
+                                                        if (!validKeys && !navigationKeys) {
+                                                            e.preventDefault();
+                                                        }
+                                                    }}
+                                                    onPaste={e => {
+                                                        const paste = e.clipboardData.getData('Text');
+                                                        // Verificar si el contenido pegado tiene caracteres no válidos
+                                                        if (!/^[A-Za-z0-9-]*$/.test(paste)) {
+                                                            e.preventDefault();
+                                                        }
+                                                    }}
+                                                    className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)]"
+                                                    placeholder="A1234-56789"
+                                                    disabled={isFormDisabled}
+                                                />
+                                            )}
                                         />
                                         {errors.licenseNumber && (
                                             <p className="text-sm text-red-500 mt-1">{errors.licenseNumber.message}</p>
@@ -685,16 +804,17 @@ const BookingForm = () => {
                                         <label htmlFor="licenseType" className="block text-sm font-medium mb-2">
                                             License Type
                                         </label>
-                                        <input
-                                            type="text"
+                                        <select
                                             id="licenseType"
-                                            {...register('licenseType', {
-                                                required: 'License type is required'
-                                            })}
-                                            className="w-full p-2 border rounded-md"
-                                            placeholder="e.g. Class 7, Class 5"
+                                            {...register('licenseType', { required: 'License type is required' })}
+                                            className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)]"
                                             disabled={isFormDisabled}
-                                        />
+                                        >
+                                            <option value="" disabled>Select license type</option>
+                                            <option value="Class 7">Class 7</option>
+                                            <option value="Class 5">Class 5</option>
+                                            <option value="Class 4">Class 4</option>
+                                        </select>
                                         {errors.licenseType && (
                                             <p className="text-sm text-red-500 mt-1">{errors.licenseType.message}</p>
                                         )}
@@ -714,7 +834,7 @@ const BookingForm = () => {
                                                     selected={field.value}
                                                     onChange={(date) => field.onChange(date)}
                                                     dateFormat="MMMM d, yyyy"
-                                                    className="w-full p-2 border rounded-md"
+                                                    className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)]"
                                                     placeholderText="Select expiry date"
                                                     minDate={new Date()}
                                                     disabled={isFormDisabled}
@@ -729,63 +849,96 @@ const BookingForm = () => {
                             )}
                         </div>
 
-                        {/* Sección de información de road test */}
-                        <div className="space-y-4">
-                            <h2 className="text-2xl font-bold text-center mb-6">Road Test Information</h2>
-                            <div>
-                                <p className="block text-sm font-medium mb-3">Have you booked your road test already?</p>
-                                <div className="flex space-x-6 mb-4">
-                                    <label className="flex items-center space-x-2">
-                                        <input
-                                            type="radio"
-                                            value="no"
-                                            {...register('hasBookedRoadTest', { required: 'Please select an option' })}
-                                            className="h-4 w-4"
-                                            disabled={isFormDisabled}
-                                        />
-                                        <span>No</span>
-                                    </label>
-                                    <label className="flex items-center space-x-2">
-                                        <input
-                                            type="radio"
-                                            value="yes"
-                                            {...register('hasBookedRoadTest', { required: 'Please select an option' })}
-                                            className="h-4 w-4"
-                                            disabled={isFormDisabled}
-                                        />
-                                        <span>Yes</span>
-                                    </label>
-                                </div>
-                                {errors.hasBookedRoadTest && (
-                                    <p className="text-sm text-red-500 mt-1">{errors.hasBookedRoadTest.message}</p>
-                                )}
-                            </div>
-
-                            {/* Campo adicional si ha reservado road test */}
-                            {hasBookedRoadTest === 'yes' && (
+                        {/* Sección de información de learner permit - Solo se muestra si NO tiene licencia */}
+                        {hasDriverLicense === 'no' && (
+                            <div className="space-y-4">
+                                <h2 className="text-2xl font-bold text-center mb-6">Learner Permit Information</h2>
                                 <div>
-                                    <label htmlFor="roadTestLocation" className="block text-sm font-medium mb-2">
-                                        ICBC Location
-                                    </label>
-                                    <select
-                                        id="roadTestLocation"
-                                        {...register('roadTestLocation', { required: 'ICBC location is required' })}
-                                        className="w-full p-2 border rounded-md"
-                                        disabled={isFormDisabled}
-                                    >
-                                        <option value="">Select ICBC location</option>
-                                        {icbcLocations.map((location) => (
-                                            <option key={location} value={location}>
-                                                {location}
-                                            </option>
-                                        ))}
-                                    </select>
-                                    {errors.roadTestLocation && (
-                                        <p className="text-sm text-red-500 mt-1">{errors.roadTestLocation.message}</p>
+                                    <p className="block text-sm font-medium mb-3">Do you have a learner permit?</p>
+                                    <div className="flex space-x-6 mb-4">
+                                        <label className="flex items-center space-x-2">
+                                            <input
+                                                type="radio"
+                                                value="no"
+                                                {...register('hasLearnerPermit', { required: 'Please select an option' })}
+                                                className="h-4 w-4 focus:ring-[var(--primary-color)]"
+                                                disabled={isFormDisabled}
+                                            />
+                                            <span>No</span>
+                                        </label>
+                                        <label className="flex items-center space-x-2">
+                                            <input
+                                                type="radio"
+                                                value="yes"
+                                                {...register('hasLearnerPermit', { required: 'Please select an option' })}
+                                                className="h-4 w-4 focus:ring-[var(--primary-color)]"
+                                                disabled={isFormDisabled}
+                                            />
+                                            <span>Yes</span>
+                                        </label>
+                                    </div>
+                                    {errors.hasLearnerPermit && (
+                                        <p className="text-sm text-red-500 mt-1">{errors.hasLearnerPermit.message}</p>
                                     )}
                                 </div>
-                            )}
-                        </div>
+
+                                {/* Si no tiene permiso, mostrar mensaje de error y bloquear el formulario */}
+                                {hasLearnerPermit === 'no' && (
+                                    <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded relative mb-4">
+                                        <strong className="font-bold">Sorry!</strong>
+                                        <p className="block sm:inline"> You need to have a learner permit to book driving lessons. Please obtain a learner permit and then come back to book your lessons.</p>
+                                    </div>
+                                )}
+
+                                {/* Si tiene permiso, mostrar opción para cargar imagen */}
+                                {hasLearnerPermit === 'yes' && (
+                                    <div className="mt-4">
+                                        <label className="block text-sm font-medium mb-2">
+                                            Upload your learner permit image
+                                        </label>
+                                        <div className="flex items-center justify-center w-full">
+                                            <label className="flex flex-col w-full h-32 border-2 border-dashed hover:bg-gray-100 hover:border-gray-300 rounded-lg">
+                                                <div className="flex flex-col items-center justify-center pt-7">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8 text-gray-400 group-hover:text-gray-600"
+                                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                                                            d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                                    </svg>
+                                                    <p className="pt-1 text-sm tracking-wider text-gray-400 group-hover:text-gray-600">
+                                                        Attach a file or take a photo
+                                                    </p>
+                                                </div>
+                                                <input 
+                                                    type="file" 
+                                                    className="opacity-0"
+                                                    accept="image/*"
+                                                    capture="environment"
+                                                    onChange={(e) => {
+                                                        if (e.target.files && e.target.files[0]) {
+                                                            setLearnerPermitImage(e.target.files[0]);
+                                                            // Resetear la URL previa si había una
+                                                            setLearnerPermitImageUrl(null);
+                                                        }
+                                                    }}
+                                                />
+                                            </label>
+                                        </div>
+                                        {learnerPermitImage && (
+                                            <div className="mt-4">
+                                                <p className="text-sm text-green-600">File selected: {learnerPermitImage.name}</p>
+                                                <div className="mt-2 relative w-full h-40">
+                                                    <img
+                                                        src={URL.createObjectURL(learnerPermitImage)}
+                                                        alt="Uploaded learner permit"
+                                                        className="object-contain w-full h-full"
+                                                    />
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
+                            </div>
+                        )}
 
                         {/* Sección de selección de clase de licencia */}
                         <h2 className="text-2xl font-bold text-center mb-6">Select Your License Class</h2>
@@ -815,7 +968,7 @@ const BookingForm = () => {
                                     <p className="text-sm text-gray-500 mb-4">* Taxes are not included in the price.</p>
                                     <div className="grid grid-cols-1 gap-4">
                                         {classes.find(c => c.id === selectedClass)?.plans.map((plan) => (
-                                            <div key={plan.id} className={`border p-4 rounded-lg hover:bg-gray-50 ${selectedPlan === plan.id ? 'border-blue-500 bg-blue-50' : ''}`}>
+                                            <div key={plan.id} className={`border p-4 rounded-lg hover:bg-gray-50 ${selectedPlan === plan.id ? 'border-[var(--primary-color)] border-2' : ''}`}>
                                                 <input
                                                     type="radio"
                                                     {...register('plan', { required: 'Please select a plan' })}
@@ -842,7 +995,7 @@ const BookingForm = () => {
                                         {instructors.map((instructor, index) => (
                                             <div key={instructor.id}
                                                 className={`relative border rounded-xl p-4 cursor-pointer transition-all duration-200 ${selectedInstructor === instructor.id
-                                                    ? 'border-blue-500 bg-blue-50'
+                                                    ? 'border-[var(--primary-color)] border-2'
                                                     : 'hover:border-gray-300'
                                                     }`}
                                             >
@@ -896,41 +1049,21 @@ const BookingForm = () => {
 
                                 <div className="mt-6">
                                     <h3 className="text-xl font-semibold mb-4">Choose Your Location</h3>
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                                        {locations.map((location) => (
-                                            <div key={location.id}
-                                                className={`relative border rounded-xl p-4 cursor-pointer transition-all duration-200 ${selectedLocation === location.id
-                                                    ? 'border-blue-500 bg-blue-50'
-                                                    : 'hover:border-gray-300'
-                                                    }`}
-                                            >
-                                                <input
-                                                    type="radio"
-                                                    {...register('location', {
-                                                        required: 'Please select a location'
-                                                    })}
-                                                    value={location.id}
-                                                    id={`location-${location.id}`}
-                                                    className="hidden"
-                                                />
-                                                {errors.location && (
-                                                    <p className="text-sm text-red-500 mt-2 text-center">
-                                                        {errors.location.message}
-                                                    </p>
-                                                )}
-                                                <label
-                                                    htmlFor={`location-${location.id}`}
-                                                    className="block cursor-pointer"
-                                                >
-                                                    <div className="font-medium">{location.name}</div>
-                                                    {/* <p className="text-sm text-gray-500">{location.address}</p>
-                                                    <div className="text-sm text-gray-500">
-                                                        {location.city}, {location.zip}
-                                                    </div> */}
-                                                </label>
-                                            </div>
-                                        ))}
-                                    </div>
+                                    <Controller
+                                        name="location"
+                                        control={control}
+                                        rules={{ required: 'Please select a location' }}
+                                        render={({ field }) => (
+                                            <LocationDropdown
+                                                locations={locations}
+                                                selectedLocation={field.value}
+                                                onChange={(id) => field.onChange(id)}
+                                                disabled={isFormDisabled || !selectedClass || !selectedPlan || !selectedInstructor}
+                                                error={errors.location?.message}
+                                                selectedInstructor={instructors.find(instructor => instructor.id === selectedInstructor)?.name || ''}
+                                            />
+                                        )}
+                                    />
                                 </div>
 
                                 {selectedLocation && selectedInstructor && selectedPlan && (
@@ -1063,7 +1196,7 @@ const BookingForm = () => {
                                     {/* Sección de Método de Pago - Mostrar solo si hay fecha/hora seleccionada */}
                                     {selectedDateTime && hasValidTime(selectedDateTime) && !timeSlotError && !validatingTimeSlot && (
                                         <div className="mb-8 mt-6 border p-6 rounded-md bg-white">
-                                            <h3 className="text-xl font-semibold mb-6">Payment Methods</h3>
+                                            <h3 className="text-xl font-semibold">Payment Methods</h3>
                                             
                                             <div className="space-y-4">
                                                 <div className="flex items-center space-x-3">

@@ -1,4 +1,6 @@
 "use client";
+import 'react-big-calendar/lib/css/react-big-calendar.css'
+
 
 export interface Instructor {
   id: string;
@@ -28,9 +30,8 @@ export default function Admin() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Use relative URL instead of hardcoded localhost and port
-        const res = await fetch("/api/instructors", {
-          cache: "no-store",
+        const res = await fetch("http://localhost:3000/api/instructors", {
+          cache: "default",
         });
         
         if (!res.ok) {
@@ -74,6 +75,9 @@ export default function Admin() {
 
   return (
     <div>
+      {/* {allInstructorData?.map((item,index)=> <div key={index}>
+          <p>InstructorID: {item.id}</p>
+        </div>)} */}
       <Dashboard/>
     </div>
   );

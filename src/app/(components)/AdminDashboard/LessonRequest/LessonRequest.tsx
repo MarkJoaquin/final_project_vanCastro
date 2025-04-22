@@ -3,39 +3,87 @@
 import { useEffect, useState } from "react";
 import AdminTemplate from "../Template/AdminTemplate";
 import { useAdminDataContext } from "@/app/(context)/adminContext";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
-import { toast } from "sonner";
+import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
+import { Mail, Check, X, CheckCircle, XCircle, Calendar } from "lucide-react";
+import { toast } from "sonner";
+import ImageViewer from "../../ImageViewer/ImageViewer";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 interface LessonRequest {
-    id: string;
-    lessonPlan: string;
-    lessonDate: string;
-    lessonLocation: string; 
-    startTime: string;
-    endTime: string;
-    lessonDuration: string;
-    lessonPrice: string;
-    lessonStatus: string; 
-    instructorId: string;
-    trackingNumber: string;
-    createdAt: string;
-    licenseClass?: string;
-    paymentMethod?: string;
-    student: {
-        name: string; 
-        email?: string;
-    };
+  id: string;
+  lessonPlan: string;
+  lessonDate: string;
+  lessonLocation: string;
+  startTime: string;
+  endTime: string;
+  lessonDuration: string;
+  lessonPrice: string;
+  lessonStatus: string;
+  instructorId: string;
+  trackingNumber: string;
+  createdAt: string;
+  licenseClass?: string;
+  paymentMethod?: string;
+  student: {
+    name: string;
+    email?: string;
+    hasLicense?: boolean;
+    learnerPermitUrl?: string;
+    licenses?: {
+      licenseNumber: string;
+      licenseType: string;
+      expirationDate: Date;
+    }[];
+  };
 }
 
 interface Location {
+  id: string;
+  address: string;
+  city: string;
+}
+
+interface LessonRequestData {
+  id: string;
+  trackingNumber: string;
+  instructorId: string;
+  startTime: string;
+  endTime: string;
+  lessonDate: Date;
+  lessonLocation: string;
+  lessonPlan: string;
+  lessonPrice: number;
+  lessonDuration: string;
+  lessonStatus: string;
+  paymentMethod: string | null;
+  licenseClass?: string;
+  createdAt: Date;
+  updatedAt: Date;
+  student: {
     id: string;
+    name: string;
+    email: string | null;
+    hasLicense?: boolean;
+    learnerPermitUrl?: string;
+    licenses?: {
+      licenseNumber: string;
+      licenseType: string;
+      expirationDate: Date;
+    }[];
+  };
     address: string;
     city: string;
 }
@@ -45,6 +93,13 @@ export default function LessonRequests() {
     const [locations, setLocations] = useState<Location[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [searchQuery, setSearchQuery] = useState<string>("");
+    
+    // Diálogo de confirmación
+    const [confirmDialogOpen, setConfirmDialogOpen] = useState<boolean>(false);
+    const [confirmAction, setConfirmAction] = useState<() => Promise<void>>(() => async () => {});
+    const [confirmTitle, setConfirmTitle] = useState<string>("");
+    const [confirmDescription, setConfirmDescription] = useState<string>("");
+    const [confirmButtonText, setConfirmButtonText] = useState<string>("Confirm");
 
     const { loginedInstructorData } = useAdminDataContext(); 
     const instructorId = loginedInstructorData?.id;
@@ -85,11 +140,11 @@ export default function LessonRequests() {
         fetchInitialData();
     }, []);
 
-    // Filter lesson requests with lessonStatus = "REQUESTED" and instructorId matching the logged-in instructor
+    // Filter lesson requests with lessonStatus = "REQUESTED" or "AWAITING_PAYMENT" and instructorId matching the logged-in instructor
     // Apply name search filter if search query exists
     const filteredRequests = lessonRequests
         .filter((request) => {
-            const matchesStatus = request.lessonStatus === "REQUESTED";
+            const matchesStatus = request.lessonStatus === "REQUESTED" || request.lessonStatus === "AWAITING_PAYMENT";
             const matchesInstructor = request.instructorId === instructorId;
             
             // Search filter for student name
@@ -147,100 +202,238 @@ export default function LessonRequests() {
     
     // Function to handle accepting a booking request
     const handleAcceptRequest = async (requestId: string) => {
-        try {
-            setIsLoading(true);
-            console.log("Accepting request:", requestId);
-            
-            const response = await fetch("/api/lessons/accept", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ requestId }),
-            });
-            
-            const data = await response.json();
-            
-            if (!response.ok) {
-                console.error("Error accepting request:", data.error);
-                toast.error(`Error: ${data.error}`, {
-                    description: "Please try again or contact support if the problem persists.",
+        // Setup confirmación
+        const request = lessonRequests.find((req: LessonRequest) => req.id === requestId);
+        const studentName = request?.student.name || 'the student';
+        
+        if (request?.lessonStatus === "AWAITING_PAYMENT") {
+            setConfirmTitle(`Confirm Lesson Payment?`);
+            setConfirmDescription(`Are you sure you want to confirm the payment for the lesson from ${studentName}? This will create the lesson in the system.`);
+            setConfirmButtonText("Confirm Lesson");
+        } else {
+            setConfirmTitle(`Accept Lesson Request?`);
+            setConfirmDescription(`Are you sure you want to accept the lesson request from ${studentName}?`);
+            setConfirmButtonText("Accept");
+        }
+        
+        // Preparar acción que se ejecutará si el usuario confirma
+        setConfirmAction(() => async () => {
+            try {
+                setIsLoading(true);
+                console.log("Accepting request:", requestId);
+                
+                // 1. Aceptar la solicitud
+                const response = await fetch("/api/lessons/accept", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ requestId }),
+                });
+                
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    console.error("Error accepting request:", data.error);
+                    toast.error(`Error: ${data.error}`, {
+                        description: "Please try again or contact support if the problem persists.",
+                        duration: 5000
+                    });
+                    return;
+                }
+                
+                console.log("Request accepted successfully:", data);
+                
+                // 2. Enviar correo de notificación al estudiante
+                try {
+                    const emailResponse = await fetch("/api/send-acceptance-email", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ requestId }),
+                    });
+                    
+                    if (emailResponse.ok) {
+                        console.log("Acceptance email sent successfully");
+                    } else {
+                        console.warn("Failed to send acceptance email", await emailResponse.json());
+                    }
+                } catch (emailError) {
+                    console.error("Error sending acceptance email:", emailError);
+                    // No interrumpimos el flujo si falla el envío del correo
+                }
+                
+                // Refrescar la lista de solicitudes para que esta ya no aparezca
+                setLessonRequests((prevRequests: LessonRequest[]) => 
+                    prevRequests.filter((req: LessonRequest) => req.id !== requestId)
+                );
+                
+                const actionText = request?.lessonStatus === "AWAITING_PAYMENT" ? "confirmed" : "accepted";
+                
+                toast.success(`Booking request ${actionText}!`, {
+                    description: `The lesson has been ${actionText} and a notification email has been sent to the student.`,
+                    duration: 4000
+                });
+            } catch (error) {
+                console.error("Error accepting request:", error);
+                toast.error("Request failed", {
+                    description: "An error occurred while accepting the request. Please try again.",
                     duration: 5000
                 });
-                return;
+            } finally {
+                setIsLoading(false);
             }
-            
-            console.log("Request accepted successfully:", data);
-            
-            // Refrescar la lista de solicitudes para que esta ya no aparezca
-            const updatedRequests = lessonRequests.filter(req => req.id !== requestId);
-            setLessonRequests(updatedRequests);
-            
-            toast.success("Booking request accepted!", {
-                description: "The lesson has been confirmed and added to your schedule.",
-                duration: 4000
-            });
-        } catch (error) {
-            console.error("Error accepting request:", error);
-            toast.error("Request failed", {
-                description: "An error occurred while accepting the request. Please try again.",
-                duration: 5000
-            });
-        } finally {
-            setIsLoading(false);
-        }
+        });
+        
+        // Mostrar diálogo
+        setConfirmDialogOpen(true);
     };
     
     // Function to handle declining a booking request
     const handleDeclineRequest = async (requestId: string) => {
-        try {
-            setIsLoading(true);
-            console.log("Declining request:", requestId);
-            
-            const response = await fetch("/api/lessons/decline", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ requestId }),
-            });
-            
-            const data = await response.json();
-            
-            if (!response.ok) {
-                console.error("Error declining request:", data.error);
-                toast.error(`Error: ${data.error}`, {
-                    description: "Please try again or contact support if the problem persists.",
-                    duration: 5000
-                });
-                return;
-            }
-            
-            console.log("Request declined successfully:", data);
-            
-            // Refrescar la lista de solicitudes para que esta ya no aparezca
-            const updatedRequests = lessonRequests.filter(req => req.id !== requestId);
-            setLessonRequests(updatedRequests);
-            
-            toast.success("Booking request declined", {
-                description: "The student will be notified that their request was declined.",
-                duration: 4000
-            });
-        } catch (error) {
-            console.error("Error declining request:", error);
-            toast.error("Request failed", {
-                description: "An error occurred while declining the request. Please try again.",
-                duration: 5000
-            });
-        } finally {
-            setIsLoading(false);
+        // Buscar los detalles de la solicitud para mostrarlos en la confirmación
+        const requestDetails = lessonRequests.find((req: LessonRequest) => req.id === requestId);
+        const studentName = requestDetails?.student.name || 'this student';
+        
+        // Setup confirmación según el estado de la solicitud
+        if (requestDetails?.lessonStatus === "AWAITING_PAYMENT") {
+            setConfirmTitle(`Cancel Payment Request?`);
+            setConfirmDescription(`Are you sure you want to cancel the payment request for ${studentName}? This will return the lesson to REJECTED status.`);
+            setConfirmButtonText("Cancel Payment");
+        } else {
+            setConfirmTitle(`Decline Lesson Request?`);
+            setConfirmDescription(`Are you sure you want to decline the lesson request from ${studentName}? This action cannot be undone.`);
+            setConfirmButtonText("Decline");
         }
+        
+        // Preparar acción que se ejecutará si el usuario confirma
+        setConfirmAction(() => async () => {
+            setIsLoading(true);
+            try {
+                // 1. Rechazar la solicitud
+                const response = await fetch(`/api/lessons/decline`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ requestId })
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || "Failed to decline request");
+                }
+
+                const updatedRequest = await response.json();
+                
+                // 2. Enviar correo de notificación al estudiante
+                try {
+                    const emailResponse = await fetch("/api/send-rejection-email", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ requestId }),
+                    });
+                    
+                    if (emailResponse.ok) {
+                        console.log("Rejection email sent successfully");
+                    } else {
+                        console.warn("Failed to send rejection email", await emailResponse.json());
+                    }
+                } catch (emailError) {
+                    console.error("Error sending rejection email:", emailError);
+                    // No interrumpimos el flujo si falla el envío del correo
+                }
+                
+                // Update the local state with the updated request
+                setLessonRequests((prevRequests: LessonRequest[]) => 
+                    prevRequests.filter((req: LessonRequest) => req.id !== requestId)
+                );
+
+                // Mensaje personalizado según el estado que tenía la solicitud
+                const actionText = requestDetails?.lessonStatus === "AWAITING_PAYMENT" ? "cancelled" : "declined";
+                
+                toast.success(`Booking request ${actionText} successfully`, {
+                    description: "A notification email has been sent to the student.",
+                    duration: 4000
+                });
+                
+                // Optionally refresh the data
+                fetchLessonRequests();
+            } catch (error) {
+                console.error("Error declining request:", error);
+                toast.error(error instanceof Error ? error.message : "Failed to decline request");
+            } finally {
+                setIsLoading(false);
+            }
+        });
+        
+        // Mostrar diálogo
+        setConfirmDialogOpen(true);
     };
-    
+
+    // Function to handle sending invoice to the student
+    const handleSendInvoice = async (requestId: string) => {
+        const request = lessonRequests.find(req => req.id === requestId);
+        const studentName = request?.student.name || 'the student';
+        
+        // Setup confirmación
+        setConfirmTitle(`Send Invoice?`);
+        setConfirmDescription(`Send invoice to ${studentName} for the lesson with tracking number ${request?.trackingNumber}?`);
+        setConfirmButtonText("Send Invoice");
+        
+        // Preparar acción que se ejecutará si el usuario confirma
+        setConfirmAction(() => async () => {
+            setIsLoading(true);
+            try {
+                const response = await fetch('/api/send-invoice', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ requestId })
+                });
+
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(data.error || 'Failed to send invoice');
+                }
+
+                // Actualizar el estado local para reflejar el cambio a AWAITING_PAYMENT
+                setLessonRequests((prevRequests: LessonRequest[]) => 
+                    prevRequests.map((req: LessonRequest) => 
+                        req.id === requestId ? { ...req, lessonStatus: "AWAITING_PAYMENT" } : req
+                    )
+                );
+
+                const request = lessonRequests.find((req: LessonRequest) => req.id === requestId);
+                const studentName = request?.student.name || 'the student';
+                
+                toast.success(`Invoice sent successfully!`, {
+                    description: `The invoice has been sent to ${studentName} and status updated to AWAITING FOR PAYMENT.`,
+                    duration: 4000
+                });
+            } catch (error) {
+                console.error('Error sending invoice:', error);
+                toast.error(error instanceof Error ? error.message : 'Failed to send invoice');
+            } finally {
+                setIsLoading(false);
+            }
+        });
+        
+        // Mostrar diálogo
+        setConfirmDialogOpen(true);
+    };
+
     // Función para determinar a qué sección pertenece una solicitud basándose en su fecha
     const getRequestSection = (dateStr: string): string => {
+        // Fecha actual
         const today = new Date();
-        today.setHours(0, 0, 0, 0); // Normalizar a inicio del día
+        // console.log('Today:', today);
+        today.setHours(0, 0, 0, 0);
         
         const tomorrow = new Date(today);
         tomorrow.setDate(tomorrow.getDate() + 1);
@@ -248,10 +441,21 @@ export default function LessonRequests() {
         const nextWeek = new Date(today);
         nextWeek.setDate(nextWeek.getDate() + 7);
         
-        const requestDate = new Date(dateStr);
-        requestDate.setHours(0, 0, 0, 0); // Normalizar a inicio del día
+        // Convertir el string de fecha a componentes consistentes
+        const rawDate = new Date(dateStr);
+        const dateParts = rawDate.toISOString().split('T')[0].split('-');
+        const year = parseInt(dateParts[0]);
+        const month = parseInt(dateParts[1]) - 1; // Meses en JS son 0-11
+        const day = parseInt(dateParts[2]);
         
-        if (requestDate.getTime() === today.getTime()) {
+        // Crear fecha local sin problemas de zona horaria
+        const requestDate = new Date(year, month, day);
+        // console.log('Request Date:', requestDate);
+
+        // Comparaciones
+        if (requestDate < today) {
+            return "Past";
+        }else if (requestDate.getTime() === today.getTime()) {
             return "Today";
         } else if (requestDate.getTime() === tomorrow.getTime()) {
             return "Tomorrow";
@@ -265,6 +469,7 @@ export default function LessonRequests() {
     // Agrupar las solicitudes por sección
     const groupRequestsBySection = () => {
         const grouped: Record<string, LessonRequest[]> = {
+            "Past": [],
             "Today": [],
             "Tomorrow": [],
             "This Week": [],
@@ -290,7 +495,7 @@ export default function LessonRequests() {
         }
         
         const groupedRequests = groupRequestsBySection();
-        const sections = ["Today", "Tomorrow", "This Week", "Upcoming"];
+        const sections = ["Past", "Today", "Tomorrow", "This Week", "Upcoming"];
         
         return (
             <div className="w-full space-y-6">
@@ -323,9 +528,34 @@ export default function LessonRequests() {
                                     <p><span className="text-gray-600">Plan:</span> {request.lessonPlan}</p>
                                     <p><span className="text-gray-600">Duration:</span> {request.lessonDuration} minutes</p>
                                     <p><span className="text-gray-600">Price:</span> ${request.lessonPrice}</p>
-                                    <p><span className="text-gray-600">Status:</span> {request.lessonStatus}</p>
+                                    <p>
+                                        <span className="text-gray-600">Status: </span>
+                                        <span className={`px-2 py-1 rounded text-xs font-medium ${getStatusColor(request.lessonStatus)}`}>
+                                           {request.lessonStatus === "AWAITING_PAYMENT" ? "AWAITING FOR PAYMENT" : request.lessonStatus}
+                                        </span>
+                                    </p>
                                     {request.licenseClass && (
                                         <p><span className="text-gray-600">License Class:</span> {request.licenseClass}</p>
+                                    )}
+                                    
+                                    {/* Student ID Verification Section */}
+                                    <h4 className="font-semibold mt-3 mb-1">Student ID Verification</h4>
+                                    {request.student.learnerPermitUrl ? (
+                                        <div className="mt-2">
+                                            <p><span className="text-gray-600">Learner Permit:</span></p>
+                                            <ImageViewer 
+                                                imageUrl={request.student.learnerPermitUrl} 
+                                                altText="Learner Permit" 
+                                            />
+                                        </div>
+                                    ) : request.student.hasLicense && request.student.licenses && request.student.licenses.length > 0 ? (
+                                        <div className="mt-2">
+                                            <p><span className="text-gray-600">License Number:</span> {request.student.licenses[0].licenseNumber}</p>
+                                            <p><span className="text-gray-600">License Type:</span> {request.student.licenses[0].licenseType}</p>
+                                            <p><span className="text-gray-600">Expiration Date:</span> {new Date(request.student.licenses[0].expirationDate).toLocaleDateString()}</p>
+                                        </div>
+                                    ) : (
+                                        <p><span className="text-gray-600">No ID verification provided</span></p>
                                     )}
                                 </div>
                                 
@@ -340,20 +570,43 @@ export default function LessonRequests() {
                                         <p><span className="text-gray-600">Payment Method:</span> {request.paymentMethod}</p>
                                     )}
                                     
-                                    <div className="mt-4 flex space-x-3">
+                                    <div className="mt-4 flex space-x-3 flex-wrap gap-2">
                                         <Button 
                                             onClick={() => handleAcceptRequest(request.id)} 
                                             className="bg-[#FFCE47] text-black hover:bg-amber-400 cursor-pointer"
                                             disabled={isLoading}
                                         >
-                                            {isLoading ? "Processing..." : "Accept"}
+                                            {isLoading ? "Processing..." : (
+                                                <>
+                                                    <CheckCircle className="mr-2 h-4 w-4" />
+                                                    {request.lessonStatus === "AWAITING_PAYMENT" ? "Confirm Lesson" : "Accept"}
+                                                </>
+                                            )}
                                         </Button>
                                         <Button 
                                             onClick={() => handleDeclineRequest(request.id)} 
                                             className="bg-white border border-black text-black hover:bg-gray-100 cursor-pointer"
                                             disabled={isLoading}
                                         >
-                                            {isLoading ? "Processing..." : "Decline"}
+                                            {isLoading ? "Processing..." : (
+                                                <>
+                                                    <XCircle className="mr-2 h-4 w-4" />
+                                                    Decline
+                                                </>
+                                            )}
+                                        </Button>
+                                        <Button 
+                                            onClick={() => handleSendInvoice(request.id)} 
+                                            className="bg-blue-500 hover:bg-blue-600 text-white cursor-pointer"
+                                            disabled={isLoading || !request.student.email}
+                                            title={!request.student.email ? "Student email not available" : "Send invoice to student"}
+                                        >
+                                            {isLoading ? "Processing..." : (
+                                                <>
+                                                    <Mail className="mr-2 h-4 w-4" />
+                                                    Send Invoice
+                                                </>
+                                            )}
                                         </Button>
                                     </div>
                                 </div>
@@ -367,6 +620,24 @@ export default function LessonRequests() {
                 })}
             </div>
         );
+    };
+
+    // Función para obtener el color de fondo según el estado de la solicitud
+    const getStatusColor = (status: string) => {
+        switch (status) {
+            case "REQUESTED":
+                return "bg-gray-200 text-gray-800"; // Gris para solicitudes nuevas
+            case "AWAITING_PAYMENT":
+                return "bg-[#FFCE47] text-black"; // Amarillo (color primario) para pagos pendientes
+            case "CONFIRMED":
+                return "bg-green-500 text-white"; // Verde para confirmadas
+            case "REJECTED":
+                return "bg-red-500 text-white"; // Rojo para rechazadas
+            case "LATE_RESPONSE":
+                return "bg-orange-400 text-white"; // Naranja para respuestas tardías
+            default:
+                return "bg-gray-100 text-gray-800";
+        }
     };
 
     // Handler para el cambio en el input de búsqueda
@@ -395,7 +666,48 @@ export default function LessonRequests() {
                 <CustomMainComponent />
             </div>
 
-
+            {/* Diálogo de confirmación */}
+            <AlertDialog open={confirmDialogOpen} onOpenChange={setConfirmDialogOpen}>
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                        <AlertDialogTitle>{confirmTitle}</AlertDialogTitle>
+                        <AlertDialogDescription>
+                            {confirmDescription}
+                        </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction
+                            onClick={async () => {
+                                await confirmAction();
+                                setConfirmDialogOpen(false);
+                            }}
+                            className={confirmButtonText === "Decline" ? "bg-red-500 hover:bg-red-600" : 
+                                     confirmButtonText === "Send Invoice" ? "bg-blue-500 hover:bg-blue-600" : 
+                                     "bg-[#FFCE47] hover:bg-amber-400 text-black"}
+                        >
+                            {confirmButtonText === "Accept" ? (
+                                <>
+                                    <CheckCircle className="mr-2 h-4 w-4 inline" />
+                                    {confirmButtonText}
+                                </>
+                            ) : confirmButtonText === "Decline" ? (
+                                <>
+                                    <XCircle className="mr-2 h-4 w-4 inline" />
+                                    {confirmButtonText}
+                                </>
+                            ) : confirmButtonText === "Send Invoice" ? (
+                                <>
+                                    <Mail className="mr-2 h-4 w-4 inline" />
+                                    {confirmButtonText}
+                                </>
+                            ) : (
+                                confirmButtonText
+                            )}
+                        </AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
         </div>
     );
 }
