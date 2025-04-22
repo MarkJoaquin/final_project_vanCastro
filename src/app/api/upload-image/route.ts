@@ -3,12 +3,11 @@ import { PrismaClient } from '@prisma/client';
 import { writeFile } from 'fs/promises';
 import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
+import * as fs from 'fs';
 
 const prisma = new PrismaClient();
 
 // Esta ruta maneja la subida de imágenes como learner permit
-// Para asegurar que el directorio existe
-const fs = require('fs');
 export async function POST(request: NextRequest) {
   try {
     // Asegurarse de que la solicitud es multipart/form-data
