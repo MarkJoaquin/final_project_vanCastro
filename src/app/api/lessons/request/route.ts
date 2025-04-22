@@ -303,7 +303,13 @@ export async function GET(request: NextRequest) {
     const lessonRequests = await prisma.lessonsRequest.findMany({
       include: {
         student: {
-          include: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            phone: true,  // Incluir el número de teléfono
+            hasLicense: true,
+            learnerPermitUrl: true,
             licenses: {
               orderBy: {
                 createdAt: 'desc'

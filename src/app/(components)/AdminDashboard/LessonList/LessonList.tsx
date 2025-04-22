@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import AddNewLessonModal from "../Modals/AddNewLessonModal";
 import ImageViewer from "../../ImageViewer/ImageViewer";
+import { MessageCircle } from "lucide-react";
 
 interface ConfirmedLesson {
   id: string;
@@ -32,6 +33,7 @@ interface ConfirmedLesson {
   paymentMethod?: string;
   student: {
     name: string;
+    phone?: string;
     hasLicense?: boolean;
     learnerPermitUrl?: string;
     licenses?: {
@@ -207,16 +209,16 @@ export default function LessonList() {
                 {lessons.map((lesson) => (
           <AccordionItem key={lesson.id} value={lesson.id} className="mb-4 border-b border-gray-200">
             <AccordionTrigger className="flex justify-between px-4 py-3 bg-white rounded-md shadow-sm hover:shadow-md transition-all cursor-pointer">
-              <div className="flex flex-col items-start text-left">
-                <span className="font-semibold text-base">{lesson.student.name}</span>
-                <span className="text-sm text-gray-600">
+              <div className="flex flex-col items-start text-left w-full overflow-hidden">
+                <span className="font-semibold text-base truncate w-full">{lesson.student.name}</span>
+                <span className="text-sm text-gray-600 truncate w-full">
                   {formatLessonDate(lesson.date)} - {lesson.startTime} ~ {lesson.endTime}
                 </span>
               </div>
             </AccordionTrigger>
             
-            <AccordionContent className="bg-gray-50 px-6 py-4 rounded-b-md">
-              <div className="grid grid-cols-2 gap-4">
+            <AccordionContent className="bg-gray-50 px-4 sm:px-6 py-4 rounded-b-md">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <h4 className="font-semibold mb-1">Lesson Details</h4>
                   <p><span className="text-gray-600">Plan:</span> {lesson.plan}</p>
@@ -259,6 +261,36 @@ export default function LessonList() {
                   {lesson.paymentMethod && (
                     <p><span className="text-gray-600">Payment Method:</span> {lesson.paymentMethod}</p>
                   )}
+                  
+                  <div className="mt-4">
+                    <Button 
+                      onClick={() => {
+                        // Formatear el número de teléfono para WhatsApp (eliminar espacios, paréntesis, etc.)
+                        const phoneNumber = lesson.student.phone ? 
+                          lesson.student.phone.replace(/[\s()-]/g, '') : '';
+                        
+                        if (!phoneNumber) {
+                          toast.error("Student phone number not available");
+                          return;
+                        }
+                        
+                        // Formatear el mensaje con detalles de la lección
+                        const message = `Hello ${lesson.student.name}, I'm your driving instructor regarding your confirmed lesson on ${formatLessonDate(lesson.date)} at ${lesson.startTime}.`;
+                        
+                        // Crear la URL de WhatsApp
+                        const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+                        
+                        // Abrir WhatsApp en una nueva pestaña
+                        window.open(whatsappUrl, '_blank');
+                      }} 
+                      className="bg-green-500 hover:bg-green-600 text-white cursor-pointer"
+                      disabled={!lesson.student.phone}
+                      title={!lesson.student.phone ? "Student phone number not available" : "Contact student via WhatsApp"}
+                    >
+                      <MessageCircle className="mr-2 h-4 w-4 " />
+                      Contact via WhatsApp
+                    </Button>
+                  </div>
                 </div>
               </div>
             </AccordionContent>
@@ -280,20 +312,20 @@ export default function LessonList() {
   // Componente principal
   return (
     <div className="w-full">
-      <div className="w-[80%] m-auto mt-[2rem]">
-        <div className="flex justify-between items-center flex-wrap gap-[0.5rem]">
+      <div className="w-full max-w-6xl mx-auto px-4 sm:px-6">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
           <h2 className="text-2xl font-bold">Confirmed Lessons</h2>
-          <div className="flex gap-[1rem]">
+          <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
             <Input
-              placeholder="Student name"
+              placeholder="Search student name"
               type="text"
               value={searchQuery}
               onChange={handleSearchChange}
-              className="bg-white py-5"
+              className="bg-white py-5 w-full"
             />
             <Button
               onClick={() => setShowAddLessonModal(true)}
-              className="bg-[#FFCE47] text-black hover:bg-amber-400 cursor-pointer"
+              className="bg-[#FFCE47] text-black hover:bg-amber-400 cursor-pointer w-full sm:w-auto whitespace-nowrap"
             >
               Add New Lesson
             </Button>
@@ -301,7 +333,7 @@ export default function LessonList() {
         </div>
       </div>
       
-      <div className="w-[80%] m-auto mt-4">
+      <div className="w-full max-w-6xl mx-auto px-4 sm:px-6">
         <CustomMainComponent />
       </div>
 
