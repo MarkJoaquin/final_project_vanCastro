@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import AddNewLessonModal from "../Modals/AddNewLessonModal";
 import ImageViewer from "../../ImageViewer/ImageViewer";
+import { MessageCircle } from "lucide-react";
 
 interface ConfirmedLesson {
   id: string;
@@ -32,6 +33,7 @@ interface ConfirmedLesson {
   paymentMethod?: string;
   student: {
     name: string;
+    phone?: string;
     hasLicense?: boolean;
     learnerPermitUrl?: string;
     licenses?: {
@@ -259,6 +261,36 @@ export default function LessonList() {
                   {lesson.paymentMethod && (
                     <p><span className="text-gray-600">Payment Method:</span> {lesson.paymentMethod}</p>
                   )}
+                  
+                  <div className="mt-4">
+                    <Button 
+                      onClick={() => {
+                        // Formatear el número de teléfono para WhatsApp (eliminar espacios, paréntesis, etc.)
+                        const phoneNumber = lesson.student.phone ? 
+                          lesson.student.phone.replace(/[\s()-]/g, '') : '';
+                        
+                        if (!phoneNumber) {
+                          toast.error("Student phone number not available");
+                          return;
+                        }
+                        
+                        // Formatear el mensaje con detalles de la lección
+                        const message = `Hello ${lesson.student.name}, I'm your driving instructor regarding your confirmed lesson on ${formatLessonDate(lesson.date)} at ${lesson.startTime}.`;
+                        
+                        // Crear la URL de WhatsApp
+                        const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+                        
+                        // Abrir WhatsApp en una nueva pestaña
+                        window.open(whatsappUrl, '_blank');
+                      }} 
+                      className="bg-green-500 hover:bg-green-600 text-white cursor-pointer"
+                      disabled={!lesson.student.phone}
+                      title={!lesson.student.phone ? "Student phone number not available" : "Contact student via WhatsApp"}
+                    >
+                      <MessageCircle className="mr-2 h-4 w-4 " />
+                      Contact via WhatsApp
+                    </Button>
+                  </div>
                 </div>
               </div>
             </AccordionContent>

@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
-import { Mail, Check, X, CheckCircle, XCircle, Calendar } from "lucide-react";
+import { Mail, Check, X, CheckCircle, XCircle, Calendar, MessageCircle } from "lucide-react";
 import { toast } from "sonner";
 import ImageViewer from "../../ImageViewer/ImageViewer";
 import {
@@ -76,6 +76,7 @@ interface LessonRequestData {
     id: string;
     name: string;
     email: string | null;
+    phone?: string;
     hasLicense?: boolean;
     learnerPermitUrl?: string;
     licenses?: {
@@ -605,6 +606,37 @@ export default function LessonRequests() {
                                                 <>
                                                     <Mail className="mr-2 h-4 w-4" />
                                                     Send Invoice
+                                                </>
+                                            )}
+                                        </Button>
+                                        <Button 
+                                            onClick={() => {
+                                                // Formatear el número de teléfono para WhatsApp (eliminar espacios, paréntesis, etc.)
+                                                const phoneNumber = request.student.phone ? 
+                                                    request.student.phone.replace(/[\s()-]/g, '') : '';
+                                                
+                                                if (!phoneNumber) {
+                                                    toast.error("Student phone number not available");
+                                                    return;
+                                                }
+                                                
+                                                // Formatear el mensaje con detalles de la lección
+                                                const message = `Hello ${request.student.name}, I'm your driving instructor regarding your lesson on ${formatLessonDate(request.lessonDate)} at ${request.startTime}.`;
+                                                
+                                                // Crear la URL de WhatsApp
+                                                const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+                                                
+                                                // Abrir WhatsApp en una nueva pestaña
+                                                window.open(whatsappUrl, '_blank');
+                                            }} 
+                                            className="bg-green-500 hover:bg-green-600 text-white cursor-pointer"
+                                            disabled={!request.student.phone}
+                                            title={!request.student.phone ? "Student phone number not available" : "Contact student via WhatsApp"}
+                                        >
+                                            {isLoading ? "Processing..." : (
+                                                <>
+                                                    <MessageCircle className="mr-2 h-4 w-4" />
+                                                    WhatsApp
                                                 </>
                                             )}
                                         </Button>
