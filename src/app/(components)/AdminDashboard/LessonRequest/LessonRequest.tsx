@@ -514,16 +514,16 @@ export default function LessonRequests() {
                                 {requests.map((request) => (
                     <AccordionItem key={request.id} value={request.id} className="mb-4 border-b border-gray-200">
                         <AccordionTrigger className="flex justify-between px-4 py-3 bg-white rounded-md shadow-sm hover:shadow-md transition-all cursor-pointer">
-                            <div className="flex flex-col items-start text-left">
-                                <span className="font-semibold text-base">{request.student.name}</span>
-                                <span className="text-sm text-gray-600">
+                            <div className="flex flex-col items-start text-left w-full overflow-hidden">
+                                <span className="font-semibold text-base truncate w-full">{request.student.name}</span>
+                                <span className="text-sm text-gray-600 truncate w-full">
                                     {formatLessonDate(request.lessonDate)} - {request.startTime} ~ {request.endTime}
                                 </span>
                             </div>
                         </AccordionTrigger>
                         
-                        <AccordionContent className="bg-gray-50 px-6 py-4 rounded-b-md">
-                            <div className="grid grid-cols-2 gap-4">
+                        <AccordionContent className="bg-gray-50 px-4 sm:px-6 py-4 rounded-b-md">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
                                     <h4 className="font-semibold mb-1">Lesson Details</h4>
                                     <p><span className="text-gray-600">Plan:</span> {request.lessonPlan}</p>
@@ -574,7 +574,7 @@ export default function LessonRequests() {
                                     <div className="mt-4 flex space-x-3 flex-wrap gap-2">
                                         <Button 
                                             onClick={() => handleAcceptRequest(request.id)} 
-                                            className="bg-[#FFCE47] text-black hover:bg-amber-400 cursor-pointer"
+                                            className="bg-[#FFCE47] text-black hover:bg-amber-400 cursor-pointer w-full sm:w-auto"
                                             disabled={isLoading}
                                         >
                                             {isLoading ? "Processing..." : (
@@ -586,7 +586,7 @@ export default function LessonRequests() {
                                         </Button>
                                         <Button 
                                             onClick={() => handleDeclineRequest(request.id)} 
-                                            className="bg-white border border-black text-black hover:bg-gray-100 cursor-pointer"
+                                            className="bg-white border border-black text-black hover:bg-gray-100 cursor-pointer w-full sm:w-auto"
                                             disabled={isLoading}
                                         >
                                             {isLoading ? "Processing..." : (
@@ -598,7 +598,7 @@ export default function LessonRequests() {
                                         </Button>
                                         <Button 
                                             onClick={() => handleSendInvoice(request.id)} 
-                                            className="bg-blue-500 hover:bg-blue-600 text-white cursor-pointer"
+                                            className="bg-blue-500 hover:bg-blue-600 text-white cursor-pointer w-full sm:w-auto"
                                             disabled={isLoading || !request.student.email}
                                             title={!request.student.email ? "Student email not available" : "Send invoice to student"}
                                         >
@@ -629,7 +629,7 @@ export default function LessonRequests() {
                                                 // Abrir WhatsApp en una nueva pestaña
                                                 window.open(whatsappUrl, '_blank');
                                             }} 
-                                            className="bg-green-500 hover:bg-green-600 text-white cursor-pointer"
+                                            className="bg-green-500 hover:bg-green-600 text-white cursor-pointer w-full sm:w-auto"
                                             disabled={!request.student.phone}
                                             title={!request.student.phone ? "Student phone number not available" : "Contact student via WhatsApp"}
                                         >
@@ -679,22 +679,22 @@ export default function LessonRequests() {
 
     return (
         <div className="w-full">
-            <div className="w-[80%] m-auto mt-[2rem]">
-                <div className="flex justify-between items-center flex-wrap gap-[0.5rem]">
+            <div className="w-full max-w-6xl mx-auto px-4 sm:px-6">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
                     <h2 className="text-2xl font-bold">Booking Requests</h2>
-                    <div className="flex gap-[1rem]">
+                    <div className="w-full sm:w-auto">
                         <Input
-                            placeholder="Student name"
+                            placeholder="Search student name"
                             type="text"
                             value={searchQuery}
                             onChange={handleSearchChange}
-                            className="bg-white py-5"
+                            className="bg-white py-5 w-full"
                         />
                     </div>
                 </div>
             </div>
             
-            <div className="w-[80%] m-auto mt-4">
+            <div className="w-full max-w-6xl mx-auto px-4 sm:px-6">
                 <CustomMainComponent />
             </div>
 

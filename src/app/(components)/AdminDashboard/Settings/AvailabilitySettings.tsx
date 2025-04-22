@@ -97,15 +97,15 @@ export default function AvailabilitySettings() {
     }
 
     return (
-        <Card className="mb-8">
+        <Card className="mb-8 w-full max-w-3xl mx-auto">
             <CardHeader>
-                <CardTitle>Lesson Availability</CardTitle>
-                <CardDescription>
+                <CardTitle className="text-xl sm:text-2xl">Lesson Availability</CardTitle>
+                <CardDescription className="text-sm sm:text-base">
                     Change your business hours based on the season
                 </CardDescription>
             </CardHeader>
             <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                     <div>
                         <Label htmlFor="startTime" className="block text-sm font-medium mb-2">
                             Start Time
@@ -133,13 +133,15 @@ export default function AvailabilitySettings() {
                         />
                     </div>
                 </div>
-                <Button 
-                    onClick={saveAvailability} 
-                    className="mt-6 bg-[var(--primary-color)] text-black font-bold hover:text-white cursor-pointer"
-                    disabled={isLoading || isSaving}
-                >
-                    {isSaving ? 'Saving...' : 'Save Changes'}
-                </Button>
+                <div className="mt-6 flex justify-center sm:justify-end">
+                    <Button 
+                        onClick={saveAvailability} 
+                        className="w-full sm:w-auto bg-[var(--primary-color)] text-black font-bold hover:text-white cursor-pointer"
+                        disabled={isLoading || isSaving}
+                    >
+                        {isSaving ? 'Saving...' : 'Save Changes'}
+                    </Button>
+                </div>
             </CardContent>
         </Card>
     )
