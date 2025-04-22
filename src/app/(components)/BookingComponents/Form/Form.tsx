@@ -1019,7 +1019,7 @@ const BookingForm = () => {
                                                 >
                                                     <div className="relative w-full aspect-square mb-3">
                                                         <Image
-                                                            src={`/instructor${index}.png`}
+                                                            src={`/Instructor${index}.png`}
                                                             alt={instructor.name}
                                                             fill
                                                             className="object-cover rounded-lg"
