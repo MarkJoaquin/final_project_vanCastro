@@ -12,6 +12,12 @@ export default function AdminSidebar() {
     const [bookingRequestCount, setBookingRequestCount] = useState(0); // Estado para el contador de solicitudes
     const { loginedInstructorData } = useAdminDataContext(); // Obtén los datos del instructor logueado
     const instructorId = loginedInstructorData?.id; // ID del instructor logueado
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
+
+
+    const toggleMobileMenu = () => {
+        setIsMobileMenuOpen(!isMobileMenuOpen);
+    };
 
     useEffect(() => {
         const fetchBookingRequests = async () => {
@@ -36,12 +42,47 @@ export default function AdminSidebar() {
     }, [instructorId]); // Ejecuta el efecto cuando cambie el ID del instructor
 
     return (
-        <aside className={`${styles.sidebar} w-80 h-screen text-[#777777] fixed`}>
-            <div className="p-4 text-lg font-bold text-black border-b border-gray-700">
-                Admin Panel
+        <div className="relative z-50">
+            {/* Header mobile solo visible en pantallas pequeñas */}
+            <div className={styles.mobileHeader}>
+            <Image
+            src="/images/frame.png"
+            alt="Logo"
+            width={120}
+            height={0}
+            style={{ height: "auto" }}
+            priority
+            />
+            <button
+            className={styles.mobileMenuButton}
+            onClick={toggleMobileMenu}
+            aria-label="Toggle menu"
+            >
+            {isMobileMenuOpen ? "✖" : "☰"}
+            </button>
+        </div>
+
+        {/* Menú desplegable debajo del header */}
+        {isMobileMenuOpen && (
+            <nav className={styles.mobileDropdown}>
+            <ul className={styles.mobileNavList}>
+                <li><Link href="/admin/calendar" onClick={toggleMobileMenu} >Calendar</Link></li>
+                <li><Link href="/admin/booking-request" onClick={toggleMobileMenu}>Booking Request</Link></li>
+                <li><Link href="/admin/pending-action" onClick={toggleMobileMenu}>Pending Action</Link></li>
+                <li><Link href="/admin/lesson" onClick={toggleMobileMenu}>Lesson</Link></li>
+                <li><Link href="/admin/student" onClick={toggleMobileMenu}>Student</Link></li>
+                <li><Link href="/admin/settings" onClick={toggleMobileMenu}>Settings</Link></li>
+            </ul>
+            </nav>
+        )}
+
+        <aside className={`${styles.sidebar} ${isMobileMenuOpen ? styles.open : ''} w-80 h-screen text-[#777777] fixed`}>
+            <div className={`${styles.sidebarhead} "p-4 text-lg font-bold text-black border-b border-gray-700"`}>
+            <Image className={styles.adminLogo} src="/images/frame.png" alt="Logo" width={150} height={0} style={{height: "auto"}} priority />
             </div>
-            <nav className="mt-4">
-                <ul className="space-y-2">
+
+            <nav className= {`${styles.nav}"mt-4"`}>
+                <ul className={`${styles.sideBarLinks} "space-y-2"`}>
                     <li className={styles.link}>
                         <Link
                             href="/admin/calendar"
@@ -215,5 +256,6 @@ export default function AdminSidebar() {
                 </ul>
             </div>
         </aside>
+    </div>
     );
 }

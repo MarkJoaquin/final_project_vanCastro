@@ -44,3 +44,103 @@
     color: black; 
     font-weight: 700;
 }
+
+.adminLogo{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media screen and (max-width: 480px) {
+    .sidebar {
+        transform: translateX(100%); /* Esconde a la derecha */
+        position: fixed;
+        right: 0;
+        top: 0;
+        width: 100%;
+    }
+    
+    .sidebarhead{
+        border: none; 
+    }
+
+    .adminLogo{
+        display: none;
+        
+    }
+
+    .mobileHeader{
+        display: flex;
+        align-items: center;
+        padding: 1rem;
+        justify-content: space-between;
+    }
+  
+    .open {
+      transform: translateX(0%);
+    }
+  
+    .mobileMenuButton {
+        display: block;
+        z-index: 60; /* Encima del sidebar */
+        background: none;
+        border: none;
+        font-size: 2rem;
+        cursor: pointer;
+        color: #333;
+    }
+
+    .activeLink{
+        padding: 0.25rem;
+    }
+
+    .sideBarLinks {
+        flex-direction: column;
+        background-color: rgb(20, 18, 12);
+        padding: 1rem;
+        color: white;
+        gap: 0.35rem;
+
+    }
+
+    
+
+  .sideBarLinks.open{
+    display: flex;
+    padding-left: 1rem; /* Alineación con el logo */
+    padding-right: 1rem;  
+    margin-top: 1rem;
+  }
+
+}
+  
+
+  @media screen and (min-width: 481px) and (max-width: 768px) {
+    .sidebar {
+      transform: translateX(-100%);
+      position: fixed;
+      width: 70%;
+      height: 100vh;
+    }
+  
+    .open {
+      transform: translateX(0%);
+    }
+  
+    .mobileMenuButton {
+      display: block;
+    }
+  }
+  
+  @media (min-width: 769px) {
+    .sidebar {
+      transform: translateX(0%);
+      position: fixed;
+      width: 20rem;
+      height: 100vh;
+    }
+  
+    .mobileMenuButton {
+      display: none;
+    }
+  }

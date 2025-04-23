@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import AddNewLessonModal from "../Modals/AddNewLessonModal";
+import styles from "../LessonList/LessonList.module.css"; // Importing the CSS module
 
 interface ConfirmedLesson {
     id: string;
@@ -251,7 +252,7 @@ export default function LessonList() {
 
   // Componente principal
   return (
-    <div className="w-full">
+    <div className={`${styles.lessonComponent}"w-full"`}>
       <div className="w-[80%] m-auto mt-[2rem]">
         <div className="flex justify-between items-center flex-wrap gap-[0.5rem]">
           <h2 className="text-2xl font-bold">Confirmed Lessons</h2>
