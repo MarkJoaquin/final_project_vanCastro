@@ -6,12 +6,11 @@
         font-size: 1rem !important;
         font-weight: 600 !important;
     }
-    .buttonAction{
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-        width: 6rem;
+    .message{
+        font-size: 1rem !important;
+        font-weight: 600 !important;
     }
+   
 }
 
 @media screen and (min-width: 481px) and (max-width: 768px){

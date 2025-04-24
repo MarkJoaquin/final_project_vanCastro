@@ -33,6 +33,11 @@
         padding: 0.2rem;
         gap: 2rem;
     }
+
+    .subtitle{
+        font-size: 0.85rem !important;
+        font-weight: 500 !important;
+    }
 }
 
 @media screen and (min-width: 481px) and (max-width: 768px){
@@ -41,8 +46,4 @@
         font-size: 1.15rem !important;
         font-weight: 600 !important;
     }
-}
-
-@media (min-width: 769px) and (max-width: 1279px){
-
 }

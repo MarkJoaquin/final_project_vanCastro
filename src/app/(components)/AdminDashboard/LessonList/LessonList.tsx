@@ -241,25 +241,25 @@ export default function LessonList() {
             <AccordionContent className="bg-gray-50 px-6 py-4 rounded-b-md">
               <div className={`${styles.lessonDetails} grid grid-cols-2 gap-4 `}>
                 <div>
-                    <h4 className={`${styles.title}"font-semibold mb-1"`}>Lesson Details</h4>
-                    <p><span className="text-gray-600">Plan:</span> {lesson.plan}</p>
-                    <p><span className="text-gray-600">Duration:</span> {lesson.duration} minutes</p>
-                    <p><span className="text-gray-600">Price:</span> ${lesson.price}</p>
-                    <p><span className="text-gray-600">Status:</span> {lesson.status}</p>
-                    <p><span className="text-gray-600">Payment Status:</span> {lesson.paymentStatus}</p>
+                    <h4 className="font-semibold mb-1">Lesson Details</h4>
+                    <p className={styles.subtitle}><span className="text-gray-600">Plan:</span> {lesson.plan}</p>
+                    <p className={styles.subtitle}><span className="text-gray-600">Duration:</span> {lesson.duration} minutes</p>
+                    <p className={styles.subtitle}><span className="text-gray-600">Price:</span> ${lesson.price}</p>
+                    <p className={styles.subtitle}><span className="text-gray-600">Status:</span> {lesson.status}</p>
+                    <p className={styles.subtitle}><span className="text-gray-600">Payment Status:</span> {lesson.paymentStatus}</p>
                     {lesson.licenseClass && (
-                      <p><span className="text-gray-600">License Class:</span> {getLicenseClassName(lesson.licenseClass)}</p>
+                      <p className={styles.subtitle}><span className="text-gray-600">License Class:</span> {getLicenseClassName(lesson.licenseClass)}</p>
                     )}
                 </div>
                 <div>
                   <h4 className="font-semibold mb-1">Location</h4>
-                  <p>{lesson.location?.name || "No location"}</p>
+                  <p className={styles.subtitle}>{lesson.location?.name || "No location"}</p>
                   {/* <p>{lesson.location?.city || "No city"}</p> */}
                   
                   <h4 className="font-semibold mt-3 mb-1">Additional Information</h4>
-                  <p><span className="text-gray-600">Tracking Number:</span> {lesson.trackingNumber}</p>
+                  <p className={styles.subtitle}><span className="text-gray-600">Tracking Number:</span> {lesson.trackingNumber}</p>
                   {lesson.paymentMethod && (
-                    <p><span className="text-gray-600">Payment Method:</span> {lesson.paymentMethod}</p>
+                    <p className={styles.subtitle}><span className="text-gray-600">Payment Method:</span> {lesson.paymentMethod}</p>
                   )}
                 </div>
               </div>

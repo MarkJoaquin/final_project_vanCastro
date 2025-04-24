@@ -132,7 +132,7 @@
       position: fixed;
       right: 0;
       top: 0;
-      width: 50%;
+      width: 60%;
       transition: transform 0.3s ease-in-out;
       background-color: white;
       z-index: 50;
@@ -169,6 +169,8 @@
 
   .activeLink{
       padding: 0.25rem;
+      width: 15rem ;
+      
   }
 
   .sideBarLinks {
@@ -201,6 +203,10 @@
 
   .link{
     font-size: 1rem !important;
+  }
+
+  .active{
+    width: 15rem;
   }
 }
   

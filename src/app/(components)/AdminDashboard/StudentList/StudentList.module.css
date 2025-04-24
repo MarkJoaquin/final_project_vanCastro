@@ -10,6 +10,12 @@
     .studentDetail{
         padding: 12px ;
     }
+
+    .subtitle{
+        font-size: 0.85rem !important;
+        font-weight: 500 !important;
+    }
+
 }
 
 @media screen and (min-width: 481px) and (max-width: 768px){

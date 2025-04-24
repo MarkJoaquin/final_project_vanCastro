@@ -288,7 +288,7 @@ export default function LessonRequests() {
         }
         
         if (filteredRequests.length === 0) {
-            return <p className="text-center py-4">No booking requests to display</p>;
+            return <p className={`${styles.message} text-center py-4 `}>No booking requests to display</p>;
         }
         
         const groupedRequests = groupRequestsBySection();
@@ -319,7 +319,7 @@ export default function LessonRequests() {
                         </AccordionTrigger>
                         
                         <AccordionContent className="bg-gray-50 px-6 py-4 rounded-b-md">
-                            <div className="grid grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <h4 className="font-semibold mb-1">Lesson Details</h4>
                                     <p><span className="text-gray-600">Plan:</span> {request.lessonPlan}</p>
@@ -342,10 +342,10 @@ export default function LessonRequests() {
                                         <p><span className="text-gray-600">Payment Method:</span> {request.paymentMethod}</p>
                                     )}
                                     
-                                    <div className={`${styles.buttonAction} mt-4 flex space-x-3`}>
+                                    <div className= "mt-4 flex space-x-3">
                                         <Button 
                                             onClick={() => handleAcceptRequest(request.id)} 
-                                            className={`${styles.acceptButton}"bg-[#FFCE47] text-black hover:bg-amber-400 cursor-pointer"`}
+                                            className="bg-[#FFCE47] text-black hover:bg-amber-400 cursor-pointer"
                                             disabled={isLoading}
                                         >
                                             {isLoading ? "Processing..." : "Accept"}

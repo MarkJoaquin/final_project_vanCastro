@@ -134,3 +134,19 @@
   }
 } 
   
+
+  @media screen and (min-width: 481px) and (max-width: 768px){
+    h2{
+      font-size: 1.3rem !important;
+    }
+  
+    p{
+      font-size: 1.1rem !important;
+      font-weight: 600;
+    }
+  
+    .total-number {
+      font-size: 1.02rem !important;
+      font-weight: 600;
+    }
+  }

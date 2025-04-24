@@ -151,24 +151,25 @@ export default function StudentList() {
                     <div className="grid grid-cols-1 md:grid-cols-2  gap-6">
                       {/* Columna 1 - Detalles generales */}
                       <div>
-                        <p><strong>Plan:</strong> {lesson.plan}</p>
-                        <p><strong>Date:</strong> {formatLessonDate(lesson)}</p>
-                        <p><strong>Time:</strong> {lesson.startTime} - {lesson.endTime}</p>
-                        <p><strong>Duration:</strong> {calculateClassDuration(lesson.startTime, lesson.endTime)} minutes</p>
-                        <p><strong>Status:</strong> {lesson.status}</p>
-                        <p><strong>License Class:</strong> {getLicenseClassName(lesson.licenseClass)}</p>
+                      <h4 className="font-semibold mb-1">Student Details</h4>
+                        <p className={styles.subtitle}><strong>Plan:</strong> {lesson.plan}</p>
+                        <p className={styles.subtitle}><strong>Date:</strong> {formatLessonDate(lesson)}</p>
+                        <p className={styles.subtitle}><strong>Time:</strong> {lesson.startTime} - {lesson.endTime}</p>
+                        <p className={styles.subtitle}><strong>Duration:</strong> {calculateClassDuration(lesson.startTime, lesson.endTime)} minutes</p>
+                        <p className={styles.subtitle}><strong>Status:</strong> {lesson.status}</p>
+                        <p className={styles.subtitle}><strong>License Class:</strong> {getLicenseClassName(lesson.licenseClass)}</p>
                       </div>
 
                       {/* Columna 2 - Información adicional */}
                       <div>
                         <h4 className="font-semibold mb-1">Location</h4>
-                        <p>{lesson.location?.name || "No location"}</p>
+                        <p className={styles.subtitle}>{lesson.location?.name || "No location"}</p>
                         {/* <p>{lesson.location?.city || "No city"}</p> */}
 
                         <h4 className="font-semibold mt-4 mb-1">Additional Information</h4>
-                        <p><span className="text-gray-600">Tracking Number:</span> {lesson.trackingNumber}</p>
+                        <p className={styles.subtitle}><span className="text-gray-600">Tracking Number:</span> {lesson.trackingNumber}</p>
                         {lesson.paymentMethod && (
-                          <p><span className="text-gray-600">Payment Method:</span> {lesson.paymentMethod}</p>
+                          <p className={styles.subtitle}><span className="text-gray-600">Payment Method:</span> {lesson.paymentMethod}</p>
                         )}
                       </div>
                     </div>
