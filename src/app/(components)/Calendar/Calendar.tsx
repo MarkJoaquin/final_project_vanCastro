@@ -7,6 +7,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import { useSession } from "next-auth/react";
 import { formatLessons } from "@/lib/formatLessons";
 import "./Calendar.css"; // Importa tu CSS para el calendario
+
 // import { format } from "path";
 
 // import {getInstructorLessonsByEmail} from "@/app/api/lessons/confirmed/route"
@@ -78,7 +79,7 @@ export default function AdminCalendar() {
 
   return (
     <div className="p-4">
-      <h2 className="text-xl font-bold mb-4">Lessons Calendar</h2>
+      <h2 className= "text-xl font-bold mb-4">Lessons Calendar</h2>
       <div className="h-[70vh] relative">
         <Calendar
           localizer={localizer}

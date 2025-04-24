@@ -11,7 +11,7 @@ export default function RootLayout({
   return (<>
     <AdminDataContextProvider>
       <AdminSidebar/>
-      <div className={`${styles.layoutDiv}"pl-4 pt-16 md:ml-80 md:pt-0 flex-1"`}>
+      <div className={`${styles.layoutDiv} pl-4 pt-16 md:ml-80 md:pt-16 flex-1`}>
         <AdminNav/>
         {children}
       </div>

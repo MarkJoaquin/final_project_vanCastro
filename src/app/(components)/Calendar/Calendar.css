@@ -115,3 +115,22 @@
 .rbc-row-segment {
   border: none;
 }
+
+
+@media screen and (max-width: 480px){
+  h2{
+    font-size: 1.1rem !important;
+  }
+
+
+  p{
+    font-size: 1rem !important;
+    font-weight: 600;
+  }
+
+  .total-number {
+    font-size: 1rem !important;
+    font-weight: 600;
+  }
+} 
+  

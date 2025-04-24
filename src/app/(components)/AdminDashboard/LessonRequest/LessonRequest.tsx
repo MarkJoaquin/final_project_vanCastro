@@ -12,6 +12,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
+import styles from "../LessonRequest/LessonRequest.module.css";
+
 
 interface LessonRequest {
     id: string;
@@ -340,10 +342,10 @@ export default function LessonRequests() {
                                         <p><span className="text-gray-600">Payment Method:</span> {request.paymentMethod}</p>
                                     )}
                                     
-                                    <div className="mt-4 flex space-x-3">
+                                    <div className={`${styles.buttonAction} mt-4 flex space-x-3`}>
                                         <Button 
                                             onClick={() => handleAcceptRequest(request.id)} 
-                                            className="bg-[#FFCE47] text-black hover:bg-amber-400 cursor-pointer"
+                                            className={`${styles.acceptButton}"bg-[#FFCE47] text-black hover:bg-amber-400 cursor-pointer"`}
                                             disabled={isLoading}
                                         >
                                             {isLoading ? "Processing..." : "Accept"}
@@ -378,7 +380,7 @@ export default function LessonRequests() {
         <div className="w-full">
             <div className="w-[80%] m-auto mt-[2rem]">
                 <div className="flex justify-between items-center flex-wrap gap-[0.5rem]">
-                    <h2 className="text-2xl font-bold">Booking Requests</h2>
+                    <h2 className={`${styles.title} text-2xl font-bold `}>Booking Requests</h2>
                     <div className="flex gap-[1rem]">
                         <Input
                             placeholder="Student name"

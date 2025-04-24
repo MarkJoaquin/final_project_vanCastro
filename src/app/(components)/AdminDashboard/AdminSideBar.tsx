@@ -19,6 +19,12 @@ export default function AdminSidebar() {
         setIsMobileMenuOpen(!isMobileMenuOpen);
     };
 
+    const handleLinkClick = () => {
+        if (window.innerWidth < 769) {
+            setIsMobileMenuOpen(false);
+        }
+    };
+
     useEffect(() => {
         const fetchBookingRequests = async () => {
             try {
@@ -45,47 +51,36 @@ export default function AdminSidebar() {
         <div className="relative z-50">
             {/* Header mobile solo visible en pantallas pequeñas */}
             <div className={styles.mobileHeader}>
-            <Image
-            src="/images/frame.png"
-            alt="Logo"
-            width={120}
-            height={0}
-            style={{ height: "auto" }}
-            priority
-            />
-            <button
-            className={styles.mobileMenuButton}
-            onClick={toggleMobileMenu}
-            aria-label="Toggle menu"
-            >
-            {isMobileMenuOpen ? "✖" : "☰"}
-            </button>
-        </div>
+                <Image src="/images/frame.png" alt="Logo" width={120} height={0} style={{ height: "auto" }} priority />
+                <button
+                    className={styles.mobileMenuButton}
+                    onClick={toggleMobileMenu}
+                    aria-label="Toggle menu"
+                    aria-expanded={isMobileMenuOpen ? "true" : "false"}
+                    aria-controls="mobileMenu"
+                >
+                    {isMobileMenuOpen ? '✖' : '☰'}
+                </button> 
+            </div>
 
-        {/* Menú desplegable debajo del header */}
-        {isMobileMenuOpen && (
-            <nav className={styles.mobileDropdown}>
-            <ul className={styles.mobileNavList}>
-                <li><Link href="/admin/calendar" onClick={toggleMobileMenu} >Calendar</Link></li>
-                <li><Link href="/admin/booking-request" onClick={toggleMobileMenu}>Booking Request</Link></li>
-                <li><Link href="/admin/pending-action" onClick={toggleMobileMenu}>Pending Action</Link></li>
-                <li><Link href="/admin/lesson" onClick={toggleMobileMenu}>Lesson</Link></li>
-                <li><Link href="/admin/student" onClick={toggleMobileMenu}>Student</Link></li>
-                <li><Link href="/admin/settings" onClick={toggleMobileMenu}>Settings</Link></li>
-            </ul>
-            </nav>
-        )}
+            
+            {/* Overlay */}
+            {isMobileMenuOpen && (
+            <div className={styles.overlay} onClick={() => setIsMobileMenuOpen(false)}></div>
+            )}
 
+        
         <aside className={`${styles.sidebar} ${isMobileMenuOpen ? styles.open : ''} w-80 h-screen text-[#777777] fixed`}>
-            <div className={`${styles.sidebarhead} "p-4 text-lg font-bold text-black border-b border-gray-700"`}>
+            <div className={`${styles.sidebarhead} p-4 text-lg font-bold text-black border-b border-gray-700`}>
             <Image className={styles.adminLogo} src="/images/frame.png" alt="Logo" width={150} height={0} style={{height: "auto"}} priority />
             </div>
 
-            <nav className= {`${styles.nav}"mt-4"`}>
-                <ul className={`${styles.sideBarLinks} "space-y-2"`}>
+            <nav className= {`${styles.sideBarLinks}mt-4`}>
+                <ul className={`${styles.sideBarLinks} space-y-2`}>
                     <li className={styles.link}>
                         <Link
                             href="/admin/calendar"
+                            onClick={toggleMobileMenu}
                             className={`${styles.activeLink} ${
                                 pathname === "/admin/calendar" ? styles.active : ""
                             }`}
@@ -103,6 +98,7 @@ export default function AdminSidebar() {
                     <li className={styles.link}>
                         <Link
                             href="/admin/booking-request"
+                            onClick={toggleMobileMenu}
                             className={`${styles.activeLink} ${
                                 pathname === "/admin/booking-request" ? styles.active : ""
                             }`}
@@ -125,6 +121,7 @@ export default function AdminSidebar() {
                     <li className={styles.link}>
                         <Link
                             href="/admin/pending-action"
+                            onClick={toggleMobileMenu}
                             className={`${styles.activeLink} ${
                                 pathname === "/admin/pending-action" ? styles.active : ""
                             }`}
@@ -142,6 +139,7 @@ export default function AdminSidebar() {
                     <li className={styles.link}>
                         <Link
                             href="/admin/lesson"
+                            onClick={toggleMobileMenu}
                             className={`${styles.activeLink} ${
                                 pathname === "/admin/lesson" ? styles.active : ""
                             }`}
@@ -159,6 +157,7 @@ export default function AdminSidebar() {
                     <li className={styles.link}>
                         <Link
                             href="/admin/student"
+                            onClick={toggleMobileMenu}
                             className={`${styles.activeLink} ${
                                 pathname === "/admin/student" ? styles.active : ""
                             }`}
@@ -234,11 +233,12 @@ export default function AdminSidebar() {
             </nav>
 
             {/* Settings link at the bottom */}
-            <div className="absolute bottom-4 w-full">
+            <div className={`${styles.settings} absolute bottom-4 w-full `}>
                 <ul>
                     <li className={styles.link}>
                         <Link
                             href="/admin/settings"
+                            onClick={toggleMobileMenu}
                             className={`${styles.activeLink} ${
                                 pathname === "/admin/settings" ? styles.active : ""
                             }`}
