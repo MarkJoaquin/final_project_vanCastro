@@ -1,4 +1,5 @@
 import AvailabilitySettings from "@/app/(components)/AdminDashboard/Settings/AvailabilitySettings"
+import InstructorSetting from "../[id]/page"
 
 export default function SettingsPage() {
 
@@ -8,6 +9,7 @@ export default function SettingsPage() {
                 <h1 className="text-3xl font-bold mb-8">Settings</h1>
                 
                 <AvailabilitySettings />
+                <InstructorSetting/>
                 
                 {/* Aquí se pueden agregar más secciones de configuración en el futuro */}
             </div>

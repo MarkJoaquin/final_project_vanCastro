@@ -34,7 +34,7 @@ export default function AdminNav(){
             className="p-2 rounded-full hover:bg-gray-100 transition-colors"
             title="Profile Settings"
           >
-            {loginedInstructorData?.profileImageUrl ? (
+{/*             {loginedInstructorData?.profileImageUrl ? (
               <Image
                 src={loginedInstructorData.profileImageUrl}
                 alt="Profile"
@@ -44,7 +44,7 @@ export default function AdminNav(){
               />
             ) : (
               <User className="h-5 w-5 text-gray-700" />
-            )}
+            )} */}
           </Link>
           
           {/* Settings icon */}
