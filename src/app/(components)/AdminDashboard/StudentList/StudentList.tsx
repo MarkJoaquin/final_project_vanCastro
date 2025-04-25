@@ -3,9 +3,9 @@
 import { useEffect, useState } from "react";
 import AdminTemplate from "../Template/AdminTemplate";
 import { useAdminDataContext } from "@/app/(context)/adminContext";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion" ;
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import styles from "./StudentList.module.css";
-import { Input } from "@/components/ui/input" ;
+import { Input } from "@/components/ui/input";
 
 interface ConfirmedLesson {
   id: string;
@@ -42,6 +42,7 @@ export default function StudentList() {
   const instructorId = loginedInstructorData?.id;
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [planLessonsMap, setPlanLessonsMap] = useState<Record<string, number>>({});
 
   const fetchConfirmedLessons = async () => {
     setIsLoading(true);
@@ -76,15 +77,38 @@ export default function StudentList() {
     }
   };
 
+  const fetchTotalLessonsPerPlan = async () => {
+    try {
+      const res = await fetch("/api/lessons/lessonsCount");
+      if (!res.ok) {
+        console.error("Failed to fetch total lessons per plan");
+        return;
+      }
+      const data = await res.json();
+
+      // Convert to an object like { "Plan A": 10, "Plan B": 8 }
+      const map: Record<string, number> = {};
+      data.forEach((plan: { name: string; lessons: number }) => {
+        map[plan.name.trim().toLowerCase()] = plan.lessons;
+      });
+
+      setPlanLessonsMap(map);
+      console.log("Plan lessons map:", map);
+    } catch (error) {
+      console.error("Error fetching total lessons per plan:", error);
+    }
+  };
+
   useEffect(() => {
     fetchConfirmedLessons();
     fetchLicenseClasses();
+    fetchTotalLessonsPerPlan();
   }, []);
 
   const assignedLessons = confirmedLessons
     .filter((lesson) => {
       const matchesInstructor = lesson.instructorId === instructorId;
-      const matchesSearch = searchQuery.trim() === "" || 
+      const matchesSearch = searchQuery.trim() === "" ||
         lesson.student.name.toLowerCase().includes(searchQuery.toLowerCase());
       return matchesInstructor && matchesSearch;
     });
@@ -111,18 +135,26 @@ export default function StudentList() {
     return found ? found.name : id;
   };
 
+  // Function to get pending lessons count for a student based on their plan
+  const getPendingLessonsCount = (lessons: ConfirmedLesson[], planName: string, totalLessons: number): number => {
+    const completedLessons = lessons.filter(
+      (lesson) => lesson.plan.toLowerCase() === planName.toLowerCase() && lesson.status.toLowerCase() === "confirmed"
+    ).length;
+    return totalLessons - completedLessons;
+  };
+
   const CustomMainComponent = () => {
     if (isLoading) {
       return <p className="text-center py-4">Loading confirmed students...</p>;
     }
-  
+
     if (assignedLessons.length === 0) {
       return <p className="text-center py-4">No confirmed students to display</p>;
     }
-  
+
     const groupLessonsByStudent = () => {
       const grouped: { [studentName: string]: ConfirmedLesson[] } = {};
-  
+
       assignedLessons.forEach((lesson) => {
         const name = lesson.student.name;
         if (!grouped[name]) {
@@ -130,12 +162,12 @@ export default function StudentList() {
         }
         grouped[name].push(lesson);
       });
-  
+
       return grouped;
     };
-  
+
     const groupedLessons = groupLessonsByStudent();
-  
+
     return (
       <div className="w-full space-y-6">
         <Accordion type="multiple" className="w-full space-y-4">
@@ -144,39 +176,36 @@ export default function StudentList() {
               <AccordionTrigger className="flex justify-between px-4 py-3 bg-white rounded-md shadow-sm hover:shadow-md transition-all cursor-pointer">
                 {studentName}
               </AccordionTrigger>
-              <AccordionContent className={`${styles.studentDetail} bg-gray-50 px-6 py-4 rounded-b-md `}>
-                <div className="space-y-6 border-gray-200">
-                  {lessons.map((lesson, index) => (
-                    <div key={index} className= "bg-white p-6 rounded-md shadow-sm border-b border-gray-200 last:border-b-0">
-                    <div className="grid grid-cols-1 md:grid-cols-2  gap-6">
-                      {/* Columna 1 - Detalles generales */}
-                      <div>
-                      <h4 className="font-semibold mb-1">Student Details</h4>
-                        <p className={styles.subtitle}><strong>Plan:</strong> {lesson.plan}</p>
-                        <p className={styles.subtitle}><strong>Date:</strong> {formatLessonDate(lesson)}</p>
-                        <p className={styles.subtitle}><strong>Time:</strong> {lesson.startTime} - {lesson.endTime}</p>
-                        <p className={styles.subtitle}><strong>Duration:</strong> {calculateClassDuration(lesson.startTime, lesson.endTime)} minutes</p>
-                        <p className={styles.subtitle}><strong>Status:</strong> {lesson.status}</p>
-                        <p className={styles.subtitle}><strong>License Class:</strong> {getLicenseClassName(lesson.licenseClass)}</p>
-                      </div>
+              <AccordionContent className="bg-gray-50 px-6 py-4 rounded-b-md">
+              {lessons.map((lesson, index) => {
+                const normalizedPlanName = lesson.plan.trim().toLowerCase();
+                const total = planLessonsMap[normalizedPlanName] ?? 0;
 
-                      {/* Columna 2 - Información adicional */}
-                      <div>
-                        <h4 className="font-semibold mb-1">Location</h4>
-                        <p className={styles.subtitle}>{lesson.location?.name || "No location"}</p>
-                        {/* <p>{lesson.location?.city || "No city"}</p> */}
-
-                        <h4 className="font-semibold mt-4 mb-1">Additional Information</h4>
-                        <p className={styles.subtitle}><span className="text-gray-600">Tracking Number:</span> {lesson.trackingNumber}</p>
-                        {lesson.paymentMethod && (
-                          <p className={styles.subtitle}><span className="text-gray-600">Payment Method:</span> {lesson.paymentMethod}</p>
-                        )}
-                      </div>
+                const completed = lessons.filter(
+                  (l) =>
+                    l.plan.trim().toLowerCase() === normalizedPlanName &&
+                    l.status.toLowerCase() === "confirmed"
+                ).length;
+                  return (
+                    <div key={index} className="bg-gray-50 px-6 py-4 rounded-b-md">
+                      <p><strong>Plan:</strong> {lesson.plan}</p>
+                      <p><strong>Date:</strong> {formatLessonDate(lesson)}</p>
+                      <p><strong>Time:</strong> {lesson.startTime} - {lesson.endTime}</p>
+                      <p><strong>Duration:</strong> {calculateClassDuration(lesson.startTime, lesson.endTime)} minutes</p>
+                      <p><strong>Status:</strong> {lesson.status}</p>
+                      <p><strong>License Class:</strong> {getLicenseClassName(lesson.licenseClass)}</p>
+                      <p>
+                        <strong>Lessons completed: </strong>
+                        {completed} of {total}
+                      </p>
+                      <p>
+                        <strong>Lessons pending: </strong>
+                        {total - completed}
+                      </p>
                     </div>
-                  </div>
-                ))}
-              </div>
-            </AccordionContent>
+                  );
+                })}
+              </AccordionContent>
             </AccordionItem>
           ))}
         </Accordion>
