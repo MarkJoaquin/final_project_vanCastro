@@ -53,6 +53,7 @@ export default function LessonList() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [showAddLessonModal, setShowAddLessonModal] = useState<boolean>(false);
+  const [instructors, setInstructors] = useState<{ id: string; name: string }[]>([]); // Estado para los instructores
   const { loginedInstructorData } = useAdminDataContext();
   const instructorId = loginedInstructorData?.id;
 
@@ -75,8 +76,37 @@ export default function LessonList() {
     }
   };
 
+  const fetchInstructors = async () => {
+    try {
+      const res = await fetch("/api/instructors"); // Ruta de la API de instructores
+      if (!res.ok) {
+        throw new Error("Failed to fetch instructors");
+      }
+      const data = await res.json();
+      setInstructors(data); // Guardamos los instructores en el estado
+    } catch (error) {
+      console.error("Error fetching instructors:", error);
+    }
+  };
+
+  const getInstructorName = (id: string): string => {
+    const instructor = instructors.find((instructor) => instructor.id === id);
+    return instructor ? instructor.name : "Unknown Instructor";
+  };
+
+  // Función para asignar colores al nombre del instructor
+  const getInstructorColor = (instructorName: string) => {
+    switch (instructorName) {
+      case "Andresa":
+        return "bg-[#db7b72] text-white"; 
+      case "Anderson":
+        return "bg-[#449ce7] text-white"; 
+    }
+  };
+
   useEffect(() => {
     fetchConfirmedLessons();
+    fetchInstructors(); // Llamamos a la función para obtener los instructores
   }, []);
 
   // Filtra las lecciones asignadas al instructor logeado y por nombre de estudiante si hay búsqueda
@@ -229,6 +259,14 @@ export default function LessonList() {
                   {lesson.licenseClass && (
                     <p><span className="text-gray-600">License Class:</span> {lesson.licenseClass}</p>
                   )}
+                  <p>
+                    <span className="text-gray-600 mr-1">Instructor:</span>
+                    <span
+                      className={`px-2 py-1 rounded text-xs font-medium ${getInstructorColor(getInstructorName(lesson.instructorId))}`}
+                    >
+                      {getInstructorName(lesson.instructorId)}
+                    </span>
+                  </p>
                   
                   {/* Student ID Verification Section */}
                   <h4 className="font-semibold mt-3 mb-1">Student ID Verification</h4>
