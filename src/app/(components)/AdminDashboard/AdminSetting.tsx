@@ -167,7 +167,7 @@ export default function AdminSetting() {
 
           {editPass &&
             <>
-              <div className='border-1 border-black rounded-md'>
+              <div className='max-w-3xl m-auto border-1 border-black rounded-md'>
                 <div className='px-[1rem] py-[0.5rem] bg-[#FFCE47] border-dashed border-b-1 border-black rounded-t-md'>
                   <p className='font-bold'>Change the Password</p>
                   {isPassNotFilled.length > 0 && 

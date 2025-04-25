@@ -42,6 +42,7 @@ interface LessonRequest {
     email?: string;
     hasLicense?: boolean;
     learnerPermitUrl?: string;
+    phone?: string; // Added phone property
     licenses?: {
       licenseNumber: string;
       licenseType: string;
@@ -532,7 +533,7 @@ export default function LessonRequests() {
                                     <p>
                                         <span className="text-gray-600">Status: </span>
                                         <span className={`px-2 py-1 rounded text-xs font-medium ${getStatusColor(request.lessonStatus)}`}>
-                                           {request.lessonStatus === "AWAITING_PAYMENT" ? "AWAITING FOR PAYMENT" : request.lessonStatus}
+                                            {request.lessonStatus === "AWAITING_PAYMENT" ? "AWAITING FOR PAYMENT" : request.lessonStatus}
                                         </span>
                                     </p>
                                     {request.licenseClass && (
@@ -715,8 +716,8 @@ export default function LessonRequests() {
                                 setConfirmDialogOpen(false);
                             }}
                             className={confirmButtonText === "Decline" ? "bg-red-500 hover:bg-red-600" : 
-                                     confirmButtonText === "Send Invoice" ? "bg-blue-500 hover:bg-blue-600" : 
-                                     "bg-[#FFCE47] hover:bg-amber-400 text-black"}
+                                    confirmButtonText === "Send Invoice" ? "bg-blue-500 hover:bg-blue-600" : 
+                                    "bg-[#FFCE47] hover:bg-amber-400 text-black"}
                         >
                             {confirmButtonText === "Accept" ? (
                                 <>
