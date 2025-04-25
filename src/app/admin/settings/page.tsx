@@ -1,7 +1,16 @@
+"use client"
+
 import AvailabilitySettings from "@/app/(components)/AdminDashboard/Settings/AvailabilitySettings"
 import InstructorSetting from "../[id]/page"
+import useInitialPassStore from "@/store/initialPass"
 
 export default function SettingsPage() {
+    const {isInitialPass, changeIsInitialPassStatus} = useInitialPassStore();
+
+    console.log("isInitialPass",isInitialPass)
+    if(isInitialPass){
+        alert(`Your Password is same as email,\n Please change your Password!!`)
+    }
 
     return (
         <div className="min-h-screen p-4">
