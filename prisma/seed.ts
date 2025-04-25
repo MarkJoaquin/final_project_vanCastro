@@ -378,13 +378,20 @@ async function main() {
     data: { fromCity: 'Burnaby', toCity: 'Vancouver', time: 30 }
   })
 
-  /* Localities */
+  /* Localities - Specific locations */
 
   await prisma.location.createMany({
     data: [
-      { name: 'North Vancouver', address: '2555 25th St', city: 'North Vancouver', zip: 'V5A 1A1' },
-      { name: 'Vancouver', address: '2555 25th St', city: 'Vancouver', zip: 'V5A 1A1' },
-      { name: 'Burnaby', address: '2555 25th St', city: 'Burnaby', zip: 'V5A 1A1' }
+      // Burnaby locations
+      { name: 'Burnaby - Lougheed Highway', address: '3880 Lougheed Hwy', city: 'Burnaby', zip: 'V5C 6N2' },
+      { name: 'Burnaby - Wayburne Drive', address: '4399 Wayburne Dr', city: 'Burnaby', zip: 'V5G 3X7' },
+      
+      // North Vancouver locations
+      { name: 'North Vancouver - Marine Drive', address: '1331 Marine Drive', city: 'North Vancouver', zip: 'V7P 1T4' },
+      
+      // Vancouver locations
+      { name: 'Vancouver - McDonald St', address: '4126 McDonald St', city: 'Vancouver', zip: 'V6L 2P1' },
+      { name: 'Vancouver - Kingsway', address: '999 Kingsway', city: 'Vancouver', zip: 'V5V 3C4' }
     ]
   })
 

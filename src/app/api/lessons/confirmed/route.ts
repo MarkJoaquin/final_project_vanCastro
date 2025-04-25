@@ -39,6 +39,20 @@ export async function GET() {
           student: {
             select: {
               name: true,
+              phone: true,  // Incluir el número de teléfono
+              hasLicense: true,
+              learnerPermitUrl: true,
+              licenses: {
+                select: {
+                  licenseNumber: true,
+                  licenseType: true,
+                  expirationDate: true,
+                },
+                orderBy: {
+                  createdAt: 'desc'
+                },
+                take: 1
+              },
             },
           },
           location: {
@@ -113,12 +127,20 @@ export async function POST(req: Request) {
             lessons: {
                 where: { status: "CONFIRMED" },
                 include: {
-                    student: true,
-                    location: true,
-                },
-            },
-        },
-    });
+                    student: {
+                      include: {
+                        licenses: {
+                          orderBy: {
+                            createdAt: 'desc'
+                          },
+                          take: 1
+                        }
+                      }
+                    }
+                }
+            }
+        }
+    })
 
     return NextResponse.json(instructor?.lessons ?? []);
 }

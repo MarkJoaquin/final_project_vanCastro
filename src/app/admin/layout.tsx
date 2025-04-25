@@ -8,16 +8,19 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (<>
+  return (
     <AdminDataContextProvider>
       <LessonProvider>
-      <AdminSidebar/>
-      <div className="ml-80 flex-1 pl-4">
-        <AdminNav/>
-        {children}
+      <div className="flex flex-col lg:flex-row min-h-screen bg-gray-50">
+        <AdminSidebar />
+        <div className="flex-1 transition-all duration-300 p-4 pt-16 lg:pt-4">
+          <AdminNav />
+          <main className="mt-4">
+            {children}
+          </main>
+        </div>
       </div>
       </LessonProvider>
     </AdminDataContextProvider>
-  </>
   );
 }

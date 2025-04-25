@@ -1,0 +1,128 @@
+.dropdownContainer {
+  position: relative;
+  width: 100%;
+}
+
+.dropdownButton {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 10px 14px;
+  background-color: var(--form-input-background, white);
+  border: 1px solid var(--form-input-border, #e2e2e2);
+  color: var(--form-input-text, #333);
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.dropdownButton:focus {
+  outline: none;
+  border-color: #ffce47;
+  box-shadow: 0 0 0 3px rgba(255, 206, 71, 0.2);
+}
+
+.dropdownButton.error {
+  border-color: #f44336;
+}
+
+.chevron {
+  transition: transform 0.2s ease;
+}
+
+.chevron.open {
+  transform: rotate(180deg);
+}
+
+.dropdownContent {
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 0;
+  width: 100%;
+  max-height: 350px;
+  display: flex;
+  background-color: white;
+  border: 1px solid #e2e2e2;
+  border-radius: 6px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.citiesColumn {
+  width: 35%;
+  border-right: 1px solid #e2e2e2;
+  max-height: 350px;
+  overflow-y: auto;
+}
+
+.locationsColumn {
+  width: 65%;
+  max-height: 350px;
+  overflow-y: auto;
+}
+
+.cityItem {
+  padding: 12px 15px;
+  cursor: pointer;
+  transition: background-color 0.15s;
+  font-weight: 500;
+}
+
+.cityItem:hover, .cityItem.active {
+  background-color: #f5f5f5;
+  color: #000;
+}
+
+.locationItem {
+  padding: 12px 15px;
+  cursor: pointer;
+  transition: background-color 0.15s;
+  border-bottom: 1px solid #f5f5f5;
+}
+
+.locationItem:last-child {
+  border-bottom: none;
+}
+
+.locationItem:hover {
+  background-color: #f9f9f9;
+}
+
+.locationItem.selected {
+  background-color: #FFF9E6;
+}
+
+.locationName {
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.locationAddress {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.errorMessage {
+  margin-top: 5px;
+  color: #f44336;
+  font-size: 0.8rem;
+}
+
+@media (max-width: 768px) {
+  .dropdownContent {
+    flex-direction: column;
+    max-height: 400px;
+  }
+
+  .citiesColumn, .locationsColumn {
+    width: 100%;
+    max-height: 200px;
+  }
+
+  .citiesColumn {
+    border-right: none;
+    border-bottom: 1px solid #e2e2e2;
+  }
+}

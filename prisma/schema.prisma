@@ -41,6 +41,7 @@ model Student {
   country        String?
   hasLicense     Boolean?
   hasRoadTest    Boolean?
+  learnerPermitUrl String?
   createdAt      DateTime         @default(now())
   updatedAt      DateTime         @updatedAt
 
