@@ -99,6 +99,19 @@ export default function StudentList() {
     }
   };
 
+  const updateLessonStatus = async (lessonId: string) => {
+    try {
+      const res = await fetch(`/api/lessons/${lessonId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: "completed" }),
+      });
+      if (!res.ok) throw new Error("Failed to update status");
+    } catch (err) {
+      console.error("Error updating lesson status:", err);
+    }
+  };
+
   useEffect(() => {
     fetchConfirmedLessons();
     fetchLicenseClasses();
@@ -168,6 +181,25 @@ export default function StudentList() {
 
     const groupedLessons = groupLessonsByStudent();
 
+    const isLessonCompletedByTime = (lesson: ConfirmedLesson): boolean => {
+      const today = new Date();
+      const lessonDateTime = new Date(`${lesson.date}T${lesson.endTime}`);
+      return lessonDateTime < today;
+    };
+
+    const updateLessonStatus = async (lessonId: string) => {
+      try {
+        const res = await fetch(`/api/lessons/${lessonId}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ status: "completed" }),
+        });
+        if (!res.ok) throw new Error("Failed to update status");
+      } catch (err) {
+        console.error("Error updating lesson status:", err);
+      }
+    };
+
     return (
       <div className="w-full space-y-6">
         <Accordion type="multiple" className="w-full space-y-4">
@@ -180,12 +212,22 @@ export default function StudentList() {
               {lessons.map((lesson, index) => {
                 const normalizedPlanName = lesson.plan.trim().toLowerCase();
                 const total = planLessonsMap[normalizedPlanName] ?? 0;
+                const lessonEndTime = new Date(`${lesson.date}T${lesson.endTime}`);
+                // Check if the lesson is completed by time
+                const now = new Date();
 
+                useEffect(() => {
+                  if (lesson.status !== "completed" && lessonEndTime < now) {
+                    updateLessonStatus(lesson.id);
+                  }
+                }, [lessonEndTime, lesson.status]);
                 const completed = lessons.filter(
                   (l) =>
                     l.plan.trim().toLowerCase() === normalizedPlanName &&
-                    l.status.toLowerCase() === "confirmed"
+                    l.status.toLowerCase() === "completed"
                 ).length;
+
+
                   return (
                     <div key={index} className="bg-gray-50 px-6 py-4 rounded-b-md">
                       <p><strong>Plan:</strong> {lesson.plan}</p>
@@ -195,11 +237,11 @@ export default function StudentList() {
                       <p><strong>Status:</strong> {lesson.status}</p>
                       <p><strong>License Class:</strong> {getLicenseClassName(lesson.licenseClass)}</p>
                       <p>
-                        <strong>Lessons completed: </strong>
+                        <strong> Completed Lessons: </strong>
                         {completed} of {total}
                       </p>
                       <p>
-                        <strong>Lessons pending: </strong>
+                        <strong>Pending Lessons : </strong>
                         {total - completed}
                       </p>
                     </div>
