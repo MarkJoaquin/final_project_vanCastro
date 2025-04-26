@@ -1,0 +1,7 @@
+.lesson-info-1,
+.lesson-info-2,
+.lesson-info-3 {
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    padding: 1rem;
+}

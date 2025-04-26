@@ -23,7 +23,7 @@ export default function AdminSidebar() {
                 const data = await res.json();
                 const bookingRequests = data.filter(
                     (request: { lessonStatus: string; instructorId: string }) =>
-                        request.lessonStatus === "REQUESTED" &&
+                        (request.lessonStatus === "REQUESTED" || request.lessonStatus === "AWAITING_PAYMENT") &&
                         request.instructorId === instructorId // Filtra por el ID del instructor logueado
                 );
                 setBookingRequestCount(bookingRequests.length); // Actualiza el contador
