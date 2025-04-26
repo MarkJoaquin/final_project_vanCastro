@@ -38,12 +38,6 @@ export default function AdminLogin() {
         password: adminLogin.password,
         redirect: false
       });
-      if(adminLogin.email===adminLogin.password){
-        console.log(true)
-        changeIsInitialPassStatus(true)
-      }else{
-        changeIsInitialPassStatus(false)
-      }
 
       console.log("Auth result:", result);
       
@@ -56,8 +50,10 @@ export default function AdminLogin() {
         console.log("email and pass",adminLogin.password,adminLogin.password)
         // Force hard navigation to /admin
         if(adminLogin.password===adminLogin.password){
+          changeIsInitialPassStatus(true)
           router.push("/admin/settings");
         }else{
+          changeIsInitialPassStatus(false)
           router.push("/admin")
         }
       }
