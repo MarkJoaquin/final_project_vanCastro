@@ -37,6 +37,10 @@ span {
     margin-bottom: 6px;
 }
 
+.footer-mail:hover {
+    color: var(--primary-color);
+}
+
 .div-social-logo {
     padding: 8px;
     background-color: var(--primary-color);

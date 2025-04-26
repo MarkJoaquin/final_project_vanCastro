@@ -26,7 +26,7 @@ export default function Footer() {
                             style={{marginRight:"1rem"}}
                         />
                         <p className="pr-3">Anderson</p>
-                        <p className="flex hover-element">+1 604-600-9173</p>
+                        <p className="flex hover-element">{SOCIAL_LINKS.phoneAnderson}</p>
                     </div>
                     <div className="footer-element contact-driver">
                         <Image
@@ -37,9 +37,11 @@ export default function Footer() {
                             style={{marginRight:"1rem"}}
                         />
                         <p className="pr-3">Andresa</p>
-                        <p className="flex hover-element">+1 778-680-5613</p>
+                        <p className="flex hover-element">{SOCIAL_LINKS.phoneAndresa}</p>
                     </div>
-                    <p className="footer-element"><span>Email:</span> Vancastrodrivingschool@gmail.com</p>
+                    <Link href={SOCIAL_LINKS.email} target="_blank" rel="noopener noreferrer">
+                        <p className="footer-element footer-mail" ><span>Email:</span> Vancastrodrivingschool@gmail.com</p>
+                    </Link>
                     <p className="footer-element"><span className="working-hours">Working hours:</span> Monday to Friday 8a.m. - 6p.m.</p>
                 </div>  
                 <div className="footer-location justify-items-start order-tablet-2">

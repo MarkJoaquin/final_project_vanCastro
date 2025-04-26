@@ -28,8 +28,8 @@ export default function ContactSection() {
                     <Phone className="h-5 w-5 text-[var(--primary-color)]" />
                   </div>
                   <div className="space-y-1">
-                    <p>Anderson +1 604-600-9173</p>
-                    <p>Andresa +1 778-680-5613</p>
+                    <p className="hover:underline cursor-pointer">Anderson {SOCIAL_LINKS.phoneAnderson}</p>
+                    <p className="hover:underline cursor-pointer">Andresa {SOCIAL_LINKS.phoneAndresa}</p>
                   </div>
                 </div>
               </div>
@@ -39,7 +39,7 @@ export default function ContactSection() {
                   <div className="flex h-10 w-10 items-center justify-center rounded-full bg-black">
                     <Mail className="h-5 w-5 text-[var(--primary-color)]" />
                   </div>
-                  <Link href="mailto:vancastrodrivingschool@gmail.com">
+                  <Link href={SOCIAL_LINKS.email} target="_blank" rel="noopener noreferrer">
                     <p className="hover:underline">
                       Vancastrodrivingschool@gmail.com
                     </p>
