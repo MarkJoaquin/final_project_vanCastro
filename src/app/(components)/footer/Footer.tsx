@@ -97,7 +97,8 @@ export default function Footer() {
                         <div className="div-social-logo flex justify-center">
                             <Link href={SOCIAL_LINKS.youtube}
                                 target="_blank"
-                                rel="noopener noreferrer">
+                                rel="noopener noreferrer"
+                                className="flex justify-center">
                                 <Image
                                     className="social-logo"
                                     src={YotubeLogo}
