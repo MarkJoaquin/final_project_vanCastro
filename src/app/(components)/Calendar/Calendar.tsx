@@ -20,7 +20,7 @@ interface CalendarEvent {
 
 export default function AdminCalendar() {
   const [events, setEvents] = useState<CalendarEvent[]>([]);
-  const [view, setView] = useState<'month' | 'day'>(Views.MONTH);
+  const [view, setView] = useState<'month' | 'day' | 'week'>(Views.MONTH);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedInstructorId, setSelectedInstructorId] = useState<string | null>(null);
   const [instructors, setInstructors] = useState<{ id: string; name: string }[]>([]);
@@ -92,8 +92,8 @@ export default function AdminCalendar() {
   };
 
   const handleViewChange = (newView: View) => {
-    if (newView === Views.MONTH || newView === Views.DAY) {
-      setView(newView as "month" | "day");
+    if (newView === Views.MONTH || newView === Views.DAY || newView === Views.WEEK) {
+      setView(newView as "month" | "day" | "week");
     }
   };
 
@@ -150,7 +150,7 @@ export default function AdminCalendar() {
           startAccessor="start"
           endAccessor="end"
           style={{ height: "100%" }}
-          views={[Views.MONTH, Views.DAY]}
+          views={[Views.MONTH, Views.WEEK, Views.DAY]}
           selectable
           eventPropGetter={(event) => {
             const className = `event-instructor-${event.instructorId}`;
