@@ -116,7 +116,7 @@ export default function AdminCalendar() {
   };
 
   return (
-    <div className="p-4">
+    <div className="p-4 calendar-container">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-bold">Lessons Calendar</h2>
         <div className="flex items-center gap-2">

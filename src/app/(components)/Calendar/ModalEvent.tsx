@@ -63,7 +63,7 @@ const ModalEvent: React.FC<ModalEventProps> = ({ lessonId, getInstructorName, on
                         </p>
                         <p>
                             <strong>Instructor:</strong>{" "}
-                            <span className={`font-medium rounded p-[2] ${instructorColorClass}`}>
+                            <span className={`font-medium rounded p-[2] px-[5] ${instructorColorClass}`}>
                                 {instructorName}
                             </span>
                         </p>

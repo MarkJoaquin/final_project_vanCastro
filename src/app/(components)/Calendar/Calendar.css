@@ -1,3 +1,7 @@
+.calendar-container {
+    padding: 0;
+}
+
 .total-lesson {
     font-size: 18px;
 }
@@ -24,6 +28,15 @@
   text-transform: uppercase;
   padding: 8px;
   border: none;
+}
+
+.rbc-toolbar-label {
+  font-size: 20px; /* Tamaño de fuente del encabezado */
+  font-weight: 600; /* Negrita */
+  color: #333; /* Color del texto del encabezado */
+  margin: 0.5rem 0;
+  background-color: rgb(234, 227, 218);
+  border-radius: 10px;
 }
 
 /* Celdas del calendario */
@@ -133,4 +146,12 @@
 /* Ocultar bordes entre las celdas */
 .rbc-row-segment {
   border: none;
+}
+
+/* Estilos responsivos para pantallas pequeñas */
+@media (max-width: 768px) {
+  /* Ajustar el tamaño del contenedor del calendario */
+  .rbc-calendar {
+    font-size: 12px; /* Reducir el tamaño de fuente */
+  }
 }
