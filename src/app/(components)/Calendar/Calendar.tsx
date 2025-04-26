@@ -117,7 +117,7 @@ export default function AdminCalendar() {
 
   return (
     <div className="p-4 calendar-container">
-      <div className="flex justify-between items-center mb-4">
+      <div className="flex justify-between items-center mb-4 title-calendar">
         <h2 className="text-xl font-bold">Lessons Calendar</h2>
         <div className="flex items-center gap-2">
           <label htmlFor="instructor-select" className="text-sm font-medium">
@@ -138,7 +138,7 @@ export default function AdminCalendar() {
           </select>
         </div>
       </div>
-      <div className="h-[70vh] relative">
+      <div className="h-[70vh] w-full block relative">
         <Calendar
           localizer={localizer}
           events={filteredLessons}
@@ -176,13 +176,13 @@ export default function AdminCalendar() {
           onClose={() => setIsModalOpen(false)}
         />
       )}
-      <div className="flex flex-col items-start mt-4 p-4 bg-gray-100 rounded-md shadow-md w-[300px]">
+      <div className="flex flex-row justify-between items-start mt-4 p-4 bg-gray-100 rounded-md shadow-md w-full">
         <p className="text-md">
           Total Lessons: <span className="font-bold">{totalLessonsAll}</span>
         </p>
-        <div className="text-md mt-2 flex flex-col items-end">
+        <div className="text-md ml-5 flex flex-row items-end">
           {Object.entries(lessonsByInstructor).map(([instructorId, count]) => (
-            <p key={instructorId}>
+            <p key={instructorId} className="ml-5">
               {getInstructorName(instructorId)}: <span className="font-bold">{count}</span>
             </p>
           ))}

@@ -1,5 +1,13 @@
 .calendar-container {
     padding: 0;
+    width: 100%;
+}
+
+.title-calendar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
 }
 
 .total-lesson {
