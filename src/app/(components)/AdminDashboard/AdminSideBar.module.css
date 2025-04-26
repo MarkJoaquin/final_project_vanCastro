@@ -55,9 +55,9 @@
   display: none;
 }
 
-@media screen and (max-width: 480px) {
+/* @media screen and (max-width: 480px) {
     .sidebar {
-        transform: translateX(100%); /* Esconde a la derecha */
+        transform: translateX(100%); 
         position: fixed;
         right: 0;
         top: 0;
@@ -109,7 +109,7 @@
 
     .sideBarLinks.open{
       display: flex;
-      padding-left: 1rem; /* Alineación con el logo */
+      padding-left: 1rem; 
       padding-right: 1rem;  
       margin-top: 5rem;
     }
@@ -128,7 +128,7 @@
 
   @media screen and (min-width: 481px) and (max-width: 768px) {
     .sidebar {
-      transform: translateX(100%); /* Esconde a la derecha */
+      transform: translateX(100%); 
       position: fixed;
       right: 0;
       top: 0;
@@ -182,7 +182,7 @@
 
   .sideBarLinks.open{
     display: flex;
-    padding-left: 1rem; /* Alineación con el logo */
+    padding-left: 1rem; 
     padding-right: 1rem;  
     margin-top: 5rem;
   }
@@ -210,4 +210,4 @@
   }
 }
   
- 
+  */
