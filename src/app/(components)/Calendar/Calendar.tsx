@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import "react-big-calendar/lib/css/react-big-calendar.css";
 import { Calendar, Views, View, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
-import "react-big-calendar/lib/css/react-big-calendar.css";
 import { formatLessons } from "@/lib/formatLessons";
 import "./Calendar.css";
 import ModalEvent from "./ModalEvent";

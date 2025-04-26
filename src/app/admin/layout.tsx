@@ -2,6 +2,8 @@ import AdminNav from "../(components)/AdminDashboard/AdminNav";
 import AdminSidebar from "../(components)/AdminDashboard/AdminSideBar";
 import { AdminDataContextProvider } from "../(context)/adminContext";
 import { LessonProvider } from "../(context)/lessonContext";
+import "react-big-calendar/lib/css/react-big-calendar.css"; 
+import "@/app/(components)/Calendar/Calendar.css"; 
 
 export default function RootLayout({
   children,
