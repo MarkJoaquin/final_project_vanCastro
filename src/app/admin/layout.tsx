@@ -1,6 +1,7 @@
 import AdminNav from "../(components)/AdminDashboard/AdminNav";
 import AdminSidebar from "../(components)/AdminDashboard/AdminSideBar";
 import { AdminDataContextProvider } from "../(context)/adminContext";
+import { LessonProvider } from "../(context)/lessonContext";
 import styles from "./layout.module.css";
 
 export default function RootLayout({
@@ -8,15 +9,19 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (<>
+  return (
     <AdminDataContextProvider>
-      <AdminSidebar/>
-      <div className={`${styles.layoutDiv} pl-4 pt-16 md:ml-80 md:pt-16 flex-1`}>
-        <AdminNav/>
-        {children}
+      <LessonProvider>
+      <div className="flex flex-col lg:flex-row min-h-screen bg-gray-50">
+        <AdminSidebar />
+        <div className="flex-1 transition-all duration-300 p-4 pt-16 lg:pt-4">
+          <AdminNav />
+          <main className="mt-4">
+            {children}
+          </main>
+        </div>
       </div>
-      
+      </LessonProvider>
     </AdminDataContextProvider>
-  </>
   );
 }

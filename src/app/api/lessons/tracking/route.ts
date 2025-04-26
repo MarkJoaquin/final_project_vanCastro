@@ -23,6 +23,20 @@ export async function GET(request: NextRequest) {
           select: {
             name: true,
             email: true,
+            learnerPermitUrl: true,
+            hasLicense: true,
+            licenses: {
+              select: {
+                licenseNumber: true,
+                licenseType: true,
+                expirationDate: true,
+                createdAt: true
+              },
+              orderBy: {
+                createdAt: 'desc'
+              },
+              take: 1
+            }
           },
         },
         instructor: {
@@ -58,6 +72,13 @@ export async function GET(request: NextRequest) {
       // Sumamos un día para corregir el problema
       lessonDate.setDate(lessonDate.getDate() + 1);
       
+      // Extraer la información de la licencia si existe
+      const licenseInfo = lesson.student.licenses && lesson.student.licenses.length > 0 ? {
+        licenseNumber: lesson.student.licenses[0].licenseNumber,
+        expiryDate: lesson.student.licenses[0].expirationDate, // Ahora usamos el campo correcto
+        licenseClass: lesson.student.licenses[0].licenseType // Usamos licenseType como la clase
+      } : null;
+
       return NextResponse.json({
         found: true,
         type: 'lesson',
@@ -78,6 +99,10 @@ export async function GET(request: NextRequest) {
           paymentMethod: lesson.paymentMethod || 'Not specified',
           trackingNumber: lesson.trackingNumber,
           createdAt: lesson.createdAt,
+          // Información de licencia y learner permit
+          learnerPermitUrl: lesson.student.learnerPermitUrl,
+          hasLicense: lesson.student.hasLicense,
+          licenseInfo
         },
       });
     }
@@ -92,6 +117,20 @@ export async function GET(request: NextRequest) {
           select: {
             name: true,
             email: true,
+            learnerPermitUrl: true,
+            hasLicense: true,
+            licenses: {
+              select: {
+                licenseNumber: true,
+                licenseType: true,
+                expirationDate: true,
+                createdAt: true
+              },
+              orderBy: {
+                createdAt: 'desc'
+              },
+              take: 1
+            }
           },
         },
         instructor: {
@@ -125,6 +164,13 @@ export async function GET(request: NextRequest) {
       const requestDate = new Date(lessonRequest.lessonDate);
       // Sumamos un día para corregir el problema
       requestDate.setDate(requestDate.getDate() + 1);
+
+      // Extraer la información de la licencia si existe
+      const licenseInfo = lessonRequest.student.licenses && lessonRequest.student.licenses.length > 0 ? {
+        licenseNumber: lessonRequest.student.licenses[0].licenseNumber,
+        expiryDate: lessonRequest.student.licenses[0].expirationDate, // Ahora usamos el campo correcto
+        licenseClass: lessonRequest.student.licenses[0].licenseType // Usamos licenseType como la clase
+      } : null;
       
       return NextResponse.json({
         found: true,
@@ -145,6 +191,10 @@ export async function GET(request: NextRequest) {
           paymentMethod: lessonRequest.paymentMethod || 'Not specified',
           trackingNumber: lessonRequest.trackingNumber,
           createdAt: lessonRequest.createdAt,
+          // Información de licencia y learner permit
+          learnerPermitUrl: lessonRequest.student.learnerPermitUrl,
+          hasLicense: lessonRequest.student.hasLicense,
+          licenseInfo
         },
       });
     }

@@ -24,10 +24,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Verificar que la solicitud esté en estado REQUESTED
-    if (lessonRequest.lessonStatus !== 'REQUESTED') {
+    // Verificar que la solicitud esté en estado REQUESTED o AWAITING_PAYMENT
+    if (lessonRequest.lessonStatus !== 'REQUESTED' && lessonRequest.lessonStatus !== 'AWAITING_PAYMENT') {
       return NextResponse.json(
-        { error: 'Only lesson requests with status REQUESTED can be declined' },
+        { error: 'Only lesson requests with status REQUESTED or AWAITING_PAYMENT can be declined' },
         { status: 400 }
       );
     }

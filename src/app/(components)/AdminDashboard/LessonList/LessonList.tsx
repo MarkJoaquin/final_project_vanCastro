@@ -1,42 +1,52 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import AdminTemplate from "../Template/AdminTemplate";
+import { useState, useEffect } from "react";
+import { useLessonContext } from "@/app/(context)/lessonContext";
 import { useAdminDataContext } from "@/app/(context)/adminContext";
 import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import AddNewLessonModal from "../Modals/AddNewLessonModal";
 import styles from "../LessonList/LessonList.module.css"; // Importing the CSS module
+import ImageViewer from "../../ImageViewer/ImageViewer";
+import { MessageCircle } from "lucide-react";
 
 interface ConfirmedLesson {
-    id: string;
-    date: Date;
-    startTime: string;
-    endTime: string;
-    duration: string;
-    plan: string;
-    price: string;
-    status: string;
-    paymentStatus: string;
-    trackingNumber: string;
-    instructorId: string;
-    // Campos adicionales que vienen del API
-    licenseClass?: string;
-    paymentMethod?: string;
-    student: {
-        name: string;
-    };
-    location: {
-        name: string;
-        city: string;
-    };
+  id: string;
+  date: Date;
+  startTime: string;
+  endTime: string;
+  duration: string;
+  plan: string;
+  price: string;
+  status: string;
+  paymentStatus: string;
+  trackingNumber: string;
+  instructorId: string;
+  // Campos adicionales que vienen del API
+  licenseClass?: string;
+  paymentMethod?: string;
+  student: {
+    name: string;
+    phone?: string;
+    hasLicense?: boolean;
+    learnerPermitUrl?: string;
+    licenses?: {
+      licenseNumber: string;
+      licenseType: string;
+      expirationDate: Date;
+    }[];
+  };
+  location: {
+    name: string;
+    city: string;
+  };
 }
 
 interface LicenseClass {
@@ -49,6 +59,7 @@ export default function LessonList() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [showAddLessonModal, setShowAddLessonModal] = useState<boolean>(false);
+  const [instructors, setInstructors] = useState<{ id: string; name: string }[]>([]); // Estado para los instructores
   const { loginedInstructorData } = useAdminDataContext();
   const instructorId = loginedInstructorData?.id;
   const [licenseClasses, setLicenseClasses] = useState<LicenseClass[]>([]);
@@ -72,6 +83,34 @@ export default function LessonList() {
     }
   };
 
+  const fetchInstructors = async () => {
+    try {
+      const res = await fetch("/api/instructors"); // Ruta de la API de instructores
+      if (!res.ok) {
+        throw new Error("Failed to fetch instructors");
+      }
+      const data = await res.json();
+      setInstructors(data); // Guardamos los instructores en el estado
+    } catch (error) {
+      console.error("Error fetching instructors:", error);
+    }
+  };
+
+  const getInstructorName = (id: string): string => {
+    const instructor = instructors.find((instructor) => instructor.id === id);
+    return instructor ? instructor.name : "Unknown Instructor";
+  };
+
+  // Función para asignar colores al nombre del instructor
+  const getInstructorColor = (instructorName: string) => {
+    switch (instructorName) {
+      case "Andresa":
+        return "bg-[#db7b72] text-white"; 
+      case "Anderson":
+        return "bg-[#449ce7] text-white"; 
+    }
+  };
+
   const fetchLicenseClasses = async () => {
     try {
       const res = await fetch("/api/plans/classes");
@@ -88,6 +127,7 @@ export default function LessonList() {
 
   useEffect(() => {
     fetchConfirmedLessons();
+    fetchInstructors(); // Llamamos a la función para obtener los instructores
     fetchLicenseClasses()
   }, []);
 
@@ -213,8 +253,7 @@ export default function LessonList() {
   };
     
     return (
-      <div className="w-full space-y-6 m-auto">
-    
+      <div className="w-full">
         {sections.map(section => {
           const lessons = groupedLessons[section];
           
@@ -228,18 +267,18 @@ export default function LessonList() {
               <h3 className={`${styles.section} text-lg font-semibold mb-3 px-2 py-1 bg-gray-100 rounded `}>{section}</h3>
               <Accordion type="single" collapsible className="w-full">
                 {lessons.map((lesson) => (
-              <AccordionItem key={lesson.id} value={lesson.id} className="mb-4 border-b border-gray-200">
-                <AccordionTrigger className="flex justify-between px-4 py-3 bg-white rounded-md shadow-sm hover:shadow-md transition-all cursor-pointer">
-                  <div className="flex flex-col items-start text-left">
-                    <span className="font-semibold text-base">{lesson.student.name}</span>
-                    <span className="text-sm text-gray-600">
-                      {formatLessonDate(lesson.date)} - {lesson.startTime} ~ {lesson.endTime}
-                    </span>
-                  </div>
-                </AccordionTrigger>
+          <AccordionItem key={lesson.id} value={lesson.id} className="mb-4 border-b border-gray-200">
+            <AccordionTrigger className="flex justify-between px-4 py-3 bg-white rounded-md shadow-sm hover:shadow-md transition-all cursor-pointer">
+              <div className="flex flex-col items-start text-left w-full overflow-hidden">
+                <span className="font-semibold text-base truncate w-full">{lesson.student.name}</span>
+                <span className="text-sm text-gray-600 truncate w-full">
+                  {formatLessonDate(lesson.date)} - {lesson.startTime} ~ {lesson.endTime}
+                </span>
+              </div>
+            </AccordionTrigger>
             
-            <AccordionContent className="bg-gray-50 px-6 py-4 rounded-b-md">
-              <div className={`${styles.lessonDetails} grid grid-cols-2 gap-4 `}>
+            <AccordionContent className="bg-gray-50 px-4 sm:px-6 py-4 rounded-b-md">
+              <div className={`${styles.lessonDetails} grid grid-cols-1 md:grid-cols-2 gap-6 `}>
                 <div>
                     <h4 className="font-semibold mb-1">Lesson Details</h4>
                     <p className={styles.subtitle}><span className="text-gray-600">Plan:</span> {lesson.plan}</p>
@@ -250,6 +289,34 @@ export default function LessonList() {
                     {lesson.licenseClass && (
                       <p className={styles.subtitle}><span className="text-gray-600">License Class:</span> {getLicenseClassName(lesson.licenseClass)}</p>
                     )}
+                  <p>
+                    <span className="text-gray-600 mr-1">Instructor:</span>
+                    <span
+                      className={`px-2 py-1 rounded text-xs font-medium ${getInstructorColor(getInstructorName(lesson.instructorId))}`}
+                    >
+                      {getInstructorName(lesson.instructorId)}
+                    </span>
+                  </p>
+                  
+                  {/* Student ID Verification Section */}
+                  <h4 className="font-semibold mt-3 mb-1">Student ID Verification</h4>
+                  {lesson.student.learnerPermitUrl ? (
+                    <div className="mt-2">
+                      <p><span className="text-gray-600">Learner Permit:</span></p>
+                      <ImageViewer 
+                        imageUrl={lesson.student.learnerPermitUrl} 
+                        altText="Learner Permit" 
+                      />
+                    </div>
+                  ) : lesson.student.hasLicense && lesson.student.licenses && lesson.student.licenses.length > 0 ? (
+                    <div className="mt-2">
+                      <p><span className="text-gray-600">License Number:</span> {lesson.student.licenses[0].licenseNumber}</p>
+                      <p><span className="text-gray-600">License Type:</span> {lesson.student.licenses[0].licenseType}</p>
+                      <p><span className="text-gray-600">Expiration Date:</span> {new Date(lesson.student.licenses[0].expirationDate).toLocaleDateString()}</p>
+                    </div>
+                  ) : (
+                    <p><span className="text-gray-600">No ID verification provided</span></p>
+                  )}
                 </div>
                 <div>
                   <h4 className="font-semibold mb-1">Location</h4>
@@ -261,6 +328,36 @@ export default function LessonList() {
                   {lesson.paymentMethod && (
                     <p className={styles.subtitle}><span className="text-gray-600">Payment Method:</span> {lesson.paymentMethod}</p>
                   )}
+                  
+                  <div className="mt-4">
+                    <Button 
+                      onClick={() => {
+                        // Formatear el número de teléfono para WhatsApp (eliminar espacios, paréntesis, etc.)
+                        const phoneNumber = lesson.student.phone ? 
+                          lesson.student.phone.replace(/[\s()-]/g, '') : '';
+                        
+                        if (!phoneNumber) {
+                          toast.error("Student phone number not available");
+                          return;
+                        }
+                        
+                        // Formatear el mensaje con detalles de la lección
+                        const message = `Hello ${lesson.student.name}, I'm your driving instructor regarding your confirmed lesson on ${formatLessonDate(lesson.date)} at ${lesson.startTime}.`;
+                        
+                        // Crear la URL de WhatsApp
+                        const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+                        
+                        // Abrir WhatsApp en una nueva pestaña
+                        window.open(whatsappUrl, '_blank');
+                      }} 
+                      className="bg-green-500 hover:bg-green-600 text-white cursor-pointer"
+                      disabled={!lesson.student.phone}
+                      title={!lesson.student.phone ? "Student phone number not available" : "Contact student via WhatsApp"}
+                    >
+                      <MessageCircle className="mr-2 h-4 w-4 " />
+                      Contact via WhatsApp
+                    </Button>
+                  </div>
                 </div>
               </div>
             </AccordionContent>
@@ -279,28 +376,27 @@ export default function LessonList() {
     );
   };
 
-  // Handler para el cambio en el input de búsqueda
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value);
-  };
+    const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchQuery(e.target.value);
+    };
 
   // Componente principal
   return (
     <div className="w-full">
-      <div className={`${styles.LessonSection} w-[80%] m-auto mt-[2rem]`}>
-        <div className="flex justify-between items-center flex-wrap gap-[0.5rem]">
-          <h2 className={`${styles.title} text-2xl font-bold `}>Confirmed Lessons</h2>
-          <div className="flex gap-[1rem]">
+      <div className="w-full max-w-6xl mx-auto px-4 sm:px-6">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+          <h2 className="text-2xl font-bold">Confirmed Lessons</h2>
+          <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
             <Input
-              placeholder="Student name"
+              placeholder="Search student name"
               type="text"
               value={searchQuery}
               onChange={handleSearchChange}
-              className="bg-white py-5"
+              className="bg-white py-5 w-full"
             />
             <Button
               onClick={() => setShowAddLessonModal(true)}
-              className="bg-[#FFCE47] text-black hover:bg-amber-400 cursor-pointer"
+              className="bg-[#FFCE47] text-black hover:bg-amber-400 cursor-pointer w-full sm:w-auto whitespace-nowrap"
             >
               Add New Lesson
             </Button>
@@ -308,7 +404,7 @@ export default function LessonList() {
         </div>
       </div>
       
-      <div className="w-[80%] m-auto mt-4">
+      <div className="w-full max-w-6xl mx-auto px-4 sm:px-6">
         <CustomMainComponent />
       </div>
 
@@ -328,3 +424,5 @@ export default function LessonList() {
     </div>
   );
 }
+
+
