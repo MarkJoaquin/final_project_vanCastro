@@ -27,9 +27,13 @@ export default function ContactSection() {
                   <div className="flex h-10 w-10 items-center justify-center rounded-full bg-black">
                     <Phone className="h-5 w-5 text-[var(--primary-color)]" />
                   </div>
-                  <div className="space-y-1">
-                    <p className="hover:underline cursor-pointer">Anderson {SOCIAL_LINKS.phoneAnderson}</p>
-                    <p className="hover:underline cursor-pointer">Andresa {SOCIAL_LINKS.phoneAndresa}</p>
+                  <div className="space-y-1 flex flex-col">
+                    <Link href={`tel:${SOCIAL_LINKS.phoneAnderson}`} target="_blank" rel="noopener noreferrer" className="hover:underline cursor-pointer">
+                      Anderson {SOCIAL_LINKS.phoneAnderson}
+                    </Link>
+                    <Link href={`tel:${SOCIAL_LINKS.phoneAndresa}`} target="_blank" rel="noopener noreferrer" className="hover:underline cursor-pointer">
+                      Andresa {SOCIAL_LINKS.phoneAndresa}
+                    </Link>
                   </div>
                 </div>
               </div>
