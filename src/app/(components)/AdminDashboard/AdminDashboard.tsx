@@ -12,11 +12,11 @@ export default function Dashboard() {
   return (
     <LessonProvider>
       <div className="min-h-[70vh]">
-        <InstructorCard />
+        {/* <InstructorCard />
         <AdminCalendar />
         <LessonRequests />
         <LessonList />
-        <StudentList />
+        <StudentList /> */}
       </div>
     </LessonProvider>
   );

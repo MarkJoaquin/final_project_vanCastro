@@ -1,26 +1,27 @@
 "use client"
 
 import Image from "next/image"
-import Setting from "@/../public/images/Admin/Setting_100_100.png"
+import Setting from "@/../public/sidebar/settings.svg"
 import { LogoutBtn } from "@/components/ui/LoginLogoutBtn"
 import Link from "next/link"
 import { useAdminDataContext } from "@/app/(context)/adminContext"
 import { User } from "lucide-react"
+import "./AdminNav.css"
 
 export default function AdminNav(){
   const { loginedInstructorData } = useAdminDataContext();
 
   return (
-    <nav className="w-full h-16 bg-white shadow-sm fixed top-0 left-0 lg:static z-20 px-4 lg:px-8">
+    <nav className="w-full h-16 bg-white shadow-sm fixed top-0 left-0 lg:static z-20 px-4 lg:px-8 rounded">
       <div className="h-full flex justify-between items-center">
         {/* Logo/Dashboard link - visible on all screens */}
-        <Link href="/admin" className="flex items-center">
+        <Link href="/admin" className="flex items-center dashboard-link">
           <p className="text-sm md:text-base font-medium hover:underline">Dashboard</p>
         </Link>
 
         {/* Instructor info - hidden on small screens */}
         <div className="hidden md:flex items-center gap-2">
-          <div className="text-right">
+          <div className="text-center">
             <p className="text-sm font-medium">{loginedInstructorData?.name || 'Instructor'}</p>
             <p className="text-xs text-gray-500">Instructor</p>
           </div>

@@ -49,7 +49,7 @@ export default function AdminSidebar() {
             {/* Botón de menú móvil */}
             <button 
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="lg:hidden fixed top-4 left-4 z-50 p-2 rounded-md bg-gray-100 hover:bg-gray-200 transition-colors"
+                className="lg:hidden fixed top-3 left-4 z-50 p-2 rounded-md bg-gray-100 hover:bg-gray-200 transition-colors"
                 aria-label="Toggle menu"
             >
                 {isMobileMenuOpen ? (
@@ -68,8 +68,8 @@ export default function AdminSidebar() {
             )}
 
             <aside 
-                className={`${styles.sidebar} w-64 md:w-72 lg:w-80 h-screen text-[#777777] fixed z-40 transition-transform duration-300 ease-in-out ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'} lg:relative`}>
-            <div className="p-4 text-lg font-bold text-black border-b border-gray-700">
+                className={`${styles.sidebar} mt-3 w-79 md:w-81 lg:w-80 h-[100%] text-[#777777] fixed z-40 transition-transform duration-300 ease-in-out ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'} lg:relative`}>
+            <div className="p-4 text-lg font-bold text-black border-b border-gray-300">
                 Admin Panel
             </div>
             <nav className="mt-4">
@@ -212,7 +212,7 @@ export default function AdminSidebar() {
             </nav>
 
             {/* Settings link at the bottom */}
-            <div className="absolute bottom-4 w-full">
+            {/* <div className="absolute bottom-4 w-full">
                 <ul>
                     <li className={styles.link}>
                         <Link
@@ -233,7 +233,7 @@ export default function AdminSidebar() {
                         </Link>
                     </li>
                 </ul>
-            </div>
+            </div> */}
         </aside>
         </>
     
