@@ -7,6 +7,7 @@ import FacebookLogo from "@/../public/footer/footer-facebook.svg"
 import InstagramLogo from "@/../public/footer/footer-instagram.svg"
 import YotubeLogo from "@/../public/footer/footer-youtube.svg"
 import WhatsappLogo from "@/../public/footer/footer-whatsapp.svg"
+import { SOCIAL_LINKS } from "@/lib/social";
 
 export default function Footer() {
 
@@ -68,7 +69,7 @@ export default function Footer() {
                     />
                     <div className="social-media flex justify-between">
                         <div className="div-social-logo flex justify-center">
-                            <Link href="https://www.facebook.com/people/Vancastro-Driving-School/100088028419878/"
+                            <Link href={SOCIAL_LINKS.facebook}
                                 target="_blank"
                                 rel="noopener noreferrer">
                                 <Image
@@ -81,7 +82,7 @@ export default function Footer() {
                             </Link>
                         </div>
                         <div className="div-social-logo flex justify-center">
-                            <Link href="https://www.instagram.com/vancastro_drivingschool/"
+                            <Link href={SOCIAL_LINKS.instagram}
                                 target="_blank"
                                 rel="noopener noreferrer">
                                 <Image
@@ -94,13 +95,17 @@ export default function Footer() {
                             </Link>
                         </div>
                         <div className="div-social-logo flex justify-center">
-                            <Image
-                                className="social-logo"
-                                src={YotubeLogo}
-                                alt="youtube"
-                                width={20}
-                                height={20}
-                            />
+                            <Link href={SOCIAL_LINKS.youtube}
+                                target="_blank"
+                                rel="noopener noreferrer">
+                                <Image
+                                    className="social-logo"
+                                    src={YotubeLogo}
+                                    alt="youtube"
+                                    width={20}
+                                    height={20}
+                                />
+                            </Link>
                         </div>
                         <div className="div-social-logo flex justify-center">
                             <Image

@@ -10,6 +10,7 @@ import {
 import { ImWhatsapp } from "react-icons/im";
 import ContactForm from "./Contact_Form";
 import styles from "./Contact_Us.module.css";
+import { SOCIAL_LINKS } from "@/lib/social";
 
 export default function ContactSection() {
   return (
@@ -61,19 +62,25 @@ export default function ContactSection() {
             <h3 className="text-xl font-semibold">Visit Our Social media</h3>
             <div className="flex gap-4">
               <Link
-                href="#"
+                href={SOCIAL_LINKS.facebook}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="flex h-10 w-10 items-center justify-center rounded-full bg-black"
               >
                 <Facebook className="h-6 w-6 text-[var(--primary-color)]" />
               </Link>
               <Link
-                href="#"
+                href={SOCIAL_LINKS.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="flex h-10 w-10 items-center justify-center rounded-full bg-black"
               >
                 <Instagram className="h-6 w-6 text-[var(--primary-color)]" />
               </Link>
               <Link
-                href="#"
+                href={SOCIAL_LINKS.youtube}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="flex h-10 w-10 items-center justify-center rounded-full bg-black"
               >
                 <Youtube className="h-6 w-6 text-[var(--primary-color)]" />
