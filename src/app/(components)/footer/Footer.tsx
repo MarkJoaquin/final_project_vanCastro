@@ -68,22 +68,30 @@ export default function Footer() {
                     />
                     <div className="social-media flex justify-between">
                         <div className="div-social-logo flex justify-center">
-                            <Image
-                                className="social-logo"
-                                src={FacebookLogo}
-                                alt="Facebook"
-                                width={20}
-                                height={20}
-                            />
+                            <Link href="https://www.facebook.com/people/Vancastro-Driving-School/100088028419878/"
+                                target="_blank"
+                                rel="noopener noreferrer">
+                                <Image
+                                    className="social-logo"
+                                    src={FacebookLogo}
+                                    alt="Facebook"
+                                    width={20}
+                                    height={20}
+                                />
+                            </Link>
                         </div>
                         <div className="div-social-logo flex justify-center">
-                            <Image
-                                className="social-logo"
-                                src={InstagramLogo}
-                                alt="instagram"
-                                width={20}
-                                height={20}
-                            />
+                            <Link href="https://www.instagram.com/vancastro_drivingschool/"
+                                target="_blank"
+                                rel="noopener noreferrer">
+                                <Image
+                                    className="social-logo"
+                                    src={InstagramLogo}
+                                    alt="instagram"
+                                    width={20}
+                                    height={20}
+                                />
+                            </Link>
                         </div>
                         <div className="div-social-logo flex justify-center">
                             <Image
