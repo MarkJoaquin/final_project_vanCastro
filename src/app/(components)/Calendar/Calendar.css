@@ -147,7 +147,7 @@
 }
 
 /* Estilos responsivos para pantallas pequeñas */
-@media (max-width: 768px) {
+@media only screen and (max-width: 768px) {
   /* Ajustar el tamaño del contenedor del calendario */
   .rbc-calendar {
     font-size: 12px; /* Reducir el tamaño de fuente */
