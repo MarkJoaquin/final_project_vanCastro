@@ -916,9 +916,13 @@ const BookingForm = () => {
                                                                 if (e.target.files && e.target.files[0]) {
                                                                     // Get the selected file
                                                                     const file = e.target.files[0];
+                                                                    console.log('Selected file:', file.name, file.type, file.size);
+                                                                    
+                                                                    // Special handling for iPhone photos which might have image.jpg name
+                                                                    const isIPhonePhoto = file.name === 'image.jpg' || file.name.startsWith('image') && file.type.startsWith('image/');
                                                                     
                                                                     // Check if the file is an image
-                                                                    if (file.type.startsWith('image/')) {
+                                                                    if (file.type.startsWith('image/') || isIPhonePhoto) {
                                                                         setLearnerPermitImage(file);
                                                                         // Reset previous URL if there was one
                                                                         setLearnerPermitImageUrl(null);

@@ -20,11 +20,26 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Validate file type
-    const validTypes = ['image/jpeg', 'image/png', 'image/gif'];
+    // Get file info for logging
+    const fileName = file.name || 'unknown';
     const fileType = file.type || '';
+    const fileSize = file.size || 0;
     
-    if (!validTypes.includes(fileType)) {
+    console.log(`Processing file upload: ${fileName}, type: ${fileType}, size: ${fileSize} bytes`);
+    
+    // Special handling for iPhone photos which often have generic names like 'image.jpg'
+    const isLikelyIPhonePhoto = fileName === 'image.jpg' || 
+                               (fileName.startsWith('image') && fileName.endsWith('.jpg'));
+    
+    // More lenient validation for file types
+    const validTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/jpg'];
+    
+    // Accept the file if it has a valid type OR if it looks like an iPhone photo
+    const isValidType = validTypes.includes(fileType) || 
+                       (isLikelyIPhonePhoto && (fileType.startsWith('image/') || fileType === ''));
+    
+    if (!isValidType) {
+      console.log(`Rejected file: ${fileName} with type: ${fileType}`);
       return NextResponse.json(
         { error: `Invalid file type: ${fileType}. Supported types are JPEG, PNG, and GIF` },
         { status: 400 }
