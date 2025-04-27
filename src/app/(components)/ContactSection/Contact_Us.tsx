@@ -10,6 +10,7 @@ import {
 import { ImWhatsapp } from "react-icons/im";
 import ContactForm from "./Contact_Form";
 import styles from "./Contact_Us.module.css";
+import { SOCIAL_LINKS } from "@/lib/social";
 
 export default function ContactSection() {
   return (
@@ -26,9 +27,13 @@ export default function ContactSection() {
                   <div className="flex h-10 w-10 items-center justify-center rounded-full bg-black">
                     <Phone className="h-5 w-5 text-[var(--primary-color)]" />
                   </div>
-                  <div className="space-y-1">
-                    <p>Anderson +1 604-600-9173</p>
-                    <p>Andresa +1 778-680-5613</p>
+                  <div className="space-y-1 flex flex-col">
+                    <Link href={`tel:${SOCIAL_LINKS.phoneAnderson}`} target="_blank" rel="noopener noreferrer" className="hover:underline cursor-pointer">
+                      Anderson {SOCIAL_LINKS.phoneAnderson}
+                    </Link>
+                    <Link href={`tel:${SOCIAL_LINKS.phoneAndresa}`} target="_blank" rel="noopener noreferrer" className="hover:underline cursor-pointer">
+                      Andresa {SOCIAL_LINKS.phoneAndresa}
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -38,7 +43,7 @@ export default function ContactSection() {
                   <div className="flex h-10 w-10 items-center justify-center rounded-full bg-black">
                     <Mail className="h-5 w-5 text-[var(--primary-color)]" />
                   </div>
-                  <Link href="mailto:vancastrodrivingschool@gmail.com">
+                  <Link href={SOCIAL_LINKS.email} target="_blank" rel="noopener noreferrer">
                     <p className="hover:underline">
                       Vancastrodrivingschool@gmail.com
                     </p>
@@ -61,19 +66,25 @@ export default function ContactSection() {
             <h3 className="text-xl font-semibold">Visit Our Social media</h3>
             <div className="flex gap-4">
               <Link
-                href="#"
+                href={SOCIAL_LINKS.facebook}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="flex h-10 w-10 items-center justify-center rounded-full bg-black"
               >
                 <Facebook className="h-6 w-6 text-[var(--primary-color)]" />
               </Link>
               <Link
-                href="#"
+                href={SOCIAL_LINKS.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="flex h-10 w-10 items-center justify-center rounded-full bg-black"
               >
                 <Instagram className="h-6 w-6 text-[var(--primary-color)]" />
               </Link>
               <Link
-                href="#"
+                href={SOCIAL_LINKS.youtube}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="flex h-10 w-10 items-center justify-center rounded-full bg-black"
               >
                 <Youtube className="h-6 w-6 text-[var(--primary-color)]" />

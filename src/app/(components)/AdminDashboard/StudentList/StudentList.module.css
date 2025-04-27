@@ -1,0 +1,28 @@
+
+
+/* @media screen and (max-width: 480px){
+    .title{
+        display: flex;
+        font-size: 1rem !important;
+        font-weight: 600 !important;
+    }
+    
+    .studentDetail{
+        padding: 12px ;
+    }
+
+    .subtitle{
+        font-size: 0.85rem !important;
+        font-weight: 500 !important;
+    }
+
+}
+
+@media screen and (min-width: 481px) and (max-width: 768px){
+    .title{
+        display: flex;
+        font-size: 1.15rem !important;
+        font-weight: 600 !important;
+    }
+
+} */

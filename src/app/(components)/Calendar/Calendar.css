@@ -1,3 +1,15 @@
+.calendar-container {
+    padding: 0;
+    width: 100%;
+}
+
+.title-calendar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
 .total-lesson {
     font-size: 18px;
 }
@@ -26,6 +38,13 @@
   border: none;
 }
 
+.rbc-toolbar-label {
+  font-size: 20px; /* Tamaño de fuente del encabezado */
+  font-weight: 600; /* Negrita */
+  color: #333; /* Color del texto del encabezado */
+  margin: 0.5rem 0;
+}
+
 /* Celdas del calendario */
 .rbc-day-bg {
   
@@ -42,14 +61,10 @@
   border: none;
 }
 
-.rbc-today .rbc-date-cell {
-    background-color: tomato;
-}
-
 /* Eventos */
 .rbc-event {
-  background-color: var(--primary-color) !important; /* Fondo gris medio para eventos */
-  color: black; /* Texto blanco */
+  /* background-color: var(--primary-color); 
+  color: black;  */
   border-radius: 4px;
   padding: 2px 4px;
   font-weight: 600;
@@ -63,9 +78,31 @@
 
 .rbc-event:focus,
 .rbc-event-selected {
-    background-color: var(--primary-color) !important; 
+    /* background-color: var(--primary-color);  */
     outline: none;
 }
+
+.rbc-event.event-instructor-67e677012104807d89c402dd {
+    background-color: #db7b72;
+    color: white;
+}
+
+  
+.event-instructor-instructor2-67e677012104807d89c402dc {
+    background-color: #449ce7; 
+    color: white;
+}
+
+/* Ajustar el evento en la vista de mes */
+.rbc-month-view .rbc-event {
+    width: auto; 
+    margin: 0 auto; 
+    text-align: center; 
+    border-radius: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 
 /* Vista de día */
 
@@ -73,6 +110,7 @@
 .rbc-timeslot-group {
   border: none;
 }
+
 
 /* Encabezado de la vista de mes */
 .rbc-toolbar {
@@ -94,11 +132,11 @@
 .rbc-toolbar button:focus,
 .rbc-toolbar button:active,
 .rbc-toolbar button.rbc-active {
-  background-color: var(--primary-color); /* Gris más oscuro al hacer clic */
+  background-color: var(--primary-color); 
   outline: none;
 }
 .rbc-toolbar button:hover {
-  background-color: var(--secoundary-color); /* Gris más oscuro al pasar el mouse */
+  background-color: var(--secoundary-color); 
 }
 
 /* Ocultar líneas de tiempo en la vista de día */
@@ -114,4 +152,24 @@
 /* Ocultar bordes entre las celdas */
 .rbc-row-segment {
   border: none;
+}
+
+/* Estilos responsivos para pantallas pequeñas */
+@media only screen and (max-width: 768px) {
+  /* Ajustar el tamaño del contenedor del calendario */
+  .rbc-calendar {
+    font-size: 12px; /* Reducir el tamaño de fuente */
+  }
+
+  .rbc-event, .rbc-event-label, .rbc-event-content {
+    font-size: 8px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .rbc-toolbar-label {
+    background-color: rgb(234, 227, 218);
+    border-radius: 10px;
+  }
 }

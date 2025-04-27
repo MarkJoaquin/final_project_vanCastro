@@ -10,8 +10,7 @@ import { Menu, X } from "lucide-react"; // Iconos para el menú móvil
 
 export default function AdminSidebar() {
     const pathname = usePathname(); // Obtén la ruta actual
-    const [bookingRequestCount, setBookingRequestCount] = useState(0); // Estado para el contador de solicitudes
-    const { loginedInstructorData } = useAdminDataContext(); // Obtén los datos del instructor logueado
+    const { bookingRequestCount, loginedInstructorData, updateBookingRequestCount } = useAdminDataContext(); // Obtén el contador del contexto y los datos del instructor logueado
     const instructorId = loginedInstructorData?.id; // ID del instructor logueado
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false); // Estado para controlar el menú móvil
 
@@ -23,10 +22,10 @@ export default function AdminSidebar() {
                 const data = await res.json();
                 const bookingRequests = data.filter(
                     (request: { lessonStatus: string; instructorId: string }) =>
-                        request.lessonStatus === "REQUESTED" &&
+                        (request.lessonStatus === "REQUESTED" || request.lessonStatus === "AWAITING_PAYMENT") &&
                         request.instructorId === instructorId // Filtra por el ID del instructor logueado
                 );
-                setBookingRequestCount(bookingRequests.length); // Actualiza el contador
+                updateBookingRequestCount(bookingRequests.length); // Actualiza el contador global
             } catch (error) {
                 console.error("Error fetching booking requests:", error);
             }
@@ -35,7 +34,7 @@ export default function AdminSidebar() {
         if (instructorId) {
             fetchBookingRequests(); // Solo ejecuta si hay un instructor logueado
         }
-    }, [instructorId]); // Ejecuta el efecto cuando cambie el ID del instructor
+    }, [instructorId, updateBookingRequestCount]); // Asegúrate de incluir updateBookingRequestCount en las dependencias
 
     // Función para cerrar el menú móvil al hacer clic en un enlace
     const handleLinkClick = () => {
@@ -49,7 +48,7 @@ export default function AdminSidebar() {
             {/* Botón de menú móvil */}
             <button 
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="lg:hidden fixed top-4 left-4 z-50 p-2 rounded-md bg-gray-100 hover:bg-gray-200 transition-colors"
+                className="lg:hidden fixed top-3 left-4 z-50 p-2 rounded-md bg-gray-100 hover:bg-gray-200 transition-colors"
                 aria-label="Toggle menu"
             >
                 {isMobileMenuOpen ? (
@@ -68,19 +67,20 @@ export default function AdminSidebar() {
             )}
 
             <aside 
-                className={`${styles.sidebar} w-64 md:w-72 lg:w-80 h-screen text-[#777777] fixed z-40 transition-transform duration-300 ease-in-out ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'} lg:relative`}>
-            <div className="p-4 text-lg font-bold text-black border-b border-gray-700">
+                className={`${styles.sidebar} mt-3 w-79 md:w-81 lg:w-80 h-[100%] text-[#777777] fixed z-40 transition-transform duration-300 ease-in-out ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'} lg:relative`}>
+            <div className="p-4 text-lg font-bold text-black border-b border-gray-300">
                 Admin Panel
             </div>
-            <nav className="mt-4">
-                <ul className="space-y-2">
+
+            <nav className= {`${styles.sideBarLinks}mt-4`}>
+                <ul className={`${styles.sideBarLinks} space-y-2`}>
                     <li className={styles.link}>
                         <Link
                             href="/admin/calendar"
                             className={`${styles.activeLink} ${
                                 pathname === "/admin/calendar" ? styles.active : ""
-                            }`}
-                            onClick={handleLinkClick}
+                            }`} 
+                            onClick={handleLinkClick} 
                         >
                             <Image
                                 src="/sidebar/calendar.svg"
@@ -95,6 +95,7 @@ export default function AdminSidebar() {
                     <li className={styles.link}>
                         <Link
                             href="/admin/booking-request"
+                            
                             className={`${styles.activeLink} ${
                                 pathname === "/admin/booking-request" ? styles.active : ""
                             }`}
@@ -118,10 +119,11 @@ export default function AdminSidebar() {
                     <li className={styles.link}>
                         <Link
                             href="/admin/lesson"
+                            onClick={handleLinkClick}
                             className={`${styles.activeLink} ${
                                 pathname === "/admin/lesson" ? styles.active : ""
                             }`}
-                            onClick={handleLinkClick}
+                            
                         >
                             <Image
                                 src="/sidebar/lesson.svg"
@@ -136,10 +138,10 @@ export default function AdminSidebar() {
                     <li className={styles.link}>
                         <Link
                             href="/admin/student"
+                            onClick={handleLinkClick}
                             className={`${styles.activeLink} ${
                                 pathname === "/admin/student" ? styles.active : ""
                             }`}
-                            onClick={handleLinkClick}
                         >
                             <Image
                                 src="/sidebar/student.svg"
@@ -212,15 +214,14 @@ export default function AdminSidebar() {
             </nav>
 
             {/* Settings link at the bottom */}
-            <div className="absolute bottom-4 w-full">
+            {/* <div className="absolute bottom-4 w-full">
                 <ul>
                     <li className={styles.link}>
                         <Link
                             href="/admin/settings"
                             className={`${styles.activeLink} ${
                                 pathname === "/admin/settings" ? styles.active : ""
-                            }`}
-                            onClick={handleLinkClick}
+                            }`}  
                         >
                             <Image
                                 src="/sidebar/settings.svg"
@@ -233,7 +234,7 @@ export default function AdminSidebar() {
                         </Link>
                     </li>
                 </ul>
-            </div>
+            </div> */}
         </aside>
         </>
     

@@ -21,6 +21,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import styles from "../LessonRequest/LessonRequest.module.css";
+
 
 interface LessonRequest {
   id: string;
@@ -42,6 +44,7 @@ interface LessonRequest {
     email?: string;
     hasLicense?: boolean;
     learnerPermitUrl?: string;
+    phone?: string; // Added phone property
     licenses?: {
       licenseNumber: string;
       licenseType: string;
@@ -102,7 +105,7 @@ export default function LessonRequests() {
     const [confirmDescription, setConfirmDescription] = useState<string>("");
     const [confirmButtonText, setConfirmButtonText] = useState<string>("Confirm");
 
-    const { loginedInstructorData } = useAdminDataContext(); 
+    const { loginedInstructorData, updateBookingRequestCount } = useAdminDataContext(); 
     const instructorId = loginedInstructorData?.id;
 
     const fetchLessonRequests = async () => {
@@ -276,6 +279,16 @@ export default function LessonRequests() {
                     description: `The lesson has been ${actionText} and a notification email has been sent to the student.`,
                     duration: 4000
                 });
+
+                // Actualiza el contador después de aceptar la solicitud
+                const updatedRequests = await fetch("/api/lessons/request");
+                const count = await updatedRequests.json();
+                const filteredRequests = count.filter(
+                    (request: { lessonStatus: string; instructorId: string }) =>
+                        (request.lessonStatus === "REQUESTED" || request.lessonStatus === "AWAITING_PAYMENT") &&
+                        request.instructorId === loginedInstructorData?.id
+                );
+                updateBookingRequestCount(filteredRequests.length); // Actualiza el contador global
             } catch (error) {
                 console.error("Error accepting request:", error);
                 toast.error("Request failed", {
@@ -492,7 +505,7 @@ export default function LessonRequests() {
         }
         
         if (filteredRequests.length === 0) {
-            return <p className="text-center py-4">No booking requests to display</p>;
+            return <p className={`${styles.message} text-center py-4 `}>No booking requests to display</p>;
         }
         
         const groupedRequests = groupRequestsBySection();
@@ -532,7 +545,7 @@ export default function LessonRequests() {
                                     <p>
                                         <span className="text-gray-600">Status: </span>
                                         <span className={`px-2 py-1 rounded text-xs font-medium ${getStatusColor(request.lessonStatus)}`}>
-                                           {request.lessonStatus === "AWAITING_PAYMENT" ? "AWAITING FOR PAYMENT" : request.lessonStatus}
+                                            {request.lessonStatus === "AWAITING_PAYMENT" ? "AWAITING FOR PAYMENT" : request.lessonStatus}
                                         </span>
                                     </p>
                                     {request.licenseClass && (
@@ -715,8 +728,8 @@ export default function LessonRequests() {
                                 setConfirmDialogOpen(false);
                             }}
                             className={confirmButtonText === "Decline" ? "bg-red-500 hover:bg-red-600" : 
-                                     confirmButtonText === "Send Invoice" ? "bg-blue-500 hover:bg-blue-600" : 
-                                     "bg-[#FFCE47] hover:bg-amber-400 text-black"}
+                                    confirmButtonText === "Send Invoice" ? "bg-blue-500 hover:bg-blue-600" : 
+                                    "bg-[#FFCE47] hover:bg-amber-400 text-black"}
                         >
                             {confirmButtonText === "Accept" ? (
                                 <>

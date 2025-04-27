@@ -23,8 +23,10 @@ interface InstructorData {
 type State = {
   allInstructorData: InstructorData[];
   loginedInstructorData: InstructorData | null;
+  bookingRequestCount: number;
   updateAllInstructorData: (data: InstructorData[]) => void;
   updateLoginedInstructorData: (data: InstructorData | null) => void;
+  updateBookingRequestCount: (newCount: number) => void;
   logout: () => void;
 };
 
@@ -36,6 +38,7 @@ const SESSION_STORAGE_KEY = "instructor_session";
 const AdminDataContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [allInstructorData, setAllInstructorData] = useState<InstructorData[]>([]);
   const [loginedInstructorData, setLoginedInstructorData] = useState<InstructorData | null>(null);
+  const [bookingRequestCount, setBookingRequestCount] = useState<number>(0); // Nuevo estado para el contador
 
   // Intentar restaurar la sesión al cargar el componente
   useEffect(() => {
@@ -52,6 +55,10 @@ const AdminDataContextProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         }
       }
     }
+  }, []);
+
+  const updateBookingRequestCount = useCallback((newCount: number) => {
+    setBookingRequestCount(newCount);
   }, []);
 
   const updateAllInstructorData = useCallback((data: InstructorData[]) => {
@@ -81,7 +88,15 @@ const AdminDataContextProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     }
   }, [allInstructorData]);
 
-  const value = { allInstructorData, loginedInstructorData, updateAllInstructorData, updateLoginedInstructorData, logout };
+  const value = {
+    allInstructorData,
+    loginedInstructorData,
+    bookingRequestCount, // Incluye el contador en el contexto
+    updateAllInstructorData,
+    updateLoginedInstructorData,
+    updateBookingRequestCount, // Incluye la función de actualización
+    logout,
+  };
 
   return <AdminDataContext.Provider value={value}>{children}</AdminDataContext.Provider>;
 };

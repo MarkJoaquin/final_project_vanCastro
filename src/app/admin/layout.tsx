@@ -1,6 +1,10 @@
 import AdminNav from "../(components)/AdminDashboard/AdminNav";
 import AdminSidebar from "../(components)/AdminDashboard/AdminSideBar";
 import { AdminDataContextProvider } from "../(context)/adminContext";
+import { LessonProvider } from "../(context)/lessonContext";
+import "react-big-calendar/lib/css/react-big-calendar.css"; 
+import "@/app/(components)/Calendar/Calendar.css"; 
+import styles from "./layout.module.css";
 
 export default function RootLayout({
   children,
@@ -9,6 +13,7 @@ export default function RootLayout({
 }>) {
   return (
     <AdminDataContextProvider>
+      <LessonProvider>
       <div className="flex flex-col lg:flex-row min-h-screen bg-gray-50">
         <AdminSidebar />
         <div className="flex-1 transition-all duration-300 p-4 pt-16 lg:pt-4">
@@ -18,6 +23,7 @@ export default function RootLayout({
           </main>
         </div>
       </div>
+      </LessonProvider>
     </AdminDataContextProvider>
   );
 }

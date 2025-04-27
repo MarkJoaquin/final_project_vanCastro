@@ -7,6 +7,7 @@ import FacebookLogo from "@/../public/footer/footer-facebook.svg"
 import InstagramLogo from "@/../public/footer/footer-instagram.svg"
 import YotubeLogo from "@/../public/footer/footer-youtube.svg"
 import WhatsappLogo from "@/../public/footer/footer-whatsapp.svg"
+import { SOCIAL_LINKS } from "@/lib/social";
 
 export default function Footer() {
 
@@ -25,7 +26,9 @@ export default function Footer() {
                             style={{marginRight:"1rem"}}
                         />
                         <p className="pr-3">Anderson</p>
-                        <p className="flex hover-element">+1 604-600-9173</p>
+                        <Link href={`tel:${SOCIAL_LINKS.phoneAnderson}`} target="_blank" rel="noopener noreferrer">
+                        <p className="flex hover-element">{SOCIAL_LINKS.phoneAnderson}</p>
+                        </Link>
                     </div>
                     <div className="footer-element contact-driver">
                         <Image
@@ -36,9 +39,13 @@ export default function Footer() {
                             style={{marginRight:"1rem"}}
                         />
                         <p className="pr-3">Andresa</p>
-                        <p className="flex hover-element">+1 778-680-5613</p>
+                        <Link href={`tel:${SOCIAL_LINKS.phoneAndresa}`} target="_blank" rel="noopener noreferrer">
+                        <p className="flex hover-element">{SOCIAL_LINKS.phoneAndresa}</p>
+                        </Link>
                     </div>
-                    <p className="footer-element"><span>Email:</span> Vancastrodrivingschool@gmail.com</p>
+                    <Link href={SOCIAL_LINKS.email} target="_blank" rel="noopener noreferrer">
+                        <p className="footer-element footer-mail" ><span>Email:</span> Vancastrodrivingschool@gmail.com</p>
+                    </Link>
                     <p className="footer-element"><span className="working-hours">Working hours:</span> Monday to Friday 8a.m. - 6p.m.</p>
                 </div>  
                 <div className="footer-location justify-items-start order-tablet-2">
@@ -68,31 +75,44 @@ export default function Footer() {
                     />
                     <div className="social-media flex justify-between">
                         <div className="div-social-logo flex justify-center">
-                            <Image
-                                className="social-logo"
-                                src={FacebookLogo}
-                                alt="Facebook"
-                                width={20}
-                                height={20}
-                            />
+                            <Link href={SOCIAL_LINKS.facebook}
+                                target="_blank"
+                                rel="noopener noreferrer">
+                                <Image
+                                    className="social-logo"
+                                    src={FacebookLogo}
+                                    alt="Facebook"
+                                    width={20}
+                                    height={20}
+                                />
+                            </Link>
                         </div>
                         <div className="div-social-logo flex justify-center">
-                            <Image
-                                className="social-logo"
-                                src={InstagramLogo}
-                                alt="instagram"
-                                width={20}
-                                height={20}
-                            />
+                            <Link href={SOCIAL_LINKS.instagram}
+                                target="_blank"
+                                rel="noopener noreferrer">
+                                <Image
+                                    className="social-logo"
+                                    src={InstagramLogo}
+                                    alt="instagram"
+                                    width={20}
+                                    height={20}
+                                />
+                            </Link>
                         </div>
                         <div className="div-social-logo flex justify-center">
-                            <Image
-                                className="social-logo"
-                                src={YotubeLogo}
-                                alt="youtube"
-                                width={20}
-                                height={20}
-                            />
+                            <Link href={SOCIAL_LINKS.youtube}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex justify-center">
+                                <Image
+                                    className="social-logo"
+                                    src={YotubeLogo}
+                                    alt="youtube"
+                                    width={20}
+                                    height={20}
+                                />
+                            </Link>
                         </div>
                         <div className="div-social-logo flex justify-center">
                             <Image
