@@ -1,3 +1,4 @@
+import { hashCompare, hashPassword } from "@/lib/hashPass";
 import prisma from "@/lib/prisma";
 import { NextResponse, NextRequest } from "next/server";
 
@@ -10,7 +11,6 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
       { status: 400 }
     );
   }
-  console.log("FindUnique before",id)
 
   try {
     const InstructorData = await prisma.instructor.findUnique({
@@ -19,7 +19,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
       },
     });
 
-    console.log("FindUnique",id)
+    console.log("FindUnique",InstructorData)
 
     return NextResponse.json({
       status: "success",
@@ -31,8 +31,8 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
   }
 }
 
-export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
-  const { id } = params;
+export async function PUT(request: NextRequest) {
+  const id  = request.nextUrl.pathname.split("/").pop();
   const body = await request.json();
 
   if( !id ){
@@ -42,6 +42,31 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
     );
   }
 
+  const instructor = await prisma.instructor.findUnique({
+    where: {
+      id: id
+    }
+  })
+
+  if(!instructor){
+    return NextResponse.json(
+      { status: "error", message: "Instructer ID info has error. Please try again after logout" },
+      { status: 400 }
+    );
+  }
+
+  const isPasswordValid =  await hashCompare(body.currentPassword,instructor.password)
+
+  if(!isPasswordValid){
+    console.log("Your Current Password is worng,,,")
+    return NextResponse.json(
+      { status: "error", message: "Your Current Password is worng,,," },
+      { status: 400 }
+    );
+  }
+  
+  const hashedPassword = await hashPassword(body.newPassword)
+  
   try {
     const updateInstructor = await prisma.instructor.update({
       where:{
@@ -52,7 +77,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
         languages: body.languages,
         phone: body.phone,
         email: body.email,
-        password: body.password,
+        password: hashedPassword,
         ...(body.licenseNumber && { licenseNumber: body.licenseNumber as string }),
         ...(body.experienceYears && {experienceYears:body.experienceYears as number})
       }

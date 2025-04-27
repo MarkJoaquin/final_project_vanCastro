@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import AddNewLessonModal from "../Modals/AddNewLessonModal";
+import styles from "../LessonList/LessonList.module.css"; // Importing the CSS module
 import ImageViewer from "../../ImageViewer/ImageViewer";
 import { MessageCircle } from "lucide-react";
 
@@ -48,6 +49,11 @@ interface ConfirmedLesson {
   };
 }
 
+interface LicenseClass {
+  id: string;
+  name: string;
+}
+
 export default function LessonList() {
   const [confirmedLessons, setConfirmedLessons] = useState<ConfirmedLesson[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -56,6 +62,7 @@ export default function LessonList() {
   const [instructors, setInstructors] = useState<{ id: string; name: string }[]>([]); // Estado para los instructores
   const { loginedInstructorData } = useAdminDataContext();
   const instructorId = loginedInstructorData?.id;
+  const [licenseClasses, setLicenseClasses] = useState<LicenseClass[]>([]);
 
   const fetchConfirmedLessons = async () => {
     setIsLoading(true);
@@ -104,9 +111,24 @@ export default function LessonList() {
     }
   };
 
+  const fetchLicenseClasses = async () => {
+    try {
+      const res = await fetch("/api/plans/classes");
+      if (!res.ok) {
+        console.error("Failed to fetch license classes");
+        return;
+      }
+      const data = await res.json();
+      setLicenseClasses(data);
+    } catch (error) {
+      console.error("Error fetching license classes:", error);
+    }
+  }
+
   useEffect(() => {
     fetchConfirmedLessons();
     fetchInstructors(); // Llamamos a la función para obtener los instructores
+    fetchLicenseClasses()
   }, []);
 
   // Filtra las lecciones asignadas al instructor logeado y por nombre de estudiante si hay búsqueda
@@ -222,6 +244,13 @@ export default function LessonList() {
     
     const groupedLessons = groupLessonsBySection();
     const sections = ["Today", "Tomorrow", "This Week", "Upcoming"];
+
+    // Map licenseClass ID to name
+  const getLicenseClassName = (id?: string) => {
+    if (!id) return "";
+    const found = licenseClasses.find((lc) => lc.id === id);
+    return found ? found.name : id;
+  };
     
     return (
       <div className="w-full">
@@ -233,8 +262,9 @@ export default function LessonList() {
           }
           
           return (
-            <div key={section} className="mb-4">
-              <h3 className="text-lg font-semibold mb-3 px-2 py-1 bg-gray-100 rounded">{section}</h3>
+            <div className={styles.acordionContainer} key={section}>
+<div key={section} className= {`${styles.acordionSection} mb-4  `}>
+              <h3 className={`${styles.section} text-lg font-semibold mb-3 px-2 py-1 bg-gray-100 rounded `}>{section}</h3>
               <Accordion type="single" collapsible className="w-full">
                 {lessons.map((lesson) => (
           <AccordionItem key={lesson.id} value={lesson.id} className="mb-4 border-b border-gray-200">
@@ -248,17 +278,17 @@ export default function LessonList() {
             </AccordionTrigger>
             
             <AccordionContent className="bg-gray-50 px-4 sm:px-6 py-4 rounded-b-md">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className={`${styles.lessonDetails} grid grid-cols-1 md:grid-cols-2 gap-6 `}>
                 <div>
-                  <h4 className="font-semibold mb-1">Lesson Details</h4>
-                  <p><span className="text-gray-600">Plan:</span> {lesson.plan}</p>
-                  <p><span className="text-gray-600">Duration:</span> {lesson.duration} minutes</p>
-                  <p><span className="text-gray-600">Price:</span> ${lesson.price}</p>
-                  <p><span className="text-gray-600">Status:</span> {lesson.status}</p>
-                  <p><span className="text-gray-600">Payment Status:</span> {lesson.paymentStatus}</p>
-                  {lesson.licenseClass && (
-                    <p><span className="text-gray-600">License Class:</span> {lesson.licenseClass}</p>
-                  )}
+                    <h4 className="font-semibold mb-1">Lesson Details</h4>
+                    <p className={styles.subtitle}><span className="text-gray-600">Plan:</span> {lesson.plan}</p>
+                    <p className={styles.subtitle}><span className="text-gray-600">Duration:</span> {lesson.duration} minutes</p>
+                    <p className={styles.subtitle}><span className="text-gray-600">Price:</span> ${lesson.price}</p>
+                    <p className={styles.subtitle}><span className="text-gray-600">Status:</span> {lesson.status}</p>
+                    <p className={styles.subtitle}><span className="text-gray-600">Payment Status:</span> {lesson.paymentStatus}</p>
+                    {lesson.licenseClass && (
+                      <p className={styles.subtitle}><span className="text-gray-600">License Class:</span> {getLicenseClassName(lesson.licenseClass)}</p>
+                    )}
                   <p>
                     <span className="text-gray-600 mr-1">Instructor:</span>
                     <span
@@ -288,16 +318,15 @@ export default function LessonList() {
                     <p><span className="text-gray-600">No ID verification provided</span></p>
                   )}
                 </div>
-                
                 <div>
                   <h4 className="font-semibold mb-1">Location</h4>
-                  <p>{lesson.location?.name || "No location"}</p>
+                  <p className={styles.subtitle}>{lesson.location?.name || "No location"}</p>
                   {/* <p>{lesson.location?.city || "No city"}</p> */}
                   
                   <h4 className="font-semibold mt-3 mb-1">Additional Information</h4>
-                  <p><span className="text-gray-600">Tracking Number:</span> {lesson.trackingNumber}</p>
+                  <p className={styles.subtitle}><span className="text-gray-600">Tracking Number:</span> {lesson.trackingNumber}</p>
                   {lesson.paymentMethod && (
-                    <p><span className="text-gray-600">Payment Method:</span> {lesson.paymentMethod}</p>
+                    <p className={styles.subtitle}><span className="text-gray-600">Payment Method:</span> {lesson.paymentMethod}</p>
                   )}
                   
                   <div className="mt-4">
@@ -336,8 +365,13 @@ export default function LessonList() {
                 ))}
               </Accordion>
             </div>
+          
+            </div>
+          
+            
           );
         })}
+        
       </div>
     );
   };

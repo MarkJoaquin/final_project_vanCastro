@@ -5,16 +5,19 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import styles from '../LetUsKnow/LetUsKnow.module.css'; // Importing the CSS module
 import { signIn } from "next-auth/react";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
+import useInitialPassStore from "@/store/initialPass";
 
 export default function AdminLogin() {
   const [adminLogin, setAdminLogin] = useState({
     email: "",
     password: "",
   });
+  const router = useRouter();
 
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const { changeIsInitialPassStatus } = useInitialPassStore()
 
   const loginHandler = async () => {
     try {
@@ -44,9 +47,15 @@ export default function AdminLogin() {
       } else {
         // If login was successful, perform a direct navigation
         console.log("Login successful, redirecting to admin dashboard");
-        
+        console.log("email and pass",adminLogin.password,adminLogin.password)
         // Force hard navigation to /admin
-        window.location.href = "/admin";
+        if(adminLogin.password===adminLogin.password){
+          changeIsInitialPassStatus(true)
+          router.push("/admin/settings");
+        }else{
+          changeIsInitialPassStatus(false)
+          router.push("/admin")
+        }
       }
     } catch (err) {
       console.error("Login error:", err);

@@ -4,6 +4,7 @@ import { AdminDataContextProvider } from "../(context)/adminContext";
 import { LessonProvider } from "../(context)/lessonContext";
 import "react-big-calendar/lib/css/react-big-calendar.css"; 
 import "@/app/(components)/Calendar/Calendar.css"; 
+import styles from "./layout.module.css";
 
 export default function RootLayout({
   children,

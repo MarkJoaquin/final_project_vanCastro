@@ -21,6 +21,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import styles from "../LessonRequest/LessonRequest.module.css";
+
 
 interface LessonRequest {
   id: string;
@@ -493,7 +495,7 @@ export default function LessonRequests() {
         }
         
         if (filteredRequests.length === 0) {
-            return <p className="text-center py-4">No booking requests to display</p>;
+            return <p className={`${styles.message} text-center py-4 `}>No booking requests to display</p>;
         }
         
         const groupedRequests = groupRequestsBySection();

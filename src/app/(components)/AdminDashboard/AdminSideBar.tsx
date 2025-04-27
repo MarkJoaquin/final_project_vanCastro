@@ -72,15 +72,16 @@ export default function AdminSidebar() {
             <div className="p-4 text-lg font-bold text-black border-b border-gray-300">
                 Admin Panel
             </div>
-            <nav className="mt-4">
-                <ul className="space-y-2">
+
+            <nav className= {`${styles.sideBarLinks}mt-4`}>
+                <ul className={`${styles.sideBarLinks} space-y-2`}>
                     <li className={styles.link}>
                         <Link
                             href="/admin/calendar"
                             className={`${styles.activeLink} ${
                                 pathname === "/admin/calendar" ? styles.active : ""
-                            }`}
-                            onClick={handleLinkClick}
+                            }`} 
+                            onClick={handleLinkClick} 
                         >
                             <Image
                                 src="/sidebar/calendar.svg"
@@ -95,6 +96,7 @@ export default function AdminSidebar() {
                     <li className={styles.link}>
                         <Link
                             href="/admin/booking-request"
+                            
                             className={`${styles.activeLink} ${
                                 pathname === "/admin/booking-request" ? styles.active : ""
                             }`}
@@ -118,10 +120,11 @@ export default function AdminSidebar() {
                     <li className={styles.link}>
                         <Link
                             href="/admin/lesson"
+                            onClick={handleLinkClick}
                             className={`${styles.activeLink} ${
                                 pathname === "/admin/lesson" ? styles.active : ""
                             }`}
-                            onClick={handleLinkClick}
+                            
                         >
                             <Image
                                 src="/sidebar/lesson.svg"
@@ -136,10 +139,10 @@ export default function AdminSidebar() {
                     <li className={styles.link}>
                         <Link
                             href="/admin/student"
+                            onClick={handleLinkClick}
                             className={`${styles.activeLink} ${
                                 pathname === "/admin/student" ? styles.active : ""
                             }`}
-                            onClick={handleLinkClick}
                         >
                             <Image
                                 src="/sidebar/student.svg"
@@ -219,8 +222,7 @@ export default function AdminSidebar() {
                             href="/admin/settings"
                             className={`${styles.activeLink} ${
                                 pathname === "/admin/settings" ? styles.active : ""
-                            }`}
-                            onClick={handleLinkClick}
+                            }`}  
                         >
                             <Image
                                 src="/sidebar/settings.svg"
