@@ -105,7 +105,7 @@ export default function LessonRequests() {
     const [confirmDescription, setConfirmDescription] = useState<string>("");
     const [confirmButtonText, setConfirmButtonText] = useState<string>("Confirm");
 
-    const { loginedInstructorData } = useAdminDataContext(); 
+    const { loginedInstructorData, updateBookingRequestCount } = useAdminDataContext(); 
     const instructorId = loginedInstructorData?.id;
 
     const fetchLessonRequests = async () => {
@@ -279,6 +279,16 @@ export default function LessonRequests() {
                     description: `The lesson has been ${actionText} and a notification email has been sent to the student.`,
                     duration: 4000
                 });
+
+                // Actualiza el contador después de aceptar la solicitud
+                const updatedRequests = await fetch("/api/lessons/request");
+                const count = await updatedRequests.json();
+                const filteredRequests = count.filter(
+                    (request: { lessonStatus: string; instructorId: string }) =>
+                        (request.lessonStatus === "REQUESTED" || request.lessonStatus === "AWAITING_PAYMENT") &&
+                        request.instructorId === loginedInstructorData?.id
+                );
+                updateBookingRequestCount(filteredRequests.length); // Actualiza el contador global
             } catch (error) {
                 console.error("Error accepting request:", error);
                 toast.error("Request failed", {

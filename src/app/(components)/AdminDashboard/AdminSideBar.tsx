@@ -10,8 +10,7 @@ import { Menu, X } from "lucide-react"; // Iconos para el menú móvil
 
 export default function AdminSidebar() {
     const pathname = usePathname(); // Obtén la ruta actual
-    const [bookingRequestCount, setBookingRequestCount] = useState(0); // Estado para el contador de solicitudes
-    const { loginedInstructorData } = useAdminDataContext(); // Obtén los datos del instructor logueado
+    const { bookingRequestCount, loginedInstructorData, updateBookingRequestCount } = useAdminDataContext(); // Obtén el contador del contexto y los datos del instructor logueado
     const instructorId = loginedInstructorData?.id; // ID del instructor logueado
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false); // Estado para controlar el menú móvil
 
@@ -26,7 +25,7 @@ export default function AdminSidebar() {
                         (request.lessonStatus === "REQUESTED" || request.lessonStatus === "AWAITING_PAYMENT") &&
                         request.instructorId === instructorId // Filtra por el ID del instructor logueado
                 );
-                setBookingRequestCount(bookingRequests.length); // Actualiza el contador
+                updateBookingRequestCount(bookingRequests.length); // Actualiza el contador global
             } catch (error) {
                 console.error("Error fetching booking requests:", error);
             }
@@ -35,7 +34,7 @@ export default function AdminSidebar() {
         if (instructorId) {
             fetchBookingRequests(); // Solo ejecuta si hay un instructor logueado
         }
-    }, [instructorId]); // Ejecuta el efecto cuando cambie el ID del instructor
+    }, [instructorId, updateBookingRequestCount]); // Asegúrate de incluir updateBookingRequestCount en las dependencias
 
     // Función para cerrar el menú móvil al hacer clic en un enlace
     const handleLinkClick = () => {
