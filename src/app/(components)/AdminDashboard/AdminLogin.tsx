@@ -47,14 +47,23 @@ export default function AdminLogin() {
       } else {
         // If login was successful, perform a direct navigation
         console.log("Login successful, redirecting to admin dashboard");
-        console.log("email and pass",adminLogin.password,adminLogin.password)
-        // Force hard navigation to /admin
-        if(adminLogin.password===adminLogin.password){
-          changeIsInitialPassStatus(true)
-          router.push("/admin/settings");
-        }else{
-          changeIsInitialPassStatus(false)
-          router.push("/admin")
+        
+        try {
+          // Reset any stored login state first
+          localStorage.removeItem('next-auth.session-token');
+          localStorage.removeItem('next-auth.callback-url');
+          localStorage.removeItem('next-auth.csrf-token');
+          
+          // Set admin status and redirect to dashboard
+          changeIsInitialPassStatus(true);
+          console.log("Redirecting to admin dashboard...");
+          
+          // Use window.location.href for a full page reload/redirect
+          window.location.href = '/admin';
+        } catch (navError) {
+          console.error("Navigation error:", navError);
+          // Fallback redirect
+          router.push("/admin");
         }
       }
     } catch (err) {

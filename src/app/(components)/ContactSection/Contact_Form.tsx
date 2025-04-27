@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -18,17 +18,77 @@ export default function ContactForm() {
     email: "",
     message: "",
   });
+  const [errors, setErrors] = useState({
+    name: "",
+    phone: "",
+    email: "",
+    message: "",
+  });
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogMessage, setDialogMessage] = useState("");
+  const [isFormValid, setIsFormValid] = useState(false);
+
+  // Validar el formulario cada vez que cambian los datos
+  useEffect(() => {
+    validateForm();
+  }, [formData]);
+
+  // Función para validar todos los campos
+  const validateForm = () => {
+    const newErrors = {
+      name: "",
+      phone: "",
+      email: "",
+      message: "",
+    };
+    
+    // Validación de nombre
+    if (formData.name.trim() === "") {
+      newErrors.name = "Name is required";
+    } else if (formData.name.trim().length < 2) {
+      newErrors.name = "Name must be at least 2 characters";
+    }
+    
+    // Validación de teléfono (formato norteamericano)
+    if (formData.phone.trim() === "") {
+      newErrors.phone = "Phone number is required";
+    } else if (!/^[\d\s\-\(\)\+]{10,15}$/.test(formData.phone.trim())) {
+      newErrors.phone = "Please enter a valid phone number";
+    }
+    
+    // Validación de email
+    if (formData.email.trim() === "") {
+      newErrors.email = "Email is required";
+    } else if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(formData.email.trim())) {
+      newErrors.email = "Please enter a valid email address";
+    }
+    
+    // Validación de mensaje
+    if (formData.message.trim() === "") {
+      newErrors.message = "Message is required";
+    } else if (formData.message.trim().length < 10) {
+      newErrors.message = "Message must be at least 10 characters";
+    }
+    
+    setErrors(newErrors);
+    
+    // Verificar si el formulario es válido (no hay errores)
+    const valid = Object.values(newErrors).every(error => error === "");
+    setIsFormValid(valid);
+    
+    return valid;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log(formData);
 
-    if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
-      setDialogMessage("Please enter a valid email address.");
+    // Validar el formulario antes de enviar
+    if (!validateForm()) {
+      // Si hay errores, mostrar un mensaje y no continuar
+      setDialogMessage("Please correct the errors in the form before submitting.");
       setDialogOpen(true);
-      setTimeout(() => setDialogOpen(false), 7000); 
+      setTimeout(() => setDialogOpen(false), 7000);
       return;
     }
 
@@ -75,37 +135,57 @@ export default function ContactForm() {
   return (
     <>
       <form onSubmit={handleSubmit} className={`${formClasses} ${styles.slideUp}`}>
-        <Input
-          placeholder="Name"
-          value={formData.name}
-          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-          className="bg-white py-5"
-          required
-        />
-        <Input
-          placeholder="Phone"
-          type="tel"
-          value={formData.phone}
-          onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-          className="bg-white py-5"
-          required
-        />
-        <Input
-          placeholder="Email"
-          type="email"
-          value={formData.email}
-          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-          className="bg-white py-5"
-          required
-        />
-        <Textarea
-          placeholder="Write message..."
-          value={formData.message}
-          onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-          className="h-[120px] bg-white"
-          required
-        />
-        <Button type="submit" className={`${buttonClasses} [w-full]`}>
+        <div className="relative">
+          <Input
+            placeholder="Name"
+            value={formData.name}
+            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            className={`bg-white py-5 ${errors.name ? 'border-red-500' : ''}`}
+            required
+          />
+          {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
+        </div>
+        
+        <div className="relative">
+          <Input
+            placeholder="Phone"
+            type="tel"
+            value={formData.phone}
+            onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+            className={`bg-white py-5 ${errors.phone ? 'border-red-500' : ''}`}
+            required
+          />
+          {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone}</p>}
+        </div>
+        
+        <div className="relative">
+          <Input
+            placeholder="Email"
+            type="email"
+            value={formData.email}
+            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+            className={`bg-white py-5 ${errors.email ? 'border-red-500' : ''}`}
+            required
+          />
+          {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
+        </div>
+        
+        <div className="relative">
+          <Textarea
+            placeholder="Write message..."
+            value={formData.message}
+            onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+            className={`h-[120px] bg-white ${errors.message ? 'border-red-500' : ''}`}
+            required
+          />
+          {errors.message && <p className="text-red-500 text-xs mt-1">{errors.message}</p>}
+        </div>
+        
+        <Button 
+          type="submit" 
+          className={`${buttonClasses} [w-full]`}
+          disabled={!isFormValid}
+        >
           Send Message
         </Button>
       </form>
@@ -120,7 +200,7 @@ export default function ContactForm() {
             <AiOutlineClose size={20} /> 
           </button>
         </DialogClose>
-        {/* <DialogTitle className={styles.dialogTitle}>Message</DialogTitle> */}
+        <DialogTitle className={styles.dialogTitle}>Message Status</DialogTitle>
         <DialogDescription className={styles.dialogDescription}>
           {dialogMessage}
         </DialogDescription>

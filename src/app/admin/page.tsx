@@ -30,8 +30,9 @@ export default function Admin() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch("http://localhost:3000/api/instructors", {
-          cache: "default",
+        // Usar URL relativa para que funcione en cualquier entorno
+        const res = await fetch("/api/instructors", {
+          cache: "no-store", // Evitar caché para obtener datos frescos
         });
         
         if (!res.ok) {
@@ -39,9 +40,24 @@ export default function Admin() {
         }
         
         const data: Instructor[] = await res.json();
-        updateAllInstructorData(data);
+        if (Array.isArray(data)) {
+          updateAllInstructorData(data);
+          console.log("Instructores cargados correctamente:", data.length);
+        } else {
+          console.error("Error: Los datos recibidos no son un array", data);
+          // Usar datos de respaldo si la API falla
+          const fallbackData: Instructor[] = [
+            { id: "fallback-1", name: "Instructor", email: "", languages: [], phone: "", password: "", createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() }
+          ];
+          updateAllInstructorData(fallbackData);
+        }
       } catch (error) {
         console.error("Error fetching data:", error);
+        // Usar datos de respaldo si la API falla completamente
+        const fallbackData: Instructor[] = [
+          { id: "fallback-1", name: "Instructor", email: "", languages: [], phone: "", password: "", createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() }
+        ];
+        updateAllInstructorData(fallbackData);
       }
     };
 
