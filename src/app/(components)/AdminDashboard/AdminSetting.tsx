@@ -151,7 +151,7 @@ export default function AdminSetting() {
                 <SettingInstructorPlate title="Phone" item={newInstructorInfo.phone}/>
                 <SettingInstructorPlate title="Email" item={newInstructorInfo.email}/>
                 <SettingInstructorPlate title="License" item={newInstructorInfo.licenseNumber}/>
-                <SettingInstructorPlate title="Experience" item={newInstructorInfo.experience} haveMB={false}/>
+                <SettingInstructorPlate title="Experience" item={newInstructorInfo.experience + " year(s)"} haveMB={false}/>
               </div>
             </div>
 

@@ -202,48 +202,82 @@ export default function StudentList() {
 
     return (
       <div className="w-full space-y-6">
-        <Accordion type="multiple" className="w-full space-y-4">
+        <Accordion type="single" collapsible className="w-full space-y-4">
           {Object.entries(groupedLessons).map(([studentName, lessons]) => (
-            <AccordionItem key={studentName} value={studentName}>
+            <AccordionItem key={studentName} value={studentName} className="mb-4 border-b border-gray-200">
               <AccordionTrigger className="flex justify-between px-4 py-3 bg-white rounded-md shadow-sm hover:shadow-md transition-all cursor-pointer">
-                {studentName}
+                <div className="flex flex-col items-start text-left w-full overflow-hidden">
+                  <span className="font-semibold text-base truncate w-full">{studentName}</span>
+                  <span className="text-sm text-gray-600 truncate w-full">
+                    {lessons.length} {lessons.length === 1 ? 'lesson' : 'lessons'} - {lessons[0].plan}
+                  </span>
+                </div>
               </AccordionTrigger>
-              <AccordionContent className="bg-gray-50 px-6 py-4 rounded-b-md">
-              {lessons.map((lesson, index) => {
-                const normalizedPlanName = lesson.plan.trim().toLowerCase();
-                const total = planLessonsMap[normalizedPlanName] ?? 0;
-                const lessonEndTime = new Date(`${lesson.date}T${lesson.endTime}`);
-                // Check if the lesson is completed by time
-                const now = new Date();
+              <AccordionContent className="bg-gray-50 px-4 sm:px-6 py-4 rounded-b-md">
+                {lessons.map((lesson, index) => {
+                  const normalizedPlanName = lesson.plan.trim().toLowerCase();
+                  const total = planLessonsMap[normalizedPlanName] ?? 0;
+                  const lessonEndTime = new Date(`${lesson.date}T${lesson.endTime}`);
+                  // Check if the lesson is completed by time
+                  const now = new Date();
 
-                useEffect(() => {
-                  if (lesson.status !== "completed" && lessonEndTime < now) {
-                    updateLessonStatus(lesson.id);
-                  }
-                }, [lessonEndTime, lesson.status]);
-                const completed = lessons.filter(
-                  (l) =>
-                    l.plan.trim().toLowerCase() === normalizedPlanName &&
-                    l.status.toLowerCase() === "completed"
-                ).length;
+                  useEffect(() => {
+                    if (lesson.status !== "completed" && lessonEndTime < now) {
+                      updateLessonStatus(lesson.id);
+                    }
+                  }, [lessonEndTime, lesson.status]);
+                  
+                  const completed = lessons.filter(
+                    (l) =>
+                      l.plan.trim().toLowerCase() === normalizedPlanName &&
+                      l.status.toLowerCase() === "completed"
+                  ).length;
 
+                  const getStatusColor = (status: string) => {
+                    switch (status.toLowerCase()) {
+                      case 'completed':
+                        return 'bg-green-100 text-green-800';
+                      case 'confirmed':
+                        return 'bg-blue-100 text-blue-800';
+                      case 'cancelled':
+                        return 'bg-red-100 text-red-800';
+                      default:
+                        return 'bg-gray-100 text-gray-800';
+                    }
+                  };
 
                   return (
-                    <div key={index} className="bg-gray-50 px-6 py-4 rounded-b-md">
-                      <p><strong>Plan:</strong> {lesson.plan}</p>
-                      <p><strong>Date:</strong> {formatLessonDate(lesson)}</p>
-                      <p><strong>Time:</strong> {lesson.startTime} - {lesson.endTime}</p>
-                      <p><strong>Duration:</strong> {calculateClassDuration(lesson.startTime, lesson.endTime)} minutes</p>
-                      <p><strong>Status:</strong> {lesson.status}</p>
-                      <p><strong>License Class:</strong> {getLicenseClassName(lesson.licenseClass)}</p>
-                      <p>
-                        <strong> Completed Lessons: </strong>
-                        {completed} of {total}
-                      </p>
-                      <p>
-                        <strong>Pending Lessons : </strong>
-                        {total - completed}
-                      </p>
+                    <div key={index} className="mb-4 last:mb-0 border-b border-gray-200 last:border-0 pb-4 last:pb-0">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                          <h4 className="font-semibold mb-1">Lesson Details</h4>
+                          <p><span className="text-gray-600">Plan:</span> {lesson.plan}</p>
+                          <p><span className="text-gray-600">Date:</span> {formatLessonDate(lesson)}</p>
+                          <p><span className="text-gray-600">Time:</span> {lesson.startTime} - {lesson.endTime}</p>
+                          <p><span className="text-gray-600">Duration:</span> {calculateClassDuration(lesson.startTime, lesson.endTime)} minutes</p>
+                          <p>
+                            <span className="text-gray-600">Status: </span>
+                            <span className={`px-2 py-1 rounded text-xs font-medium ${getStatusColor(lesson.status)}`}>
+                              {lesson.status.toUpperCase()}
+                            </span>
+                          </p>
+                          <p><span className="text-gray-600">License Class:</span> {getLicenseClassName(lesson.licenseClass)}</p>
+                        </div>
+                        
+                        <div>
+                          <h4 className="font-semibold mb-1">Progress</h4>
+                          <p><span className="text-gray-600">Completed Lessons:</span> {completed} of {total}</p>
+                          <p><span className="text-gray-600">Pending Lessons:</span> {total - completed}</p>
+                          
+                          <h4 className="font-semibold mt-3 mb-1">Additional Information</h4>
+                          <p><span className="text-gray-600">Tracking Number:</span> {lesson.trackingNumber}</p>
+                          <p><span className="text-gray-600">Payment Status:</span> {lesson.paymentStatus}</p>
+                          {lesson.paymentMethod && (
+                            <p><span className="text-gray-600">Payment Method:</span> {lesson.paymentMethod}</p>
+                          )}
+                          <p><span className="text-gray-600">Location:</span> {lesson.location.name}, {lesson.location.city}</p>
+                        </div>
+                      </div>
                     </div>
                   );
                 })}
