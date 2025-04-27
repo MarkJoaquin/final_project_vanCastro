@@ -597,15 +597,15 @@ const BookingForm = () => {
             if (learningPermitStatus === false) {
                 setIsFormDisabled(true)
                 reset()
-            } else if (!showLearningPermitDialog && learningPermitStatus === null) {
-                setShowLearningPermitDialog(true)
+            } else if (learningPermitStatus === null) {
+                // Automatically set learningPermitStatus to true without showing dialog
+                setLearningPermitStatus(true)
             }
-        } else if (selectedClassData?.name !== 'Class 7' && showLearningPermitDialog) {
-            setShowLearningPermitDialog(false)
         }
-    }, [selectedClass, showLearningPermitDialog, learningPermitStatus, reset, classes])
+    }, [selectedClass, learningPermitStatus, reset, classes, setLearningPermitStatus])
 
-    // Handle Learning Permit response
+    // Esta función ya no es necesaria ya que no mostramos el diálogo
+    // pero la mantenemos por compatibilidad con el código existente
     const handlePermitResponse = (hasPermit: boolean) => {
         if (!hasPermit) {
             setIsFormDisabled(true)
@@ -1468,9 +1468,7 @@ const BookingForm = () => {
                         />
                     )}
 
-                    {showLearningPermitDialog && (
-                        <AlertDialogBooking onPermitResponse={handlePermitResponse} />
-                    )}
+                    {/* Ya no mostramos el diálogo de Learning Permit */}
                     {isFormDisabled && (
                         <div className="mt-4 space-y-4">
                             <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded relative mb-4">
