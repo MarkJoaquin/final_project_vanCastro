@@ -36,13 +36,109 @@ const BookingForm = () => {
         reset();
     };
 
+    // Función para normalizar una imagen y convertirla a Blob
+    const normalizeImage = (file: File): Promise<Blob> => {
+        return new Promise((resolve, reject) => {
+            // Crear un elemento de imagen
+            const img = document.createElement('img') as HTMLImageElement;
+            img.onload = () => {
+                try {
+                    console.log(`Imagen cargada: ${img.width}x${img.height}`);
+                    // Crear un canvas con las dimensiones de la imagen
+                    const canvas = document.createElement('canvas');
+                    // Limitar el tamaño máximo para no generar imágenes enormes
+                    const maxSize = 1200;
+                    let width = img.width;
+                    let height = img.height;
+                    
+                    // Redimensionar si es necesario
+                    if (width > height && width > maxSize) {
+                        height = Math.floor((height * maxSize) / width);
+                        width = maxSize;
+                    } else if (height > maxSize) {
+                        width = Math.floor((width * maxSize) / height);
+                        height = maxSize;
+                    }
+                    
+                    canvas.width = width;
+                    canvas.height = height;
+                    console.log(`Canvas creado: ${width}x${height}`);
+                    
+                    // Dibujar la imagen en el canvas
+                    const ctx = canvas.getContext('2d');
+                    if (!ctx) {
+                        console.error('No se pudo obtener el contexto del canvas');
+                        return reject(new Error('Could not get canvas context'));
+                    }
+                    
+                    ctx.drawImage(img, 0, 0, width, height);
+                    console.log('Imagen dibujada en el canvas');
+                    
+                    // Convertir el canvas a Blob (imagen JPEG)
+                    canvas.toBlob(
+                        (blob) => {
+                            if (blob) {
+                                console.log(`Blob creado: ${blob.size} bytes, tipo: ${blob.type}`);
+                                resolve(blob);
+                            } else {
+                                console.error('Error al convertir canvas a blob');
+                                reject(new Error('Failed to convert image'));
+                            }
+                        },
+                        'image/jpeg',
+                        0.9 // Calidad de la imagen (0.9 = 90%)
+                    );
+                } catch (err) {
+                    console.error('Error en el procesamiento de la imagen:', err);
+                    reject(err);
+                }
+            };
+            
+            img.onerror = (err) => {
+                console.error('Error al cargar la imagen:', err);
+                reject(new Error('Failed to load image'));
+            };
+            
+            // Establecer la fuente de la imagen como URL de objeto
+            const objectUrl = URL.createObjectURL(file);
+            console.log(`URL del objeto creada para la imagen: ${file.name}, tipo: ${file.type}`);
+            img.src = objectUrl;
+        });
+    };
+    
     // Función para subir la imagen del learner permit
     const uploadLearnerPermitImage = async (email: string): Promise<string | null> => {
         if (!learnerPermitImage) return null;
 
         try {
+            console.log('Procesando imagen antes de subirla...');
+            // Variable para almacenar la imagen final a enviar
+            let fileToUpload = learnerPermitImage;
+            
+            try {
+                // Convertir la imagen a un formato estándar (JPEG)
+                const normalizedImageBlob = await normalizeImage(learnerPermitImage);
+                console.log('Imagen normalizada correctamente');
+                
+                // Crear un nuevo archivo a partir del blob con un nombre estándar
+                const normalizedFile = new File(
+                    [normalizedImageBlob],
+                    'learner_permit.jpg',
+                    { type: 'image/jpeg' }
+                );
+                console.log(`Archivo normalizado creado: ${normalizedFile.name}, tipo: ${normalizedFile.type}, tamaño: ${normalizedFile.size} bytes`);
+                
+                // Usar el archivo normalizado
+                fileToUpload = normalizedFile;
+            } catch (normalizationError) {
+                console.error('Error al normalizar la imagen:', normalizationError);
+                // Si hay un error en la normalización, usar el archivo original
+                console.log(`Usando la imagen original como respaldo: ${learnerPermitImage.name}, tipo: ${learnerPermitImage.type}`);
+                // Mantener el archivo original (ya asignado a fileToUpload)
+            }
+            
             const imageFormData = new FormData();
-            imageFormData.append('file', learnerPermitImage);
+            imageFormData.append('file', fileToUpload);
             imageFormData.append('email', email);
 
             const response = await fetch('/api/upload-image', {
@@ -51,7 +147,9 @@ const BookingForm = () => {
             });
 
             if (!response.ok) {
-                throw new Error('Error al subir la imagen');
+                const errorData = await response.json();
+                console.error('Error response from server:', errorData);
+                throw new Error(errorData.error || 'Error al subir la imagen');
             }
 
             const result = await response.json();
