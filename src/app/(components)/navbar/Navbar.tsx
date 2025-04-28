@@ -23,7 +23,7 @@ export default function Navbar() {
             <nav className={styles.navbar}>
                 <div className={styles.navbarSection}>
                     <div className={styles.logo}> 
-                        <Image className={styles.logoImg} src="/images/logo.png" alt="Logo" width={500} height={0} style={{height: "auto"}} priority />
+                        <Link href="/"><Image className={styles.logoImg} src="/images/logo.png" alt="Logo" width={500} height={0} style={{height: "auto"}} priority /></Link>
                     </div>
 
                     <button

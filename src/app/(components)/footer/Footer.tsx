@@ -66,6 +66,7 @@ export default function Footer() {
                     <p className="footer-element hover-element">Contact</p>
                 </div>
                 <div className="footer-logo mobile-first order-tablet-4">
+                    <Link href="/">
                     <Image
                         className="mb-5"
                         src={VanCastroLogo}
@@ -73,6 +74,7 @@ export default function Footer() {
                         width={200}
                         height={100}
                     />
+                    </Link>
                     <div className="social-media flex justify-between">
                         <div className="div-social-logo flex justify-center">
                             <Link href={SOCIAL_LINKS.facebook}

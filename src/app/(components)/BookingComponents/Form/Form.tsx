@@ -635,7 +635,7 @@ const BookingForm = () => {
 
     return (
         <div className="mx-auto p-4 md:p-8 bg-white rounded-lg shadow-md max-w-3xl">
-            <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">Book a Driving Lesson</h2>
+            {/* <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">Book a Driving Lesson</h2> */}
 
             {submitSuccess && trackingNumber ? (
                 <div className="my-6 p-6 bg-green-50 border border-green-200 rounded-lg text-center">
@@ -942,6 +942,9 @@ const BookingForm = () => {
                                                             placeholderText="Select expiry date"
                                                             minDate={new Date()}
                                                             disabled={isFormDisabled}
+                                                            showMonthDropdown
+                                                            showYearDropdown
+                                                            dropdownMode="select"
                                                         />
                                                     )}
                                                 />
@@ -1317,7 +1320,7 @@ const BookingForm = () => {
                                         {/* Sección de Método de Pago - Mostrar solo si hay fecha/hora seleccionada */}
                                         {selectedDateTime && hasValidTime(selectedDateTime) && !timeSlotError && !validatingTimeSlot && (
                                             <div className="mb-8 mt-6 border p-6 rounded-md bg-white">
-                                                <h3 className="text-xl font-semibold">Payment Methods</h3>
+                                                <h3 className="text-xl font-semibold pb-4">Payment Methods</h3>
 
                                                 <div className="space-y-4">
                                                     <div className="flex items-center space-x-3">
@@ -1488,7 +1491,7 @@ const BookingForm = () => {
                                 onClick={handleChangePermitStatus}
                                 className="w-full"
                             >
-                                I now have my Learning Permit
+                                I now have my Learner Permit
                             </Button>
                         </div>
                     )}

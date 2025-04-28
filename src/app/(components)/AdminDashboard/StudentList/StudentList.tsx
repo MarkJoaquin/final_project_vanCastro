@@ -7,6 +7,12 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import styles from "./StudentList.module.css";
 import { Input } from "@/components/ui/input";
 
+interface License {
+  licenseNumber: string;
+  licenseType: string;
+  expirationDate: Date;
+}
+
 interface ConfirmedLesson {
   id: string;
   date: Date;
@@ -23,6 +29,8 @@ interface ConfirmedLesson {
   paymentMethod?: string;
   student: {
       name: string;
+      email?: string;
+      phone?: string;
   };
   location: {
       name: string;
@@ -265,7 +273,16 @@ export default function StudentList() {
                         </div>
                         
                         <div>
-                          <h4 className="font-semibold mb-1">Progress</h4>
+                          <h4 className="font-semibold mb-1">Student Contact</h4>
+                          <p><span className="text-gray-600">Name:</span> {lesson.student.name}</p>
+                          {lesson.student.email && (
+                            <p><span className="text-gray-600">Email:</span> {lesson.student.email}</p>
+                          )}
+                          {lesson.student.phone && (
+                            <p><span className="text-gray-600">Phone:</span> {lesson.student.phone}</p>
+                          )}
+                          
+                          <h4 className="font-semibold mt-3 mb-1">Progress</h4>
                           <p><span className="text-gray-600">Completed Lessons:</span> {completed} of {total}</p>
                           <p><span className="text-gray-600">Pending Lessons:</span> {total - completed}</p>
                           

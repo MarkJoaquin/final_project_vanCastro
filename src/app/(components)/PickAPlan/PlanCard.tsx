@@ -41,7 +41,7 @@ export default function PlanCard({data}: CardProps) {
             ))}
             </div>
             <div className={styles.btnContainer}>
-                <Link href={'/plans'} className={styles.bookingBtn}>Book Now</Link>
+                <Link href={'/booking'} className={styles.bookingBtn}>Book Now</Link>
             </div>
         </div>
     )

@@ -68,8 +68,19 @@ export default function AdminSidebar() {
 
             <aside 
                 className={`${styles.sidebar} mt-3 w-79 md:w-81 lg:w-80 h-[100%] text-[#777777] fixed z-40 transition-transform duration-300 ease-in-out ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'} lg:relative`}>
-            <div className="p-4 text-lg font-bold text-black border-b border-gray-300">
-                Admin Panel
+            <div className="flex flex-start">
+                <div className="flex items-center">
+                    <Link href="/admin/calendar">
+                        <Image
+                            src={isMobileMenuOpen ? "/images/white_logo.png" : "/images/black_logo.png"}
+                            alt="Admin Logo"
+                            width={200}
+                            height={84}
+                            style={{width: "200px", height: "auto", objectFit: "contain", paddingLeft: "25px"}}
+                            priority
+                        />
+                    </Link>
+                </div>
             </div>
 
             <nav className= {`${styles.sideBarLinks}mt-4`}>
