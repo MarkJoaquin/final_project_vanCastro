@@ -155,7 +155,7 @@ export async function validateFutureLessons(
       if (hasOverlap) {
         return {
           isValid: false,
-          message: `Cannot schedule the lesson because it overlaps with a pending request at ${request.startTime}`
+          message: `Sorry, the time you selected is not available. The lesson overlaps with a pending request at ${request.startTime}`
         };
       }
     }
