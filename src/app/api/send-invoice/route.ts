@@ -127,6 +127,8 @@ export async function POST(req: Request) {
             }
             .invoice-company h2 {
               margin: 0;
+              padding-left: 25px;
+
               color: #333;
               font-size: 18px;
             }
@@ -179,7 +181,7 @@ export async function POST(req: Request) {
                 <p><strong>Date:</strong> ${invoiceDate}</p>
               </div>
               <div class="invoice-company">
-                <h2>Driving School</h2>
+                <h2>VanCastro Driving School</h2>
                 <p>123 Driving Lane</p>
                 <p>Vancouver, BC</p>
                 <p>Canada</p>

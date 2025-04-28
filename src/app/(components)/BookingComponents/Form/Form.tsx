@@ -635,7 +635,7 @@ const BookingForm = () => {
 
     return (
         <div className="mx-auto p-4 md:p-8 bg-white rounded-lg shadow-md max-w-3xl">
-            <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">Book a Driving Lesson</h2>
+            {/* <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">Book a Driving Lesson</h2> */}
 
             {submitSuccess && trackingNumber ? (
                 <div className="my-6 p-6 bg-green-50 border border-green-200 rounded-lg text-center">
