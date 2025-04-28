@@ -39,6 +39,7 @@ export async function GET() {
           student: {
             select: {
               name: true,
+              email: true,  // Incluir el email
               phone: true,  // Incluir el número de teléfono
               hasLicense: true,
               learnerPermitUrl: true,
