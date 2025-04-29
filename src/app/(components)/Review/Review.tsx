@@ -11,7 +11,7 @@ interface selectBtnProps {
 }
 
 export default function Review({btnName}:selectBtnProps){
-  const [selectedSection, setSelectedSection] = useState(btnName[0]);
+  const [selectedSection, setSelectedSection] = useState(btnName[1]);
 
   const setReview = () => {
     if(selectedSection==="Alumni Review"){
@@ -28,7 +28,7 @@ export default function Review({btnName}:selectBtnProps){
     <section className="mt-[60px]">
       <h2 className={`text-[50px] font-[700] text-center p-[30px] ${Style.reviewTitle}`}>Check Out Real Reviews</h2>
       <div className="pb-4">
-        <SelectorBtn btnName={btnName} onSelect={setSelectedSection}/>
+        <SelectorBtn btnName={btnName} onSelect={setSelectedSection} calousel={true}/>
       </div>
       <div className="pt-4 pb-[30px]">
         {setReview()}
