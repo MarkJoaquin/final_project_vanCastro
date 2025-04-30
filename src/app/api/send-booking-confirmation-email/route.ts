@@ -193,7 +193,7 @@ export async function POST(req: Request) {
               
               <p>You can use your tracking number to follow the status of your request.</p>
               
-              <a href="#" class="button">Track Your Request</a>
+              <a href="${process.env.NEXT_PUBLIC_APP_URL || 'https://final-project-van-castro.vercel.app/booking'}" class="button">Track Your Request</a>
             </div>
             
             <div class="footer">

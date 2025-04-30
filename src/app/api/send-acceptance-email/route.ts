@@ -178,12 +178,12 @@ export async function POST(req: Request) {
               
               <p>We look forward to seeing you!</p>
               
-              <a href="#" class="button">Track Your Lesson</a>
+              <a href="${process.env.NEXT_PUBLIC_APP_URL || 'https://final-project-van-castro.vercel.app/booking'}" class="button">Track Your Lesson</a>
             </div>
             
             <div class="footer">
-              <p>© ${new Date().getFullYear()} Driving School. All rights reserved.</p>
-              <p>If you have any questions, contact us at info@drivingschool.com</p>
+              <p>© ${new Date().getFullYear()} VanCastro Driving School. All rights reserved.</p>
+              <p>This is an automated message, please do not reply directly to this email.</p>
             </div>
           </div>
         </body>
