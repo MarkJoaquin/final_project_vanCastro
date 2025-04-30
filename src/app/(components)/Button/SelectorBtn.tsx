@@ -5,11 +5,12 @@ import Style from "./SelectBtn.module.css";
 interface selectBtnProps {
   btnName: string[];
   onSelect: (btn: string) => void;
+  calousel?:boolean
 }
 
-export default function SelectorBtn({ btnName, onSelect }: selectBtnProps) {
-  const [activeIndex, setActiveIndex] = useState<number>(0);
-
+export default function SelectorBtn({ btnName, onSelect, calousel = false }: selectBtnProps) {
+  const [activeIndex, setActiveIndex] = useState<number>(calousel? 1:0);
+  
   const selectBtnHandler = (index: number, btn: string) => {
     setActiveIndex(index);
     onSelect(btn);

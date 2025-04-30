@@ -197,7 +197,7 @@ export async function POST(req: Request) {
               <p>Please review this request in your instructor dashboard and either accept or decline the lesson.</p>
               
               <div class="action-buttons">
-                <a href="${process.env.NEXT_PUBLIC_APP_URL || 'https://vancastro.ca'}/admin/booking-request" class="button review-button">Review Request</a>
+                <a href="${process.env.NEXT_PUBLIC_APP_URL || 'https://final-project-van-castro.vercel.app/admin/booking-request'}" class="button review-button">Review Request</a>
               </div>
             </div>
             
