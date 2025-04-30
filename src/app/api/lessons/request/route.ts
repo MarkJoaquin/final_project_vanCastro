@@ -204,32 +204,56 @@ export async function POST(request: NextRequest) {
 
     // Enviar correo de confirmación al estudiante
     try {
-      await fetch(`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/send-booking-confirmation-email`, {
+      const productionUrl = 'https://final-project-van-castro.vercel.app';
+      const baseUrl = process.env.NODE_ENV === 'production' 
+        ? productionUrl 
+        : (process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000');
+      
+      console.log(`Using base URL: ${baseUrl} for email endpoint`);
+      const emailEndpoint = new URL('/api/send-booking-confirmation-email', baseUrl).toString();
+      
+      const response = await fetch(emailEndpoint, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ requestId: lessonRequest.id }),
       });
-      console.log('Booking confirmation email sent to student');
+      
+      if (!response.ok) {
+        console.error('Email API responded with error:', await response.text());
+      } else {
+        console.log('Booking confirmation email sent to student');
+      }
     } catch (emailError) {
       console.error('Error sending booking confirmation email:', emailError);
-      // No interrumpimos el flujo si falla el envío del correo
     }
 
     // Enviar notificación al instructor
     try {
-      await fetch(`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/send-instructor-notification-email`, {
+      const productionUrl = 'https://final-project-van-castro.vercel.app';
+      const baseUrl = process.env.NODE_ENV === 'production' 
+        ? productionUrl 
+        : (process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000');
+      
+      console.log(`Using base URL: ${baseUrl} for instructor email endpoint`);
+      const emailEndpoint = new URL('/api/send-instructor-notification-email', baseUrl).toString();
+      
+      const response = await fetch(emailEndpoint, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ requestId: lessonRequest.id }),
       });
-      console.log('Notification email sent to instructor');
+      
+      if (!response.ok) {
+        console.error('Instructor email API responded with error:', await response.text());
+      } else {
+        console.log('Notification email sent to instructor');
+      }
     } catch (emailError) {
       console.error('Error sending instructor notification email:', emailError);
-      // No interrumpimos el flujo si falla el envío del correo
     }
 
     return NextResponse.json({
