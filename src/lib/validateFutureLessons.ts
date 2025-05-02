@@ -401,7 +401,7 @@ export async function validateFutureLessons(
       return {
         isValid: false,
         // message: `The instructor will not have enough time to reach their next lesson. The next lesson starts at ${nextLesson.startTime} in ${nextLocation.city}, and the transit time from ${requestedLocation.city} is ${transitMinutes} minutes. You would need to book ${minutesShort} minutes earlier.`
-        message: `Sorry, due to traffic restrictions, the instructor will not have enough time to reach their next lesson, due to traffic restrictions, you would need to book ${minutesShort} minutes earlier.`
+        message: `Sorry, due to traffic restrictions, the instructor will not have enough time to reach their next lesson, you would need to book ${minutesShort} minutes earlier.`
       };
     }
   } catch (error) {
