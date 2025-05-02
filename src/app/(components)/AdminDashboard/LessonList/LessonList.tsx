@@ -74,7 +74,7 @@ export default function LessonList() {
         throw new Error(errorData.error || "Error fetching confirmed lessons");
       }
       const data = await res.json();
-      console.log("Confirmed lessons received:", data);
+      // console.log("Confirmed lessons received:", data);
       setConfirmedLessons(data);
     } catch (error) {
       console.error("Error fetching confirmed lessons:", error);

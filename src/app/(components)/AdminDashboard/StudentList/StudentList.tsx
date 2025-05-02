@@ -62,7 +62,7 @@ export default function StudentList() {
         throw new Error(errorData.error || "Error fetching confirmed lessons");
       }
       const data = await res.json();
-      console.log("Confirmed lessons received:", data);
+      // console.log("Confirmed lessons received:", data);
       setConfirmedLessons(data);
     } catch (error) {
       console.error("Error fetching confirmed lessons:", error);
@@ -101,7 +101,7 @@ export default function StudentList() {
       });
 
       setPlanLessonsMap(map);
-      console.log("Plan lessons map:", map);
+      // console.log("Plan lessons map:", map);
     } catch (error) {
       console.error("Error fetching total lessons per plan:", error);
     }

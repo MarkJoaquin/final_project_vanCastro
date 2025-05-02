@@ -369,37 +369,47 @@ export async function validateFutureLessons(
     console.log(`- Hora de llegada estimada: ${transitEndTime.getHours()}:${transitEndTime.getMinutes().toString().padStart(2, '0')}`);
     console.log(`- La próxima lección comienza a las: ${nextStartDateTime.getHours()}:${nextStartDateTime.getMinutes().toString().padStart(2, '0')}`);
     console.log(`- ¿Hay suficiente tiempo para el tránsito? ${transitEndTime <= nextStartDateTime ? 'SÍ' : 'NO'}`);
-    
-    // La parte más importante: asegurarnos de que verificamos siempre el tiempo de tránsito si las ubicaciones son diferentes
+
+    // Calcular los minutos exactos del fin de la lección solicitada y el inicio de la siguiente
+    const [lessonEndHour, lessonEndMin] = endTimeStr.split(':').map(Number);
+    const lessonEndMinutes = lessonEndHour * 60 + lessonEndMin;
+    const nextLessonMinutes = nextStartHour * 60 + nextStartMin;
+
+    // CASO ESPECIAL: Si las lecciones son en la misma ciudad y están programadas consecutivamente
+    // permitir la reserva sin tiempo de tránsito adicional
+    if (requestedLocation.city === nextLocation.city && lessonEndMinutes === nextLessonMinutes) {
+      console.log('CASO FAVORABLE: Las lecciones son consecutivas y en la misma ciudad, permitiendo reserva');
+      return { isValid: true };
+    }
+
+    // Validar tiempo de tránsito si las ubicaciones son diferentes
     if (requestedLocation.city !== nextLocation.city) {
       console.log('ATENCIÓN: Las ubicaciones son diferentes, validando tiempo de tránsito obligatoriamente');
-      
-      // CASO ESPECIAL: Si las ubicaciones son diferentes y la siguiente lección comienza exactamente cuando termina esta
-      // entonces ya sabemos que no hay tiempo de tránsito suficiente (necesitamos al menos algo de tiempo)
-      const [lessonEndHour, lessonEndMin] = endTimeStr.split(':').map(Number);
-      const lessonEndMinutes = lessonEndHour * 60 + lessonEndMin;
-      const nextLessonMinutes = nextStartHour * 60 + nextStartMin;
-      
+
+      // Si las ubicaciones son diferentes y la siguiente lección comienza exactamente cuando termina esta
+      // entonces no hay tiempo de tránsito suficiente (necesitamos al menos algo de tiempo)
       if (lessonEndMinutes === nextLessonMinutes && transitMinutes > 0) {
         console.log('CASO ESPECIAL: La siguiente lección comienza exactamente cuando termina esta, pero están en diferentes ubicaciones.');
         return {
           isValid: false,
-          message: `The instructor cannot make it to the next lesson on time. Your lesson would finish at ${endTimeStr} in ${requestedLocation.city}, and the next lesson starts at ${nextLesson.startTime} in ${nextLocation.city}. The transit time required is ${transitMinutes} minutes.`
+          message: `Sorry, due to traffic restrictions, the instructor cannot make it to the next lesson on time. Your lesson would finish at ${endTimeStr} in ${requestedLocation.city}, and the next lesson starts at ${nextLesson.startTime} in another location.` // The transit time required is ${transitMinutes} minutes.
         };
       }
     }
-    
+
+    // Verificar si hay suficiente tiempo para el tránsito
     if (transitEndTime <= nextStartDateTime) {
       return { isValid: true };
     } else {
       // Calcular cuánto tiempo falta para que sea viable
       const minutesShort = Math.ceil((transitEndTime.getTime() - nextStartDateTime.getTime()) / 60000);
-      
+
       console.log(`Se necesitarían ${minutesShort} minutos menos para que sea viable`);
-      
+
       return {
         isValid: false,
-        message: `The instructor will not have enough time to reach their next lesson. The next lesson starts at ${nextLesson.startTime} in ${nextLocation.city}, and the transit time from ${requestedLocation.city} is ${transitMinutes} minutes. You would need to book ${minutesShort} minutes earlier.`
+        // message: `The instructor will not have enough time to reach their next lesson. The next lesson starts at ${nextLesson.startTime} in ${nextLocation.city}, and the transit time from ${requestedLocation.city} to ${nextLocation.city} is ${transitMinutes} minutes.`
+        message: `Sorry, due to traffic restrictions, the instructor will not have enough time to reach their next lesson, you would need to book ${minutesShort} minutes earlier.`
       };
     }
   } catch (error) {

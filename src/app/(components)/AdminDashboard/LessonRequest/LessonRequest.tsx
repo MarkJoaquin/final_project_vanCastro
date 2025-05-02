@@ -114,7 +114,7 @@ export default function LessonRequests() {
             const res = await fetch("/api/lessons/request");
             if (!res.ok) throw new Error("Error fetching lesson requests");
             const data = await res.json();
-            console.log("Lesson requests:", data);
+            // console.log("Lesson requests:", data);
             setLessonRequests(data); 
         } catch (error) {
             console.error("Error fetching lesson requests:", error);
