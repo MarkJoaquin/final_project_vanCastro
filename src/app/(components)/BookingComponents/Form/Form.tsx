@@ -43,7 +43,7 @@ const BookingForm = () => {
             const img = document.createElement('img') as HTMLImageElement;
             img.onload = () => {
                 try {
-                    console.log(`Imagen cargada: ${img.width}x${img.height}`);
+                    // console.log(`Imagen cargada: ${img.width}x${img.height}`);
                     // Crear un canvas con las dimensiones de la imagen
                     const canvas = document.createElement('canvas');
                     // Limitar el tamaño máximo para no generar imágenes enormes
@@ -62,7 +62,7 @@ const BookingForm = () => {
                     
                     canvas.width = width;
                     canvas.height = height;
-                    console.log(`Canvas creado: ${width}x${height}`);
+                    // console.log(`Canvas creado: ${width}x${height}`);
                     
                     // Dibujar la imagen en el canvas
                     const ctx = canvas.getContext('2d');
@@ -72,13 +72,13 @@ const BookingForm = () => {
                     }
                     
                     ctx.drawImage(img, 0, 0, width, height);
-                    console.log('Imagen dibujada en el canvas');
+                    // console.log('Imagen dibujada en el canvas');
                     
                     // Convertir el canvas a Blob (imagen JPEG)
                     canvas.toBlob(
                         (blob) => {
                             if (blob) {
-                                console.log(`Blob creado: ${blob.size} bytes, tipo: ${blob.type}`);
+                                // console.log(`Blob creado: ${blob.size} bytes, tipo: ${blob.type}`);
                                 resolve(blob);
                             } else {
                                 console.error('Error al convertir canvas a blob');
@@ -101,7 +101,7 @@ const BookingForm = () => {
             
             // Establecer la fuente de la imagen como URL de objeto
             const objectUrl = URL.createObjectURL(file);
-            console.log(`URL del objeto creada para la imagen: ${file.name}, tipo: ${file.type}`);
+            // console.log(`URL del objeto creada para la imagen: ${file.name}, tipo: ${file.type}`);
             img.src = objectUrl;
         });
     };
@@ -111,14 +111,14 @@ const BookingForm = () => {
         if (!learnerPermitImage) return null;
 
         try {
-            console.log('Procesando imagen antes de subirla...');
+            // console.log('Procesando imagen antes de subirla...');
             // Variable para almacenar la imagen final a enviar
             let fileToUpload = learnerPermitImage;
             
             try {
                 // Convertir la imagen a un formato estándar (JPEG)
                 const normalizedImageBlob = await normalizeImage(learnerPermitImage);
-                console.log('Imagen normalizada correctamente');
+                // console.log('Imagen normalizada correctamente');
                 
                 // Crear un nuevo archivo a partir del blob con un nombre estándar
                 const normalizedFile = new File(
@@ -126,7 +126,7 @@ const BookingForm = () => {
                     'learner_permit.jpg',
                     { type: 'image/jpeg' }
                 );
-                console.log(`Archivo normalizado creado: ${normalizedFile.name}, tipo: ${normalizedFile.type}, tamaño: ${normalizedFile.size} bytes`);
+                // console.log(`Archivo normalizado creado: ${normalizedFile.name}, tipo: ${normalizedFile.type}, tamaño: ${normalizedFile.size} bytes`);
                 
                 // Usar el archivo normalizado
                 fileToUpload = normalizedFile;
@@ -153,7 +153,7 @@ const BookingForm = () => {
             }
 
             const result = await response.json();
-            console.log('Imagen subida exitosamente:', result);
+            // console.log('Imagen subida exitosamente:', result);
 
             return result.fileUrl;
         } catch (error) {
@@ -167,7 +167,7 @@ const BookingForm = () => {
         setSubmitError(null);
 
         try {
-            console.log('Form submitted with data:', data);
+            // console.log('Form submitted with data:', data);
 
             let formData = data;
             let permitUrl = null;
@@ -216,7 +216,7 @@ const BookingForm = () => {
             setBookingLocation(locations.find(loc => loc.id === data.location) || null);
             setSubmitSuccess(true);
             setTrackingNumber(result.trackingNumber);
-            console.log('Solicitud creada exitosamente:', result);
+            // console.log('Solicitud creada exitosamente:', result);
 
             // Close the confirmation modal after successful submission
             setShowConfirmation(false);
@@ -397,7 +397,7 @@ const BookingForm = () => {
                 }
 
                 const data = await response.json()
-                console.log('Slots no disponibles recibidos desde frontend:', data)
+                // console.log('Slots no disponibles recibidos desde frontend:', data)
                 setUnavailableTimeSlots(data)
             } catch (err) {
                 console.error('Error loading unavailable time slots:', err)
@@ -1017,7 +1017,7 @@ const BookingForm = () => {
                                                                 if (e.target.files && e.target.files[0]) {
                                                                     // Get the selected file
                                                                     const file = e.target.files[0];
-                                                                    console.log('Selected file:', file.name, file.type, file.size);
+                                                                    // console.log('Selected file:', file.name, file.type, file.size);
                                                                     
                                                                     // Special handling for iPhone photos which might have image.jpg name
                                                                     const isIPhonePhoto = file.name === 'image.jpg' || file.name.startsWith('image') && file.type.startsWith('image/');

@@ -384,7 +384,8 @@ export async function validateFutureLessons(
         console.log('CASO ESPECIAL: La siguiente lección comienza exactamente cuando termina esta, pero están en diferentes ubicaciones.');
         return {
           isValid: false,
-          message: `The instructor cannot make it to the next lesson on time. Your lesson would finish at ${endTimeStr} in ${requestedLocation.city}, and the next lesson starts at ${nextLesson.startTime} in ${nextLocation.city}. The transit time required is ${transitMinutes} minutes.`
+          // message: `The instructor cannot make it to the next lesson on time. Your lesson would finish at ${endTimeStr} in ${requestedLocation.city}, and the next lesson starts at ${nextLesson.startTime} in ${nextLocation.city}. The transit time required is ${transitMinutes} minutes.`
+          message: `Sorry, due to traffic restrictions, the instructor cannot make it to the next lesson on time. Your lesson would finish at ${endTimeStr} in ${requestedLocation.city}, and the next lesson starts at ${nextLesson.startTime} in another location. The transit time required is ${transitMinutes} minutes.`
         };
       }
     }
@@ -399,7 +400,8 @@ export async function validateFutureLessons(
       
       return {
         isValid: false,
-        message: `The instructor will not have enough time to reach their next lesson. The next lesson starts at ${nextLesson.startTime} in ${nextLocation.city}, and the transit time from ${requestedLocation.city} is ${transitMinutes} minutes. You would need to book ${minutesShort} minutes earlier.`
+        // message: `The instructor will not have enough time to reach their next lesson. The next lesson starts at ${nextLesson.startTime} in ${nextLocation.city}, and the transit time from ${requestedLocation.city} is ${transitMinutes} minutes. You would need to book ${minutesShort} minutes earlier.`
+        message: `Sorry, due to traffic restrictions, the instructor will not have enough time to reach their next lesson, due to traffic restrictions, you would need to book ${minutesShort} minutes earlier.`
       };
     }
   } catch (error) {

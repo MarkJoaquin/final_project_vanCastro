@@ -37,7 +37,7 @@ export default function AdminCalendar() {
 
       const lessons = await res.json();
       const formatted = formatLessons(lessons);
-      console.log("Formatted lessons:", formatted);
+      // console.log("Formatted lessons:", formatted);
       setEvents(formatted);
     }
 
